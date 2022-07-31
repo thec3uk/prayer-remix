@@ -6,16 +6,16 @@ import { Link } from '@remix-run/react';
 export interface ILayoutProps {
 	seoTitle?: string;
 	title: string;
-	showsubTitle: boolean;
+	showsubTitle?: boolean;
 	children: React.ReactNode;
-	menu: React.ReactNode;
-	isHome: boolean;
+	menu?: React.ReactNode;
+	isHome?: boolean;
 }
 
 const Layout = ({
 	seoTitle = 'Tim Creamer Prayer Room',
 	title,
-	showsubTitle,
+	showsubTitle = false,
 	children,
 	menu,
 	isHome = false,

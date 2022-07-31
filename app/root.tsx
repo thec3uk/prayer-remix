@@ -11,7 +11,7 @@ import styles from './styles/app.css';
 
 export const meta: MetaFunction = () => ({
 	charset: 'utf-8',
-	title: 'New Remix App',
+	title: 'Tim Creamer Prayer Room',
 	viewport: 'width=device-width,initial-scale=1',
 });
 
@@ -30,7 +30,7 @@ export default function App() {
 				<Outlet />
 				<ScrollRestoration />
 				<Scripts />
-				<LiveReload />
+				<LiveReload port={8002} />
 			</body>
 		</html>
 	);

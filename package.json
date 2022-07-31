@@ -9,13 +9,13 @@
     "start": "cross-env NODE_ENV=production netlify dev"
   },
   "dependencies": {
-    "@fontsource/dm-serif-display": "^4.5.0",
-    "@fontsource/montserrat": "^4.5.1",
+    "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "@netlify/functions": "^1.0.0",
     "@remix-run/netlify": "^1.5.1",
     "@remix-run/node": "^1.5.1",
     "@remix-run/react": "^1.5.1",
+    "airtable": "^0.11.4",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.3",
     "react": "^17.0.2",

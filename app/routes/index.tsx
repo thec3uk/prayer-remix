@@ -1,3 +1,6 @@
+import type { LoaderFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import dayjs from 'dayjs';
 import BoxLink from '~/components/boxLink';
 import GroupedList from '~/components/groupedList';
 import Layout from '~/components/layout';
@@ -16,11 +19,7 @@ const Menu = () => {
 };
 
 interface IPrayerRoomProps {
-	data: {
-		allAirtable: {
-			group: Array<IGroup>;
-		};
-	};
+	data: IPrayer[];
 }
 
 export interface IPrayer {
@@ -28,16 +27,8 @@ export interface IPrayer {
 	prayer: string;
 	title: string;
 	type: string;
-}
-
-export interface IGroup {
-	edges: Array<{
-		node: {
-			data: IPrayer;
-			id: string;
-		};
-	}>;
-	fieldValue: string;
+	created_at: string;
+	id: string;
 }
 
 const PrayerRoomPage = ({ data }: IPrayerRoomProps) => {
@@ -49,41 +40,36 @@ const PrayerRoomPage = ({ data }: IPrayerRoomProps) => {
 			menu={<Menu />}
 		>
 			<div className="hidden md:block">
-				<GroupedList
-					group={data.allAirtable.group}
-					Component={PrayerCard}
-					inverseSort
-				/>
+				<GroupedList group={data} Component={PrayerCard} inverseSort />
 			</div>
 		</Layout>
 	);
 };
 
-export default function Index() {
-	return (
-		<PrayerRoomPage
-			data={{
-				allAirtable: {
-					group: [
-						{
-							edges: [
-								{
-									node: {
-										data: {
-											name: 'name',
-											prayer: 'prayer',
-											title: 'title',
-											type: 'prayer',
-										},
-										id: '1',
-									},
-								},
-							],
-							fieldValue: 'fieldValue',
-						},
-					],
-				},
-			}}
-		/>
+export const loader: LoaderFunction = async () => {
+	const base = 'appzh9VO8LUHq2PR4';
+	const endpointUrl = 'https://api.airtable.com';
+	const tableName = 'Prayer%2FPraise%20Requests';
+	const res = await fetch(
+		`${endpointUrl}/v0/${base}/${tableName}?maxRecords=100&view=Raw%20Submitted%20Requests`,
+		{
+			headers: new Headers({
+				Authorization: 'Bearer keyzbsUppOWt4APd0',
+			}),
+		}
 	);
+	const requests = await res.json();
+	return requests.records.map((r: any) => ({
+		name: r.fields.name,
+		prayer: r.fields.prayer,
+		type: r.fields.type,
+		title: r.fields.title,
+		id: r.id,
+		created_at: dayjs(r.createdTime).format('ddd DD MMM YYYY'),
+	}));
+};
+
+export default function Index() {
+	const allData = useLoaderData();
+	return <PrayerRoomPage data={allData} />;
 }
