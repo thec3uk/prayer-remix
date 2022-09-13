@@ -2,15 +2,7 @@ import * as React from 'react';
 import './layout.css';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
 import { Link } from '@remix-run/react';
-
-export interface ILayoutProps {
-	seoTitle?: string;
-	title: string;
-	showsubTitle?: boolean;
-	children: React.ReactNode;
-	menu?: React.ReactNode;
-	isHome?: boolean;
-}
+import type { ILayoutProps } from './Layout.definition';
 
 const Layout = ({
 	seoTitle = 'Tim Creamer Prayer Room',

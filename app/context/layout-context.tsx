@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './layout.css';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
-import { useLayoutContext, LayoutContextProvider } from '../context/layout';
+import { useLayoutContext, LayoutContextProvider } from './layout';
 import { Link } from '@remix-run/react';
 
 const InnerLayout = ({ children }: { children: React.ReactNode }) => {

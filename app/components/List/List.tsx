@@ -1,10 +1,15 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import type { IPrayer } from '~/routes';
+import type { IRequest } from '~/types/global.definition';
+import type { IGroupedListProps } from './List.definition';
 
 dayjs.extend(customParseFormat);
 
-const compare = (first: IPrayer, second: IPrayer, inverseSort: any): number => {
+const compare = (
+	first: IRequest,
+	second: IRequest,
+	inverseSort: any
+): number => {
 	const firstDate = dayjs(first.created_at);
 	const secondDate = dayjs(second.created_at);
 
@@ -19,14 +24,7 @@ const compare = (first: IPrayer, second: IPrayer, inverseSort: any): number => {
 	return 0;
 };
 
-export interface IGroupedListProps {
-	group: Array<IPrayer>;
-	Component: any;
-	inverseSort?: boolean;
-	filterFn?: (item: any) => boolean;
-}
-
-const GroupedList = ({
+const List = ({
 	group,
 	Component,
 	inverseSort = false,
@@ -36,7 +34,7 @@ const GroupedList = ({
 		<div className="py-2 space-y-8 overflow-y-scroll">
 			{group
 				.sort((a, b) => compare(a, b, inverseSort))
-				.map((prayer: IPrayer) => {
+				.map((prayer: IRequest) => {
 					return (
 						<div
 							key={prayer.id}
@@ -55,4 +53,4 @@ const GroupedList = ({
 	);
 };
 
-export default GroupedList;
+export default List;
