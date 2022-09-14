@@ -16,13 +16,7 @@ type IRequestForm = {
 const RequestLayout = () => {
 	const [error, setError] = React.useState('');
 	const [isPraise, setIsPraise] = React.useState(false);
-	const { register, handleSubmit, setValue } = useForm<IRequestForm>({
-		defaultValues: {
-			name: 'Anon',
-			prayer: 'My wife and I are moving home, please pray it all goes smoothly.',
-			title: 'Moving',
-		},
-	});
+	const { register, handleSubmit, setValue } = useForm<IRequestForm>();
 
 	useEffect(() => {
 		setValue('type', isPraise ? 'praise' : 'prayer');
