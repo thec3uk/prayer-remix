@@ -1,6 +1,7 @@
+import { groupBy } from 'lodash';
 import BoxLink from '~/components/boxLink';
 import Layout from '~/components/Layout';
-import List from '~/components/List';
+import RequestList from '~/components/RequestList';
 import PrayerCard from '~/components/PrayerCard';
 import type { IPrayerRoomProps } from './home.definition';
 
@@ -25,7 +26,7 @@ const HomeLayout = ({ data }: IPrayerRoomProps) => {
 			menu={<Menu />}
 		>
 			<div className="hidden md:block">
-				<List group={data} Component={PrayerCard} inverseSort />
+				<RequestList requests={data} Component={PrayerCard} />
 			</div>
 		</Layout>
 	);

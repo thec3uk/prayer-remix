@@ -12,7 +12,7 @@ export function mapResponseToPrayerPraiseRequests(
 			type: r.fields.type,
 			title: r.fields.title,
 			id: r.id,
-			created_at: dayjs(r.createdTime).format('ddd DD MMM YYYY'),
+			created_at: dayjs(r.fields.created_at).format('ddd DD MMM YYYY'),
 			count: r.fields['Prayer Count'] || 0,
 		};
 	});
