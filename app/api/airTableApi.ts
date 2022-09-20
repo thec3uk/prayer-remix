@@ -13,7 +13,9 @@ const apiUrl = (tableName: string) =>
 export async function fetchRequests(): Promise<IRequest[]> {
 	const tableName = 'Prayer%2FPraise%20Requests';
 	const res = await fetch(
-		`${apiUrl(tableName)}?maxRecords=100&view=Raw%20Submitted%20Requests`,
+		`${apiUrl(
+			tableName
+		)}?maxRecords=100&view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at`,
 		{
 			headers: new Headers({
 				Authorization: `Bearer ${config.apiKey}`,
