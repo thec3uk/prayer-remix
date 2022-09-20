@@ -15,40 +15,49 @@ const PrayerCard = ({ data, id }: IPrayerCardProps) => {
 			setCounter(resp);
 		}
 	};
+	const report = async () => {
+		window.location.href = 'mailto:prayer@thec3.uk';
+	};
 	return (
-		<Card title={data.title} classes={cardClasses}>
-			<div className="flex flex-col justify-start w-full space-y-2 font-sans">
-				<div className="whitespace-pre-line md:h-20 md:overflow-y-scroll">
-					{data.prayer}
-				</div>
-				<div className="flex flex-row items-end justify-between">
-					<div className="flex flex-row">{data.name}</div>
-					<button
-						className={`capitalize p-2 border text-gray-100 rounded hover:bg-blue-500 font-sans flex flex-row ${buttonClasses}`}
-						onClick={onClick}
-					>
-						{data.type === 'praise' ? (
-							<span
-								role="img"
-								aria-label="party popper"
-								className="pr-2"
-							>
-								🎉
-							</span>
-						) : (
-							<span
-								role="img"
-								aria-label="folded hands"
-								className="pr-2"
-							>
-								🙏
-							</span>
-						)}
-						{counter > 0 ? counter : ''}
-					</button>
-				</div>
+		<div
+			className={`${cardClasses} text-gray-50 shadow p-4 rounded flex flex-col font-sans justify-between`}
+		>
+			<h3 className="text-xl">{data.title}</h3>
+			<div className="mt-4">{data.prayer}</div>
+			<div className="mt-4">
+				{`${data.name} ${data.location ? ` (${data.location})` : ''}`}
 			</div>
-		</Card>
+			<div className="flex flex-row justify-between mt-4">
+				<button
+					className={`capitalize p-2 border text-gray-100 rounded hover:bg-blue-500 font-sans flex flex-row ${buttonClasses}`}
+					onClick={onClick}
+				>
+					{data.type === 'praise' ? (
+						<span
+							role="img"
+							aria-label="party popper"
+							className="pr-2"
+						>
+							🎉
+						</span>
+					) : (
+						<span
+							role="img"
+							aria-label="folded hands"
+							className="pr-2"
+						>
+							🙏
+						</span>
+					)}
+					{counter > 0 ? counter : ''}
+				</button>
+				<button onClick={report}>
+					<span role="img" aria-label="red flag" className="pr-2">
+						🚩
+					</span>
+				</button>
+			</div>
+		</div>
 	);
 };
 

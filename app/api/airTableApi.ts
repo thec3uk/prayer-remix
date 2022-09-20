@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import type {
+	ILocation,
 	IRequest,
 	IRequestForm,
 	ISettings,
@@ -53,6 +54,7 @@ export async function submitRequest(request: IRequestForm): Promise<any> {
 		prayer: request?.prayer,
 		created_at: dayjs(),
 		'Prayer Count': 0,
+		location: request?.location,
 	});
 }
 
@@ -83,4 +85,18 @@ export async function incrementPrayerCount(
 		}
 	);
 	return updatedCount;
+}
+
+export async function fetchLocations(): Promise<ILocation[]> {
+	const tableName = 'Locations';
+	const res = await fetch(`${apiUrl(tableName)}`, {
+		headers: new Headers({
+			Authorization: `Bearer ${config.apiKey}`,
+		}),
+	});
+	const locations = await res.json();
+	if (!locations.records) return [];
+	return locations.records.map((location: { fields: { Name: string } }) => ({
+		name: location.fields.Name,
+	}));
 }

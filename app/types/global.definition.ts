@@ -6,6 +6,7 @@ export interface IRequest {
 	created_at: string;
 	count: number;
 	id: string;
+	location: string;
 }
 
 export type IRequestForm = {
@@ -13,9 +14,14 @@ export type IRequestForm = {
 	name?: string;
 	prayer?: string;
 	type: string;
+	location?: string;
 };
 
 export interface ISettings {
 	groupCallEnabled: boolean;
 	buttonText: string;
+}
+
+export interface ILocation {
+	name: string;
 }

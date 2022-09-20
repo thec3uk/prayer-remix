@@ -962,6 +962,10 @@ select{
   width: 100vw;
 }
 
+.flex-auto{
+  flex: 1 1 auto;
+}
+
 .flex-shrink-0{
   flex-shrink: 0;
 }
@@ -999,8 +1003,21 @@ select{
   grid-auto-flow: row;
 }
 
+.auto-rows-max{
+  grid-auto-rows: -webkit-max-content;
+  grid-auto-rows: max-content;
+}
+
 .grid-cols-1{
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-row{
@@ -1033,6 +1050,10 @@ select{
 
 .justify-between{
   justify-content: space-between;
+}
+
+.justify-evenly{
+  justify-content: space-evenly;
 }
 
 .gap-4{
@@ -1162,6 +1183,10 @@ select{
 
 .p-6{
   padding: 1.5rem;
+}
+
+.p-1{
+  padding: 0.25rem;
 }
 
 .px-4{
@@ -1476,6 +1501,10 @@ select{
 }
 
 @media (min-width: 640px){
+  .sm\:overflow-y-scroll{
+    overflow-y: scroll;
+  }
+
   .sm\:text-sm{
     font-size: 0.875rem;
     line-height: 1.25rem;
@@ -1521,6 +1550,22 @@ select{
     height: 100%;
   }
 
+  .md\:h-32{
+    height: 8rem;
+  }
+
+  .md\:h-40{
+    height: 10rem;
+  }
+
+  .md\:h-48{
+    height: 12rem;
+  }
+
+  .md\:h-72{
+    height: 18rem;
+  }
+
   .md\:w-full{
     width: 100%;
   }
@@ -1545,6 +1590,14 @@ select{
 
   .md\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .md\:flex-col{

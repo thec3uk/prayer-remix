@@ -15,7 +15,7 @@ const RequestList = ({ requests, Component }: IRequestListProps) => {
 						<h3 className="mb-4 text-xl text-gray-900">
 							{groups[key][0].created_at}
 						</h3>
-						<div className="relative grid grid-flow-row grid-cols-1 gap-4 md:grid-cols-3">
+						<div className="relative grid grid-flow-row grid-cols-1 gap-4 md:grid-cols-2">
 							{groups[key].map((request: IRequest) => (
 								<Component key={request.id} data={request} />
 							))}

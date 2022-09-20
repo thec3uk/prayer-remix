@@ -5,15 +5,21 @@ import BoxButton from '~/components/boxButton';
 import Layout from '~/components/Layout';
 import Menu from '~/components/Menu';
 import PrayerPraiseToggle from '~/components/prayerPraise';
+import type { ILocation } from '~/types/global.definition';
 
 type IRequestForm = {
 	title?: string;
 	name?: string;
 	prayer?: string;
+	location?: string;
 	type: 'prayer' | 'praise';
 };
 
-const RequestLayout = () => {
+export interface IRequestLayoutProps {
+	locations: ILocation[];
+}
+
+const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 	const [error, setError] = React.useState('');
 	const [isPraise, setIsPraise] = React.useState(false);
 	const { register, handleSubmit, setValue } = useForm<IRequestForm>();
@@ -75,6 +81,22 @@ const RequestLayout = () => {
 								enabled={isPraise}
 								setEnabled={setIsPraise}
 							/>
+							<div>
+								<label
+									htmlFor="location"
+									className="block text-sm font-medium text-gray-700 capitalize"
+								>
+									Location
+								</label>
+								<select {...register('location')}>
+									<option> - </option>
+									{locations.map(l => (
+										<option key={l.name} value={l.name}>
+											{l.name}
+										</option>
+									))}
+								</select>
+							</div>
 							<div>
 								<label
 									htmlFor="title"

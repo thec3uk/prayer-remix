@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { VideoCameraIcon } from '@heroicons/react/outline';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';

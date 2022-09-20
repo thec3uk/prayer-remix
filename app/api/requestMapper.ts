@@ -14,6 +14,7 @@ export function mapResponseToPrayerPraiseRequests(
 			id: r.id,
 			created_at: dayjs(r.fields.created_at).format('ddd DD MMM YYYY'),
 			count: r.fields['Prayer Count'] || 0,
+			location: r.fields['Name (from Location)'],
 		};
 	});
 }
