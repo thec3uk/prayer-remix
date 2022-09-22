@@ -100,3 +100,23 @@ export async function fetchLocations(): Promise<ILocation[]> {
 		name: location.fields.Name,
 	}));
 }
+
+export async function flagRequest(id: string): Promise<boolean> {
+	const base = getBase();
+
+	base('Prayer/Praise Requests').update(
+		id,
+		{
+			Flagged: true,
+		},
+
+		function (err: any) {
+			if (err) {
+				console.error(err);
+				return false;
+			}
+		}
+	);
+
+	return true;
+}

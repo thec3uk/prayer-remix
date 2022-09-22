@@ -7,6 +7,7 @@ export interface IRequest {
 	count: number;
 	id: string;
 	location: string;
+	flagged: boolean;
 }
 
 export type IRequestForm = {
