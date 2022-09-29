@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { flagRequest, incrementPrayerCount } from '~/api/airTableApi';
 import type { IPrayerCardProps } from './PrayerCard.definition';
 
-const PrayerCard = ({ data, id }: IPrayerCardProps) => {
+const PrayerCard = ({ data }: IPrayerCardProps) => {
 	const cardClasses = data.type === 'praise' ? 'bg-blue-400' : 'bg-blue-700';
 	const buttonClasses =
 		data.type === 'praise' ? 'bg-blue-700' : 'bg-blue-400';

@@ -1,6 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Switch } from '@headlessui/react';
-import React from 'react';
 
 export type IPrayerPraiseToggleProps = {
 	enabled: boolean;
