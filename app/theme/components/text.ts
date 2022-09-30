@@ -2,7 +2,7 @@ import type { SystemStyleObject } from '@chakra-ui/theme-tools';
 
 const baseStyle: SystemStyleObject = {
 	fontFamily: 'body',
-	color: 'gray.500',
+	color: 'white',
 };
 
 const sizes: Record<string, SystemStyleObject> = {

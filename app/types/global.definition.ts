@@ -2,7 +2,7 @@ export interface IRequest {
 	name: string;
 	prayer: string;
 	title: string;
-	type: string;
+	type: 'prayer' | 'praise';
 	created_at: string;
 	count: number;
 	id: string;

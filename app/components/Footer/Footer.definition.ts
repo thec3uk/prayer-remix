@@ -1,3 +1,3 @@
-export interface IHeaderProps {
+export interface IFooterProps {
 	isMobile: boolean | undefined;
 }

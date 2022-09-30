@@ -1,13 +1,21 @@
+import { Box, VStack } from '@chakra-ui/react';
 import PrayerCard from '~/components/PrayerCard';
 import type { IListProps } from './list.definition';
 
 const ListLayout = ({ requests }: IListProps) => {
 	return (
-		<div className="">
-			<div className="w-screen px-4 py-2 mb-8 font-sans text-lg bg-gray-600 shadow md:w-full text-gray-50">
-				See prayer request from others and take some time to pray
-			</div>
-		</div>
+		<VStack spacing={5} as="main">
+			<Box
+				padding={5}
+				w="100%"
+				mx="auto"
+				sx={{ columnCount: [1, 2, 3], columnGap: '1rem' }}
+			>
+				{requests.map(request => (
+					<PrayerCard data={request} key={request.id}></PrayerCard>
+				))}
+			</Box>
+		</VStack>
 	);
 };
 
