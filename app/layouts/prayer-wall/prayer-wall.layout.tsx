@@ -1,8 +1,8 @@
 import { Box, VStack } from '@chakra-ui/react';
 import PrayerCard from '~/components/PrayerCard';
-import type { IListProps } from './list.definition';
+import type { IPrayerWallProps } from './prayer-wall.definition';
 
-const ListLayout = ({ requests }: IListProps) => {
+const PrayerWallLayout = ({ requests }: IPrayerWallProps) => {
 	return (
 		<VStack spacing={5} as="main">
 			<Box
@@ -19,4 +19,4 @@ const ListLayout = ({ requests }: IListProps) => {
 	);
 };
 
-export default ListLayout;
+export default PrayerWallLayout;

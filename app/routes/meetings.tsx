@@ -1,19 +1,19 @@
 import type { LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { fetchSettings } from '~/api/airTableApi';
-import type { IPrayerMeetupPageProps } from '~/layouts/upcoming/upcoming.definition';
-import UpcomingLayout from '~/layouts/upcoming/upcoming.layout';
+import type { IPrayerMeetupPageProps } from '~/layouts/meetings/meetings.definition';
+import MeetingsLayout from '~/layouts/meetings/meetings.layout';
 
 export const loader: LoaderFunction = async () => {
 	return await fetchSettings();
 };
 
-export default function Upcoming() {
+export default function Meetings() {
 	const { groupCallEnabled, buttonText } =
 		useLoaderData<IPrayerMeetupPageProps>();
 
 	return (
-		<UpcomingLayout
+		<MeetingsLayout
 			groupCallEnabled={groupCallEnabled}
 			buttonText={buttonText}
 		/>

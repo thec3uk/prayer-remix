@@ -9,12 +9,7 @@ import {
 } from '@remix-run/react';
 import Layout from './components/Layout';
 import styles from '~/styles/global.css';
-import {
-	ChakraProvider,
-	Container,
-	Flex,
-	useBreakpointValue,
-} from '@chakra-ui/react';
+import { ChakraProvider, Flex } from '@chakra-ui/react';
 import { SkipNavLink, SkipNavContent } from '@chakra-ui/skip-nav';
 import { useContext, useEffect } from 'react';
 import ClientStyleContext from './context.client';

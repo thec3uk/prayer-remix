@@ -41,7 +41,7 @@ const PrayerCard = ({ data }: IPrayerCardProps) => {
 		>
 			<VStack p="1">
 				<Heading
-					size="xs"
+					size="xxs"
 					as="h3"
 					textOverflow="ellipsis"
 					overflow="clip"

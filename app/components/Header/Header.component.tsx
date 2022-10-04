@@ -1,114 +1,119 @@
 import {
 	Flex,
 	Box,
-	Image,
 	HStack,
 	Heading,
 	IconButton,
 	VStack,
+	Container,
 } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { useState } from 'react';
 import { use100vh } from 'react-div-100vh';
+import Branding from '../Branding';
 import HamburgerIcon from '../HamburgerIcon';
 
 function Header() {
-	// TODO: use https://github.com/kaimallea/isMobile
 	const [menuVisible, setMenuVisible] = useState(false);
 	const viewportHeight = use100vh();
+	const height = { base: '3.75rem', md: '5rem' };
+	const isMobile = { base: 'flex', md: 'none' };
+	const isDesktop = { base: 'none', md: 'flex' };
 
 	return (
 		<Box
 			position="sticky"
 			top="0"
 			zIndex="sticky"
-			height={{ base: '3.5rem', md: '5rem' }}
+			height={height}
+			py={2}
 			as="header"
 			flex="0 0 auto"
-			bgColor="white"
-			color={'gray.500'}
+			bgColor="gray.500"
+			color="white"
 		>
-			<HStack justifyContent={'space-between'}>
-				<HStack gap={2}>
-					<Link to="/">
-						<Image
-							src="/LogoGrey.png"
-							alt="The C3 Church Logo"
-							height={{ base: '1.5rem', md: '3rem' }}
+			<Container maxW="none">
+				<Flex justifyContent="space-between">
+					<Flex alignItems="center">
+						<Link to="/">
+							<Branding color="white" size="sm" />
+						</Link>
+						<Link to="/prayerwall">
+							<Heading
+								color="white"
+								as="h1"
+								size={{ base: 'sm', md: 'md' }}
+							>
+								Prayer Wall
+							</Heading>
+						</Link>
+					</Flex>
+					<HStack
+						display={isDesktop}
+						spacing={4}
+						py={{ base: 2.5, md: 5 }}
+					>
+						<Link to="/request">Submit prayer or praise</Link>
+						<Link to="/about">About</Link>
+						<Link to="/meetings">Meetings</Link>
+					</HStack>
+					<Flex display={isMobile}>
+						<IconButton
+							variant={'secondary'}
+							color="white"
+							size="md"
+							mr="2"
+							h={'80%'}
+							aria-label="Open navigation menu"
+							onClick={() => setMenuVisible(!menuVisible)}
+							icon={<HamburgerIcon active={menuVisible} />}
+							_focusVisible={{
+								outlineColor: 'teal.500',
+							}}
 						/>
-					</Link>
-					<Link to="/list">
-						<Heading
-							color={'black'}
-							as="h1"
-							size={{ base: 'sm', md: 'md' }}
-						>
-							Prayer Wall
-						</Heading>
-					</Link>
-				</HStack>
-				<Flex
-					gap={2}
-					alignSelf="end"
-					ml={{ md: '4vw', xl: '8vw' }}
-					display={{ base: 'none', md: 'flex' }}
-				>
-					<Link to="/request">Submit prayer or praise</Link>
-					<Link to="/about">About</Link>
-				</Flex>
-				<HStack
-					display={{
-						base: 'flex',
-						md: 'none',
-					}}
-				>
-					<IconButton
-						bg="white"
-						color="gray.500"
-						_hover={{ bg: 'white' }}
-						_active={{ bg: 'white' }}
-						size="md"
-						mr="2"
-						aria-label="Open navigation menu"
-						onClick={() => setMenuVisible(!menuVisible)}
-						icon={<HamburgerIcon active={menuVisible} />}
-						_focusVisible={{
-							outlineColor: 'green.500',
+					</Flex>
+					<VStack
+						display={{
+							base: menuVisible ? 'flex' : 'none',
+							md: 'none',
 						}}
-					/>
-				</HStack>
-				<VStack
-					display={{
-						base: menuVisible ? 'flex' : 'none',
-						md: 'none',
-					}}
-					height={`calc(${
-						viewportHeight ? viewportHeight + 'px' : '100vh'
-					} - 3.5rem)`}
-					overflowY="auto"
-					bg="white"
-					as="nav"
-					position="fixed"
-					top={{ base: '3.5rem', md: '5rem' }}
-					zIndex="dropdown"
-					py={8}
-					left={0}
-					right={0}
-					transition="transform 0.5s ease-in-out"
-					transform={
-						menuVisible
-							? 'translate3d(0,0,0)'
-							: 'translate3d(0, -100%, 0)'
-					}
-				>
-					<Link to="/request" onClick={() => setMenuVisible(false)}>
-						Submit prayer or praise
-					</Link>
-					<Link to="/about" onClick={() => setMenuVisible(false)}>
-						About
-					</Link>
-				</VStack>
-			</HStack>
+						height={`calc(${
+							viewportHeight ? viewportHeight + 'px' : '100vh'
+						} - 3.5rem)`}
+						overflowY="auto"
+						bg="white"
+						as="nav"
+						position="fixed"
+						top={{ base: '3.5rem', md: '5rem' }}
+						zIndex="dropdown"
+						py={8}
+						left={0}
+						right={0}
+						transition="transform 0.5s ease-in-out"
+						transform={
+							menuVisible
+								? 'translate3d(0,0,0)'
+								: 'translate3d(0, -100%, 0)'
+						}
+					>
+						<Link
+							to="/request"
+							onClick={() => setMenuVisible(false)}
+						>
+							Submit prayer or praise
+						</Link>
+						<Link to="/about" onClick={() => setMenuVisible(false)}>
+							About
+						</Link>
+						<Link
+							to="/meetings"
+							onClick={() => setMenuVisible(false)}
+						>
+							Meetings
+						</Link>
+					</VStack>
+				</Flex>
+			</Container>
 		</Box>
 	);
 }

@@ -1,147 +1,104 @@
-import React, { useEffect } from 'react';
+import {
+	Button,
+	Container,
+	Heading,
+	Input,
+	Radio,
+	RadioGroup,
+	Select,
+	Stack,
+	Textarea,
+	VStack,
+} from '@chakra-ui/react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { submitRequest } from '~/api/airTableApi';
-import BoxButton from '~/components/boxButton';
-import Menu from '~/components/Menu';
-import PrayerPraiseToggle from '~/components/prayerPraise';
-import type { ILocation } from '~/types/global.definition';
-
-type IRequestForm = {
-	title?: string;
-	name?: string;
-	prayer?: string;
-	location?: string;
-	type: 'prayer' | 'praise';
-};
-
-export interface IRequestLayoutProps {
-	locations: ILocation[];
-}
+// import { submitRequest } from '~/api/airTableApi';
+import type { IRequestForm, IRequestLayoutProps } from './request.definition';
+import { FormControl, FormLabel } from '@chakra-ui/react';
 
 const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 	const [error, setError] = React.useState('');
-	const [isPraise, setIsPraise] = React.useState(false);
-	const { register, handleSubmit, setValue } = useForm<IRequestForm>();
-
-	useEffect(() => {
-		setValue('type', isPraise ? 'praise' : 'prayer');
-	}, [isPraise, setValue]);
+	const { register, handleSubmit } = useForm<IRequestForm>();
 
 	const onSubmit = async (data: any) => {
 		try {
-			await submitRequest(data);
+			// await submitRequest(data);
+			console.log(data);
 			window.location.href = '/thanks';
 		} catch {
 			setError('Unable to submit your request');
 		}
 	};
 
-	const RequestPageMenu = (
-		<Menu links={[{ label: 'View Prayers', url: '/list' }]} />
-	);
-
 	return (
-		<div>
-			<div className="w-screen px-4 py-2 mb-24 font-sans text-lg bg-gray-500 shadow md:w-full text-gray-50">
+		<Container>
+			<Heading size="md" py="2">
 				Submit a public request
-			</div>
-
-			<div className="relative md:h-full md:flex md:flex-col md:justify-center md:mx-32">
-				<div className="rounded md:bg-gray-50 md:shadow-lg md:p-4">
-					{error && (
-						<div className="bg-red-200 px-4 py-2">{error}</div>
-					)}
-					<form
-						name="prayer-request"
-						className="mx-2 space-y-2"
-						onSubmit={handleSubmit(onSubmit)}
-					>
-						<div>
-							<label
-								htmlFor="name"
-								className="block text-sm font-medium text-gray-700 capitalize"
-							>
-								Name
-							</label>
-							<div className="mt-1">
-								<input
-									autoComplete="name"
-									type="text"
-									className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-									{...register('name', {
-										required: true,
-									})}
-									required
-								/>
-							</div>
-						</div>
-						<PrayerPraiseToggle
-							enabled={isPraise}
-							setEnabled={setIsPraise}
+			</Heading>
+			{error && <div>{error}</div>}
+			<form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
+				<VStack spacing={2}>
+					<FormControl>
+						<FormLabel>Name</FormLabel>
+						<Input
+							{...register('name', {
+								required: true,
+							})}
+							required
+							autoComplete="name"
+							type="text"
 						/>
-						<div>
-							<label
-								htmlFor="location"
-								className="block text-sm font-medium text-gray-700 capitalize"
-							>
-								Location
-							</label>
-							<select {...register('location')}>
-								<option> - </option>
-								{locations.map(l => (
-									<option key={l.name} value={l.name}>
-										{l.name}
-									</option>
-								))}
-							</select>
-						</div>
-						<div>
-							<label
-								htmlFor="title"
-								className="block text-sm font-medium text-gray-700 capitalize"
-							>
-								Title
-							</label>
-							<div className="mt-1">
-								<input
-									autoComplete="off"
-									type="text"
-									className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-									{...register('title', {
-										required: true,
-									})}
-									required
-								/>
-							</div>
-						</div>
-						<div>
-							<label
-								htmlFor="request"
-								className="block text-sm font-medium text-gray-700 capitalize"
-							>
-								Request
-							</label>
-							<div className="mt-1">
-								<textarea
-									rows={7}
-									className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-									{...register('prayer', {
-										required: true,
-									})}
-									required
-								/>
-							</div>
-						</div>
-						<div className="pt-4 -mx-2 md:-mx-6">
-							<BoxButton
-								title={`Submit your request`}
-								alignment="right"
-							/>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Prayer or praise?</FormLabel>
+						<RadioGroup>
+							<Stack direction="row">
+								<Radio {...register('prayer')} value={'true'}>
+									Prayer
+								</Radio>
+								<Radio {...register('prayer')} value={'false'}>
+									Prayer
+								</Radio>
+							</Stack>
+						</RadioGroup>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Location</FormLabel>
+						<Select {...register('location')}>
+							<option> - </option>
+							{locations.map(l => (
+								<option key={l.name} value={l.name}>
+									{l.name}
+								</option>
+							))}
+						</Select>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Title</FormLabel>
+						<Input
+							{...register('title', {
+								required: true,
+							})}
+							required
+							type="text"
+							autoComplete="off"
+						/>
+					</FormControl>
+					<FormControl>
+						<FormLabel>Request</FormLabel>
+						<Textarea
+							{...register('title', {
+								required: true,
+							})}
+							required
+							autoComplete="off"
+							size="md"
+						/>
+					</FormControl>
+					<Button type="submit">Submit your request</Button>
+				</VStack>
+			</form>
+		</Container>
 	);
 };
 
