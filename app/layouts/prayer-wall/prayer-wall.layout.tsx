@@ -19,6 +19,7 @@ const PrayerWallLayout = ({ requests }: IPrayerWallProps) => {
 				<Flex flexDir="row" justifyContent="space-between">
 					<Select w="sm">
 						<option>All Locations</option>
+						<option>Online</option>
 					</Select>
 					<Link as={RemixLink} to="/request">
 						<Button
