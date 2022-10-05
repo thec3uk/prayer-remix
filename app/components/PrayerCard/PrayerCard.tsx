@@ -1,12 +1,4 @@
-import {
-	Box,
-	Flex,
-	Heading,
-	HStack,
-	Text,
-	VStack,
-	WrapItem,
-} from '@chakra-ui/react';
+import { Box, Flex, HStack, Text, Image, Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { flagRequest, incrementPrayerCount } from '~/api/airTableApi';
 import type { IPrayerCardProps } from './PrayerCard.definition';
@@ -33,72 +25,39 @@ const PrayerCard = ({ data }: IPrayerCardProps) => {
 
 	return (
 		<Box
-			bgColor={bgColor}
 			w="100%"
-			borderRadius="xl"
-			mb={2}
+			mb={4}
 			display="inline-block"
+			bgColor="white"
+			boxShadow="0px 0px 2px rgba(0, 0, 0, 0.25)"
 		>
-			<VStack p="1">
-				<Heading
-					size="xxs"
-					as="h3"
-					textOverflow="ellipsis"
-					overflow="clip"
-					width="90%"
-					whiteSpace="nowrap"
-					color="white"
-					title={data.title}
-				>
-					{data.title}
-				</Heading>
-				<Text size="xs" color="white">
-					{data.prayer}
+			<Box w="100%" bgColor={bgColor} h="4px"></Box>
+			<Flex flexDir={'column'} p={5} gap={2}>
+				<Text size="xs">{data.prayer}</Text>
+				<Text size="xs" fontWeight="bold">
+					{`${data.name} ${
+						data.location ? ` (${data.location})` : ''
+					}`}
 				</Text>
-				<HStack justifyContent="space-between" w="90%">
-					<Text size="xs" color="white">
-						{`${data.name} ${
-							data.location ? ` (${data.location})` : ''
-						}`}
-					</Text>
-					<HStack gap="0.5">
-						<Box bgColor="white" px={3} py={1} borderRadius="xl">
-							<button onClick={onClick}>
-								{data.type === 'praise' ? (
-									<span
-										role="img"
-										aria-label="party popper"
-										className="pr-2"
-									>
-										🎉
-									</span>
-								) : (
-									<span
-										role="img"
-										aria-label="folded hands"
-										className="pr-2"
-									>
-										🙏
-									</span>
-								)}
-								{counter > 0 ? counter : ''}
-							</button>
-						</Box>
-						<button disabled={!!feedback} onClick={report}>
-							<span
-								role="img"
-								aria-label="red flag"
-								title="Report this request as inappropriate"
-								className="pr-2"
-							>
-								🚩
-							</span>
-						</button>
-					</HStack>
+				<HStack justifyContent="space-between">
+					<Flex
+						justifyContent="space-between"
+						gap="3"
+						alignItems="inherit"
+					>
+						<Text size="xxs">{data.created_at}</Text>
+						<Box w="2px" h="17px" bgColor={'#D9D9D9'}></Box>
+						<Image h="14px" w="12px" src="/flag.png" />
+						<Text textDecor={'underline'}>Report</Text>
+					</Flex>
+					<Button variant="outline" size={'sm'}>
+						Pray
+						{/* Pray <Box bgColor={'teal.500'}>{data.count}</Box> */}
+					</Button>
 				</HStack>
 
 				{feedback && <p>Thank you, we will review this request</p>}
-			</VStack>
+			</Flex>
 		</Box>
 	);
 };

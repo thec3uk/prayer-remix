@@ -5,27 +5,40 @@ const HamburgerIcon: React.FC<IHamburgerIconProps> = ({ active = false }) => {
 	const commonStyleProps = {
 		transitionDuration: '.5s',
 		transitionTimingFunction: 'cubic-bezier(.25,.46,.45,.94)',
-		borderRadius: '1px',
-		height: '2px',
+		borderRadius: '8px',
+		height: '4px',
 		bg: 'gray.500',
-		width: '100%',
-		top: '50%',
 	};
 	return (
-		<Box width="20px" height="20px" position="relative">
+		<Box width="32px" height="28px" position="relative">
 			<Box
-				transform={active ? 'rotate(45deg)' : 'translateY(-7px)'}
+				transform={
+					active
+						? 'rotate(45deg) translateY(7px) translateX(5px)'
+						: ''
+				}
 				pos="absolute"
+				w="32px"
+				top={'0'}
 				{...commonStyleProps}
 			></Box>
 			<Box
+				transform={
+					active
+						? 'rotate(-45deg) translateY(-3px) translateX(3px)'
+						: ''
+				}
+				pos="absolute"
+				w="32px"
+				top="12px"
+				{...commonStyleProps}
+			></Box>
+			<Box
+				pos="absolute"
+				right="0px"
+				w="20px"
 				opacity={active ? '0' : '1'}
-				pos="absolute"
-				{...commonStyleProps}
-			></Box>
-			<Box
-				transform={active ? 'rotate(-45deg)' : 'translateY(7px)'}
-				pos="absolute"
+				bottom="0px"
 				{...commonStyleProps}
 			></Box>
 		</Box>

@@ -1,7 +1,7 @@
 const colors = {
 	transparent: 'transparent',
 	current: 'currentColor',
-	black: '#3e4545',
+	black: '#000000',
 	white: '#FFFFFF',
 
 	navy: {
@@ -25,6 +25,7 @@ const colors = {
 		500: '#F8C23D',
 	},
 	gray: {
+		100: '#F5F5F5',
 		500: '#3E4545',
 	},
 };

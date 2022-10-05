@@ -3,8 +3,8 @@ const styles: Styles = {
 	global: () => ({
 		body: {
 			fontFamily: 'body',
-			color: 'gray.500',
-			bg: 'white',
+			color: 'black',
+			bg: 'gray.100',
 			transitionProperty: 'background-color',
 			transitionDuration: 'normal',
 			lineHeight: 'base',

@@ -20,22 +20,22 @@ const typography = {
 	},
 
 	fonts: {
-		heading: `'Novecentosanswide-Bold', sans-serif`,
-		body: `'Montserrat-Light', sans-serif`,
-		link: `'Montserrat-Light', sans-serif`,
+		heading: `'Novecentosanswide', sans-serif`,
+		body: `'Montserrat', sans-serif`,
+		link: `'Montserrat', sans-serif`,
 	},
 
 	fontSizes: {
-		xs: '1rem', //16
-		sm: '1.125rem', //18
-		md: '1.25rem', //20
-		lg: '1.5rem', //24
-		xl: '1.75rem', //28
-		'2xl': '2rem', //32
-		'3xl': '2.5rem', //40
-		'4xl': '3.5rem', //56
-		// '5xl': '2.5rem', //40
-		// '6xl': '3.5rem', //56
+		xs: '0.75rem', //12
+		sm: '0.875rem', //14
+		md: '1rem', //16
+		lg: '1.125rem', //18
+		xl: '1.25rem', //20
+		'2xl': '1.5rem', //24
+		'3xl': '1.75rem', //28
+		'4xl': '2rem', //32
+		'5xl': '2.5rem', //40
+		'6xl': '3.5rem', //56
 	},
 };
 

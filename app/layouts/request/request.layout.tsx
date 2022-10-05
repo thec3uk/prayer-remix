@@ -31,13 +31,13 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 	};
 
 	return (
-		<Container>
+		<>
 			<Heading size="md" py="2">
 				Submit a public request
 			</Heading>
 			{error && <div>{error}</div>}
 			<form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
-				<VStack spacing={2}>
+				<Stack spacing={2}>
 					<FormControl>
 						<FormLabel>Name</FormLabel>
 						<Input
@@ -96,9 +96,9 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 						/>
 					</FormControl>
 					<Button type="submit">Submit your request</Button>
-				</VStack>
+				</Stack>
 			</form>
-		</Container>
+		</>
 	);
 };
 

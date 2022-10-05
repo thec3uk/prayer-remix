@@ -1,7 +1,7 @@
 import type { SystemStyleObject } from '@chakra-ui/theme-tools';
 
 const baseStyle: SystemStyleObject = {
-	fontWeight: 'medium',
+	fontWeight: '700',
 	fontFamily: 'link',
 	color: 'white',
 	_focus: {
@@ -10,6 +10,8 @@ const baseStyle: SystemStyleObject = {
 		outlineOffset: '1px',
 		outlineColor: 'teal.700',
 	},
+	textTransform: 'uppercase',
+	borderRadius: '0px',
 };
 
 const sizes: Record<string, SystemStyleObject> = {
@@ -25,7 +27,7 @@ const sizes: Record<string, SystemStyleObject> = {
 		fontSize: 'xl',
 		lineHeight: '1.2',
 		px: 4,
-		py: 2,
+		py: 4,
 		h: 'auto',
 		minH: 10,
 	},
@@ -51,12 +53,12 @@ const sizes: Record<string, SystemStyleObject> = {
 
 const variants: Record<string, SystemStyleObject> = {
 	primary: {
-		bg: 'teal.600',
+		bg: 'gray.500',
 		_hover: {
-			bg: 'teal.500',
+			bg: 'gray.500',
 		},
 		_active: {
-			bg: 'teal.700',
+			bg: 'gray.500',
 		},
 		_disabled: {
 			opacity: 0.4,
@@ -101,10 +103,11 @@ const variants: Record<string, SystemStyleObject> = {
 		},
 	},
 	outline: {
-		color: 'teal.600',
+		color: 'gray.500',
 		bg: 'transparent',
 		border: '1px solid',
 		borderColor: 'teal.300',
+		borderRadius: '10px',
 		_hover: {
 			bg: 'teal.50',
 			borderColor: 'teal.500',
@@ -112,6 +115,7 @@ const variants: Record<string, SystemStyleObject> = {
 		_active: {
 			bg: 'teal.100',
 		},
+		textTransform: 'none',
 	},
 };
 

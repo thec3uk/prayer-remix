@@ -4,7 +4,7 @@ import type { IBrandingProps, brandSizes } from './Branding.definition';
 function Branding({ color, size = 'lg' }: IBrandingProps) {
 	const brandSize: Record<brandSizes, [number | string, number | string]> = {
 		lg: [100, 100],
-		md: [80, 80],
+		md: [63, 51],
 		sm: [50, 50],
 		fill: ['100%', '100%'],
 	};
