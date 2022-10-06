@@ -18,12 +18,18 @@ export type IRequestForm = {
 	location?: string;
 };
 
-export interface ISettings {
-	groupCallEnabled: boolean;
-	buttonText: string;
+export interface ISetting {
+	enabled: boolean;
+	text: string;
+	name: string;
 }
 
 export interface ILocation {
 	id: string;
 	name: string;
+}
+
+export interface IBibleVerse {
+	verse: string;
+	content: string;
 }

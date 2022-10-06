@@ -1,12 +1,11 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Flex, Grid, Heading, Image, Text } from '@chakra-ui/react';
 import Card from '~/components/Card';
 import Carousel from '~/components/Carousel';
 import Link from '~/components/Link';
-import type { IPrayerRoomProps } from './home.definition';
+import type { IHomeProps } from './home.definition';
 
-const HomeLayout = ({ data: requests }: IPrayerRoomProps) => {
+const HomeLayout = ({ link, verses }: IHomeProps) => {
 	return (
 		<Box px={{ base: 3, md: 4 }}>
 			<Grid
@@ -58,10 +57,16 @@ const HomeLayout = ({ data: requests }: IPrayerRoomProps) => {
 					subTitle="Join us on Zoom"
 					text="Wednesday 5th October 7.30pm"
 					img="/pedro-lima-HtwsbbClBOs-unsplash 1.png"
+					href={link.text}
 				></Card>
 			</Box>
 			<Box as="section" maxW={{ md: '1028px' }} mb={8}>
-				<Carousel prop="test"></Carousel>
+				<Carousel
+					items={verses.map(v => ({
+						title: v.content,
+						subTitle: v.verse,
+					}))}
+				></Carousel>
 			</Box>
 		</Box>
 	);

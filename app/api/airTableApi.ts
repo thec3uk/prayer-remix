@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
 import type {
+	IBibleVerse,
 	ILocation,
 	IRequest,
 	IRequestForm,
-	ISettings,
+	ISetting,
 } from '~/types/global.definition';
 import config from '../config.json';
 import { mapResponseToPrayerPraiseRequests } from './requestMapper';
@@ -27,18 +28,33 @@ export async function fetchRequests(): Promise<IRequest[]> {
 	return mapResponseToPrayerPraiseRequests(response);
 }
 
-export async function fetchSettings(): Promise<ISettings> {
+export async function fetchSettings(): Promise<ISetting[]> {
 	const tableName = 'Settings';
-	const res = await fetch(`${apiUrl(tableName)}/rec1fSqbN4koqpktH`, {
+	const res = await fetch(`${apiUrl(tableName)}`, {
 		headers: new Headers({
 			Authorization: `Bearer ${config.apiKey}`,
 		}),
 	});
-	const setting = await res.json();
-	return {
-		groupCallEnabled: setting.fields.Enabled,
-		buttonText: setting.fields['Button Text'],
-	};
+	const settings = await res.json();
+	return settings.records.map((setting: any) => ({
+		enabled: setting.fields.Enabled,
+		text: setting.fields['Button Text'],
+		name: setting.fields['name'],
+	}));
+}
+
+export async function fetchVerses(): Promise<IBibleVerse[]> {
+	const tableName = 'Prayer Inspiration';
+	const res = await fetch(`${apiUrl(tableName)}`, {
+		headers: new Headers({
+			Authorization: `Bearer ${config.apiKey}`,
+		}),
+	});
+	const verses = await res.json();
+	return verses.records.map((verse: any) => ({
+		verse: verse.fields.Verse,
+		content: verse.fields.Content,
+	}));
 }
 
 export async function submitRequest(request: IRequestForm): Promise<any> {

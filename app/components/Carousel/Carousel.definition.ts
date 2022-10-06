@@ -1,3 +1,3 @@
-export interface ICarouselProps { 
-  prop: string;
+export interface ICarouselProps {
+	items: { title: string; subTitle: string }[];
 }

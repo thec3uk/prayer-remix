@@ -4,4 +4,5 @@ export interface ICardProps {
 	text: string;
 	variant?: 'primary' | 'secondary';
 	img: string;
+	href: string;
 }
