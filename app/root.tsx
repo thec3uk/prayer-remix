@@ -9,7 +9,7 @@ import {
 } from '@remix-run/react';
 import Layout from './components/Layout';
 import styles from '~/styles/global.css';
-import { ChakraProvider, Container } from '@chakra-ui/react';
+import { ChakraProvider, VStack } from '@chakra-ui/react';
 import { SkipNavLink, SkipNavContent } from '@chakra-ui/skip-nav';
 import { useContext, useEffect } from 'react';
 import ClientStyleContext from './context.client';
@@ -145,10 +145,11 @@ const Document = withEmotionCache(
 				<body>
 					<ChakraProvider theme={C3Theme}>
 						<Fonts />
-						<Container
+						<VStack
+							margin={'auto'}
 							minH="100vh"
+							minW={{ base: 'none', lg: '100ch' }}
 							maxW={'150ch'}
-							p={{ base: 0, md: 4 }}
 						>
 							<SkipNavLink zIndex="skipLink">
 								Skip to content
@@ -158,7 +159,7 @@ const Document = withEmotionCache(
 								{children}
 							</SkipNavContent>
 							<Footer />
-						</Container>
+						</VStack>
 					</ChakraProvider>
 					<ScrollRestoration />
 					<Scripts />

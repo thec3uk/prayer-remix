@@ -54,7 +54,7 @@ export async function submitRequest(request: IRequestForm): Promise<any> {
 		prayer: request?.prayer,
 		created_at: dayjs(),
 		'Prayer Count': 0,
-		location: request?.location,
+		Location: [request?.location],
 	});
 }
 
@@ -96,9 +96,12 @@ export async function fetchLocations(): Promise<ILocation[]> {
 	});
 	const locations = await res.json();
 	if (!locations.records) return [];
-	return locations.records.map((location: { fields: { Name: string } }) => ({
-		name: location.fields.Name,
-	}));
+	return locations.records.map(
+		(location: { id: string; fields: { Name: string } }) => ({
+			name: location.fields.Name,
+			id: location.id,
+		})
+	);
 }
 
 export async function flagRequest(id: string): Promise<boolean> {

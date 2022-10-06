@@ -55,10 +55,10 @@ const variants: Record<string, SystemStyleObject> = {
 	primary: {
 		bg: 'gray.500',
 		_hover: {
-			bg: 'gray.500',
+			bg: 'gray.600',
 		},
 		_active: {
-			bg: 'gray.500',
+			bg: 'gray.700',
 		},
 		_disabled: {
 			opacity: 0.4,

@@ -24,5 +24,6 @@ export interface ISettings {
 }
 
 export interface ILocation {
+	id: string;
 	name: string;
 }

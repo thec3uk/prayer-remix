@@ -26,6 +26,10 @@ const sizes: Record<string, SystemStyleObject> = {
 		fontSize: 'sm',
 		lineHeight: '1.71428571429',
 	},
+	xs: {
+		fontSize: 'xs',
+		lineHeight: '1.6',
+	},
 };
 
 const defaultProps = {

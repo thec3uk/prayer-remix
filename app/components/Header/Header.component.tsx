@@ -4,11 +4,10 @@ import {
 	HStack,
 	IconButton,
 	VStack,
-	Container,
 	Image,
 	Text,
 } from '@chakra-ui/react';
-import { Link } from '@remix-run/react';
+import { NavLink } from '@remix-run/react';
 import { useState } from 'react';
 import { use100vh } from 'react-div-100vh';
 import HamburgerIcon from '../HamburgerIcon';
@@ -53,7 +52,7 @@ function MobileMenu() {
 						: 'translate3d(0, -100%, 0)'
 				}
 			>
-				<Link to="/" onClick={() => setMenuVisible(false)}>
+				<NavLink to="/" onClick={() => setMenuVisible(false)}>
 					<Text
 						fontWeight="bold"
 						textTransform="uppercase"
@@ -61,12 +60,17 @@ function MobileMenu() {
 					>
 						Home
 					</Text>
-				</Link>
-				<Link to="/prayerwall" onClick={() => setMenuVisible(false)}>
+				</NavLink>
+				<NavLink to="/prayerwall" onClick={() => setMenuVisible(false)}>
 					<Text fontWeight="bold" textTransform="uppercase">
 						Prayer wall
 					</Text>
-				</Link>
+				</NavLink>
+				<NavLink to="/request" onClick={() => setMenuVisible(false)}>
+					<Text fontWeight="bold" textTransform="uppercase">
+						Submit a request
+					</Text>
+				</NavLink>
 			</VStack>
 		</Box>
 	);
@@ -82,16 +86,17 @@ function Header() {
 			zIndex="sticky"
 			bgColor="gray.100"
 			py="1.5rem"
+			px={{ base: 3, md: 4 }}
 			as="header"
 			flex="0 0 auto"
-			px={{ base: 2 }}
+			w="100%"
 		>
 			<Flex justifyContent="space-between">
-				<Link to="/">
+				<NavLink to="/">
 					<Image src="/LogoBlack.png" h="51px" w="63px"></Image>
-				</Link>
+				</NavLink>
 				<HStack display={isDesktop} gap="8">
-					<Link to="/">
+					<NavLink to="/">
 						<Text
 							fontWeight="bold"
 							textTransform="uppercase"
@@ -99,12 +104,17 @@ function Header() {
 						>
 							Home
 						</Text>
-					</Link>
-					<Link to="/prayerwall">
+					</NavLink>
+					<NavLink to="/prayerwall">
 						<Text fontWeight="bold" textTransform="uppercase">
 							Prayer wall
 						</Text>
-					</Link>
+					</NavLink>
+					<NavLink to="/request">
+						<Text fontWeight="bold" textTransform="uppercase">
+							Submit a request
+						</Text>
+					</NavLink>
 				</HStack>
 				<MobileMenu />
 			</Flex>

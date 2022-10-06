@@ -1,5 +1,5 @@
 import { radioAnatomy as parts } from '@chakra-ui/anatomy';
-import {
+import type {
 	PartsStyleFunction,
 	PartsStyleObject,
 	SystemStyleFunction,
@@ -43,14 +43,14 @@ const sizes: Record<string, PartsStyleObject<typeof parts>> = {
 		label: { fontSize: 'md', ml: 3 },
 	},
 	lg: {
-		control: { w: 5, h: 5, mt: 0.5 },
+		control: { w: 6, h: 6, mt: 1 },
 		label: { fontSize: 'lg', ml: 3 },
 	},
 };
 
 const defaultProps = {
 	size: 'md',
-	colorScheme: 'teal.600',
+	colorScheme: 'gray.500',
 };
 
 export default {

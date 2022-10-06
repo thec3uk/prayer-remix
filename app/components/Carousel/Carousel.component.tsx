@@ -3,11 +3,7 @@ import { Stack, Text, Box, Flex } from '@chakra-ui/react';
 
 function Carousel({ prop }: ICarouselProps) {
 	return (
-		<Flex
-			bgColor="navy.500"
-			justifyContent="space-between"
-			mx={{ base: 2 }}
-		>
+		<Flex bgColor="navy.500" justifyContent="space-between">
 			<Text
 				mt={8}
 				ml={{ base: 4, md: 6 }}

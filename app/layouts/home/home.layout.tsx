@@ -1,20 +1,14 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import {
-	Box,
-	Button,
-	Flex,
-	Grid,
-	Heading,
-	Image,
-	Text,
-} from '@chakra-ui/react';
+import { Box, Flex, Grid, Heading, Image, Text } from '@chakra-ui/react';
 import Card from '~/components/Card';
 import Carousel from '~/components/Carousel';
+import Link from '~/components/Link';
 import type { IPrayerRoomProps } from './home.definition';
 
 const HomeLayout = ({ data: requests }: IPrayerRoomProps) => {
 	return (
-		<Box>
+		<Box px={{ base: 3, md: 4 }}>
 			<Grid
 				as="section"
 				templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
@@ -22,7 +16,7 @@ const HomeLayout = ({ data: requests }: IPrayerRoomProps) => {
 			>
 				<Flex alignItems="center" mb={{ base: 2 }}>
 					<Box maxW={{ md: 'xl' }}>
-						<Box my={{ base: 2, md: 14 }} mx={{ base: 2 }}>
+						<Box my={{ base: 2, md: 14 }}>
 							<Heading
 								as="h1"
 								size={{ base: 'md', md: '3xl' }}
@@ -44,13 +38,15 @@ const HomeLayout = ({ data: requests }: IPrayerRoomProps) => {
 								to pray. Sadly missed but an inspiration to us
 								all to 'run the race with perseverance'.
 							</Text>
-							<Button
-								rightIcon={<ArrowForwardIcon />}
-								aria-label={'Go to Prayer Wall'}
-								size={{ base: 'sm', md: 'md' }}
-							>
-								Go to prayer wall
-							</Button>
+							<Link
+								href="/prayerwall"
+								useButton
+								text="Go to prayer wall"
+								aria-label="Go to Prayer Wall"
+								buttonProps={{
+									rightIcon: <ArrowForwardIcon />,
+								}}
+							/>
 						</Box>
 					</Box>
 				</Flex>

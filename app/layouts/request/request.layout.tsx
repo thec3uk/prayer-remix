@@ -1,45 +1,78 @@
 import {
+	Box,
 	Button,
-	Container,
+	Flex,
+	FormErrorMessage,
+	FormHelperText,
+	Grid,
 	Heading,
 	Input,
 	Radio,
 	RadioGroup,
-	Select,
 	Stack,
+	StackDivider,
 	Textarea,
-	VStack,
+	useToast,
 } from '@chakra-ui/react';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-// import { submitRequest } from '~/api/airTableApi';
+import { useForm, useWatch } from 'react-hook-form';
+import { submitRequest } from '~/api/airTableApi';
 import type { IRequestForm, IRequestLayoutProps } from './request.definition';
 import { FormControl, FormLabel } from '@chakra-ui/react';
+import { Form, useNavigate } from '@remix-run/react';
+import PrayerHands from '~/components/PrayerHands';
+import Praise from '~/components/Praise';
+import Card from '~/components/Card';
 
 const RequestLayout = ({ locations }: IRequestLayoutProps) => {
-	const [error, setError] = React.useState('');
-	const { register, handleSubmit } = useForm<IRequestForm>();
+	const navigate = useNavigate();
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+	} = useForm<IRequestForm>();
+	const prayer = useWatch({ control, name: 'prayer' });
+	const toast = useToast();
 
 	const onSubmit = async (data: any) => {
 		try {
-			// await submitRequest(data);
-			console.log(data);
-			window.location.href = '/thanks';
+			await submitRequest(data);
+			navigate('/prayerwall');
+			toast({
+				title: 'Thank you',
+				description: 'Your request has been submitted successfully.',
+				status: 'success',
+				duration: 10000,
+				isClosable: true,
+			});
 		} catch {
-			setError('Unable to submit your request');
+			toast({
+				title: 'Sorry',
+				description: 'Something went wrong, please try again.',
+				status: 'error',
+				duration: 10000,
+				isClosable: true,
+			});
 		}
 	};
 
 	return (
-		<>
-			<Heading size="md" py="2">
-				Submit a public request
-			</Heading>
-			{error && <div>{error}</div>}
-			<form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
-				<Stack spacing={2}>
+		<Flex px={{ base: 3, md: 4 }} flexGrow={1}>
+			<Form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
+				<Stack
+					spacing={4}
+					divider={<StackDivider borderColor="#D9D9D9" />}
+				>
+					<Heading
+						as="h1"
+						size={{ base: 'xl', md: '3xl' }}
+						mb={{ base: 2, md: 4 }}
+						textTransform="uppercase"
+					>
+						Submit a request
+					</Heading>
 					<FormControl>
-						<FormLabel>Name</FormLabel>
+						<FormLabel>Your name</FormLabel>
 						<Input
 							{...register('name', {
 								required: true,
@@ -50,55 +83,81 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 						/>
 					</FormControl>
 					<FormControl>
-						<FormLabel>Prayer or praise?</FormLabel>
+						<FormLabel>Location</FormLabel>
 						<RadioGroup>
-							<Stack direction="row">
-								<Radio {...register('prayer')} value={'true'}>
-									Prayer
-								</Radio>
-								<Radio {...register('prayer')} value={'false'}>
-									Prayer
-								</Radio>
-							</Stack>
+							<Grid templateColumns="repeat(2, 1fr)" gap={2}>
+								{locations.map(l => (
+									<Radio
+										size={'lg'}
+										key={l.name}
+										{...register('location')}
+										value={l.id}
+									>
+										{l.name}
+									</Radio>
+								))}
+							</Grid>
 						</RadioGroup>
 					</FormControl>
 					<FormControl>
-						<FormLabel>Location</FormLabel>
-						<Select {...register('location')}>
-							<option> - </option>
-							{locations.map(l => (
-								<option key={l.name} value={l.name}>
-									{l.name}
-								</option>
-							))}
-						</Select>
+						<FormLabel>Prayer or praise?</FormLabel>
+						<RadioGroup>
+							<Grid templateColumns="repeat(2, 1fr)" gap={2}>
+								<Radio
+									{...register('type')}
+									value={'prayer'}
+									size={'lg'}
+								>
+									Prayer{' '}
+									<PrayerHands ml={1} w="24px" h="26px" />
+								</Radio>
+								<Radio
+									{...register('type')}
+									value={'praise'}
+									size={'lg'}
+								>
+									Praise <Praise ml={1} w="22px" h="26px" />
+								</Radio>
+							</Grid>
+						</RadioGroup>
 					</FormControl>
-					<FormControl>
-						<FormLabel>Title</FormLabel>
-						<Input
-							{...register('title', {
-								required: true,
-							})}
-							required
-							type="text"
-							autoComplete="off"
-						/>
-					</FormControl>
-					<FormControl>
-						<FormLabel>Request</FormLabel>
-						<Textarea
-							{...register('title', {
-								required: true,
-							})}
-							required
-							autoComplete="off"
-							size="md"
-						/>
-					</FormControl>
-					<Button type="submit">Submit your request</Button>
+					<Flex flexDir="column" alignItems="flex-end" gap={4}>
+						<FormControl isInvalid={!!errors.prayer}>
+							<FormLabel>Request</FormLabel>
+							<Textarea
+								{...register('prayer', {
+									required: true,
+									maxLength: 500,
+								})}
+								required
+								autoComplete="off"
+								size="md"
+								maxLength={500}
+							/>
+							<FormErrorMessage>
+								Please keep the request to 500 characters.
+							</FormErrorMessage>
+							<FormHelperText color={'gray.500'}>
+								{prayer?.length || 0} of 500 characters
+							</FormHelperText>
+						</FormControl>
+						<Button maxW={'50%'} type="submit">
+							Add Request
+						</Button>
+					</Flex>
 				</Stack>
-			</form>
-		</>
+				{/* Not in designs but having a weird width issue on this page*/}
+				{/* and this will resolve until Jon can have a look.*/}
+				<Box as="section" maxW={{ md: '1028px' }} my={8}>
+					<Card
+						title="Next Prayer Meeting..."
+						subTitle="Join us on Zoom"
+						text="Wednesday 5th October 7.30pm"
+						img="/pedro-lima-HtwsbbClBOs-unsplash 1.png"
+					></Card>
+				</Box>
+			</Form>
+		</Flex>
 	);
 };
 

@@ -115,7 +115,7 @@ function Footer() {
 	];
 
 	return (
-		<Box as="footer" mt={4} mb={5} mx={2}>
+		<Box as="footer" mt={4} px={{ base: 3, md: 4 }}>
 			<Flex
 				flexDir={{ base: 'column', md: 'row' }}
 				justifyContent="space-between"

@@ -1,13 +1,23 @@
-import { Box, Flex, HStack, Text, Image, Button } from '@chakra-ui/react';
+import {
+	Box,
+	Flex,
+	Text,
+	Image,
+	Button,
+	Circle,
+	useToast,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { flagRequest, incrementPrayerCount } from '~/api/airTableApi';
+import Flag from '../Flag';
+import PrayerHands from '../PrayerHands';
 import type { IPrayerCardProps } from './PrayerCard.definition';
 
 const PrayerCard = ({ data }: IPrayerCardProps) => {
 	const [counter, setCounter] = useState(data.count);
-	const [feedback, setFeedback] = useState('');
+	const toast = useToast();
 
-	const onClick = async () => {
+	const amen = async () => {
 		if (data.id) {
 			const resp = await incrementPrayerCount(data.id, counter);
 			setCounter(resp);
@@ -15,11 +25,25 @@ const PrayerCard = ({ data }: IPrayerCardProps) => {
 	};
 	const report = async () => {
 		const resp = await flagRequest(data.id);
-		setFeedback(
-			resp
-				? 'This request has been flagged.'
-				: 'Something went wrong, please contact us at prayer@thec3.uk'
-		);
+		if (resp) {
+			toast({
+				title: 'Thank you',
+				description:
+					'We have flagged the request and will review shortly.',
+				status: 'success',
+				duration: 10000,
+				isClosable: true,
+			});
+		} else {
+			toast({
+				title: 'Sorry',
+				description:
+					'Something went wrong, please try again or contact us.',
+				status: 'error',
+				duration: 10000,
+				isClosable: true,
+			});
+		}
 	};
 	const bgColor = data.type == 'praise' ? 'yellow.500' : 'teal.500';
 
@@ -39,24 +63,54 @@ const PrayerCard = ({ data }: IPrayerCardProps) => {
 						data.location ? ` (${data.location})` : ''
 					}`}
 				</Text>
-				<HStack justifyContent="space-between">
+				<Flex
+					flexDir={{ base: 'column', md: 'row' }}
+					gap={{ base: 2 }}
+					justifyContent="space-between"
+					alignItems="baseline"
+				>
 					<Flex
-						justifyContent="space-between"
+						justifyContent="flex-start"
 						gap="3"
 						alignItems="inherit"
 					>
 						<Text size="xxs">{data.created_at}</Text>
 						<Box w="2px" h="17px" bgColor={'#D9D9D9'}></Box>
-						<Image h="14px" w="12px" src="/flag.png" />
-						<Text textDecor={'underline'}>Report</Text>
+						<Flex
+							flexDir={'inherit'}
+							gap={'inherit'}
+							alignItems={'baseline'}
+							as="button"
+							onClick={() => report()}
+						>
+							{/* <Image h="14px" w="12px" src="/flag.png" /> */}
+							<Flag color={data.flagged ? 'gray.500' : 'white'} />
+							<Text textDecor={'underline'}>Report</Text>
+						</Flex>
 					</Flex>
-					<Button variant="outline" size={'sm'}>
-						Pray
-						{/* Pray <Box bgColor={'teal.500'}>{data.count}</Box> */}
+					<Button
+						leftIcon={<PrayerHands w="24px" h="26px" />}
+						variant="outline"
+						fontSize={'16px'}
+						display="flex"
+						justifyContent={'space-between'}
+						onClick={() => amen()}
+						w={'132px'}
+						h={'44px'}
+						px={'10px'}
+						py={'16px'}
+					>
+						{data.type === 'prayer' ? 'Pray' : 'Praise'}
+						<Circle
+							p={'10px'}
+							bg="#DDF3F5"
+							borderRadius="50%"
+							size="24px"
+						>
+							{counter}
+						</Circle>
 					</Button>
-				</HStack>
-
-				{feedback && <p>Thank you, we will review this request</p>}
+				</Flex>
 			</Flex>
 		</Box>
 	);

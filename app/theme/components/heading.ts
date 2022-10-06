@@ -2,7 +2,7 @@ import type { SystemStyleObject } from '@chakra-ui/theme-tools';
 
 const baseStyle: SystemStyleObject = {
 	fontFamily: 'heading',
-	fontWeight: 'normal',
+	fontWeight: 'bold',
 	color: 'gray.500',
 };
 

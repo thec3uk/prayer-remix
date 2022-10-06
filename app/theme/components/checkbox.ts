@@ -11,19 +11,20 @@ const baseStyleControl: SystemStyleFunction = () => {
 		w: '100%',
 		transitionProperty: 'box-shadow',
 		transitionDuration: 'normal',
-		border: '2px solid',
+		border: '1px solid',
 		borderRadius: 'base',
 		borderColor: 'gray.300',
 		color: 'white',
+		bgColor: 'white',
 		alignSelf: 'start',
 
 		_checked: {
-			bg: `teal.600`,
-			borderColor: `teal.600`,
-			color: 'white',
+			bg: `transparent`,
+			borderColor: `gray.500`,
+			color: 'gray.500',
 			_hover: {
-				bg: `teal.600`,
-				borderColor: `teal.600`,
+				bg: `transparent`,
+				borderColor: `gray.500`,
 			},
 
 			_disabled: {
@@ -48,7 +49,7 @@ const baseStyleControl: SystemStyleFunction = () => {
 		},
 		_focus: {
 			boxShadow: 'outline',
-			borderColor: 'teal.600',
+			borderColor: 'gray.500',
 		},
 
 		_invalid: {
