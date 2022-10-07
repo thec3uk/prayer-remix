@@ -12,7 +12,12 @@ import { mapResponseToPrayerPraiseRequests } from './requestMapper';
 const apiUrl = (tableName: string) =>
 	`${config.airTableUrl}/v0/${config.airTableBase}/${tableName}`;
 
-export async function fetchRequests(): Promise<IRequest[]> {
+export interface IRequestFilters {
+	location?: string;
+}
+export async function fetchRequests({
+	location,
+}: IRequestFilters = {}): Promise<IRequest[]> {
 	const tableName = 'Prayer%2FPraise%20Requests';
 	const res = await fetch(
 		`${apiUrl(
@@ -25,7 +30,7 @@ export async function fetchRequests(): Promise<IRequest[]> {
 		}
 	);
 	const response = await res.json();
-	return mapResponseToPrayerPraiseRequests(response);
+	return mapResponseToPrayerPraiseRequests(response, location);
 }
 
 export async function fetchSettings(): Promise<ISetting[]> {

@@ -3,10 +3,7 @@ import {
 	Box,
 	Heading,
 	Flex,
-	Select,
 	useBreakpointValue,
-	createIcon,
-	VStack,
 	Drawer,
 	useDisclosure,
 	Button,
@@ -16,112 +13,57 @@ import {
 	DrawerFooter,
 	DrawerHeader,
 	DrawerOverlay,
-	Input,
-	RadioGroup,
-	Radio,
-	Stack,
+	Text,
 } from '@chakra-ui/react';
-import React from 'react';
-import { useState } from 'react';
-import { use100vh } from 'react-div-100vh';
+import { useEffect, useState } from 'react';
+import Filters from '~/components/Filters';
+import type {
+	IFilterOptions,
+	IFiltersProps,
+} from '~/components/Filters/Filters.definition';
+import FiltersIcon from '~/components/FiltersIcon';
 import Link from '~/components/Link';
 import PrayerCard from '~/components/PrayerCard';
-import type { ILocation } from '~/types/global.definition';
+import type { IRequest } from '~/types/global.definition';
 import type { IPrayerWallProps } from './prayer-wall.definition';
-
-// using `path`
-export const FiltersIcon = createIcon({
-	displayName: 'FiltersIcon',
-	// path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
-	path: (
-		<>
-			<line
-				x1="1.5"
-				y1="4.14254"
-				x2="22.5"
-				y2="4.14254"
-				stroke="#3E4545"
-				strokeWidth="3"
-				strokeLinecap="round"
-			/>
-			<line
-				x1="1.5"
-				y1="12.4904"
-				x2="22.5"
-				y2="12.4904"
-				stroke="#3E4545"
-				strokeWidth="3"
-				strokeLinecap="round"
-			/>
-			<line
-				x1="1.5"
-				y1="21.4128"
-				x2="22.5"
-				y2="21.4128"
-				stroke="#3E4545"
-				strokeWidth="3"
-				strokeLinecap="round"
-			/>
-			<path
-				d="M17.5 2L17.5 6.01514"
-				stroke="#3E4545"
-				strokeWidth="3"
-				strokeLinecap="round"
-			/>
-			<path
-				d="M6.5 10.4998L6.5 14.4998"
-				stroke="#3E4545"
-				strokeWidth="3"
-				strokeLinecap="round"
-			/>
-			<line
-				x1="12.5"
-				y1="19.4998"
-				x2="12.5"
-				y2="23.4998"
-				stroke="#3E4545"
-				strokeWidth="3"
-				strokeLinecap="round"
-			/>
-		</>
-	),
-});
-
-interface IFiltersProps {
-	locations: ILocation[];
-}
-function Filters({ locations }: IFiltersProps) {
-	return (
-		<>
-			<Select>
-				<option key="all" value="all">
-					All Locations
-				</option>
-				{locations.map(l => (
-					<option key={l.name} value={l.name}>
-						{l.name}
-					</option>
-				))}
-			</Select>
-			<RadioGroup>
-				<Stack direction="row">
-					<Radio value={'true'}>Prayer</Radio>
-					<Radio value={'false'}>Prayer</Radio>
-				</Stack>
-			</RadioGroup>
-		</>
-	);
-}
 
 const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 	const text = useBreakpointValue({
 		base: 'Add a request',
 		md: 'Add a prayer request',
 	});
-	// const { isOpen, onOpen, onClose } = useDisclosure();
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [filteredRequests, setFilteredRequests] =
+		useState<IRequest[]>(requests);
+	const [filters, setFilters] = useState<IFilterOptions>({
+		location: 'all',
+		type: 'both',
+	});
+
+	useEffect(() => {
+		const reqs = requests.filter(
+			r =>
+				(r.location === filters.location ||
+					filters.location === 'all') &&
+				(r.type === filters.type || filters.type === 'both')
+		);
+		setFilteredRequests(reqs);
+	}, [filters, requests]);
+
+	const applyFilters = (opts: IFilterOptions) => {
+		setFilters(opts);
+	};
+
+	const Shared = ({ initialFilters, onChange, locations }: IFiltersProps) => (
+		<Filters
+			initialFilters={initialFilters}
+			onChange={onChange}
+			locations={locations}
+		/>
+	);
 
 	return (
-		<Box px={{ base: 3, md: 4 }}>
+		<Box px={{ base: 3, md: 4 }} minW={'60vw'}>
 			<Heading
 				as="h1"
 				size={{ base: 'xl', md: '3xl' }}
@@ -131,55 +73,53 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 				Prayer Wall
 			</Heading>
 			<Flex
-				// flexDir="row"
-				// justifyContent="space-between"
-				// alignItems={'center'}
-				flexDir="column"
-				alignItems="flex-end"
+				flexDir="row"
+				justifyContent="space-between"
+				alignItems="center"
 			>
-				{/* <Flex
-						display={{ base: 'block', md: 'none' }}
-						flexDir="column"
-					>
-						<FiltersIcon
-							h={'23px'}
-							w={'24px'}
-							onClick={onOpen}
-						></FiltersIcon>
-						<Drawer
-							isOpen={isOpen}
-							onClose={onClose}
-							placement="left"
-						>
-							<DrawerOverlay />
-							<DrawerContent>
-								<DrawerCloseButton />
-								<DrawerHeader>Filters</DrawerHeader>
-								<DrawerBody>
-									<Stack gap={2}>
-										<Filters locations={locations} />
-									</Stack>
-								</DrawerBody>
-								<DrawerFooter>
-									<Button
-										variant="outline"
-										mr={3}
-										onClick={onClose}
-									>
-										Cancel
-									</Button>
-									<Button onClick={onClose}>Apply</Button>
-								</DrawerFooter>
-							</DrawerContent>
-						</Drawer>
-					</Flex>
-					<Flex
-						display={{ base: 'none', md: 'flex' }}
-						gap={6}
-						alignItems="baseline"
-					>
-						<Filters locations={locations} />
-					</Flex> */}
+				<Flex display={{ base: 'block', md: 'none' }} flexDir="column">
+					<FiltersIcon
+						h={'23px'}
+						w={'24px'}
+						onClick={onOpen}
+					></FiltersIcon>
+					<Drawer isOpen={isOpen} onClose={onClose} placement="left">
+						<DrawerOverlay />
+						<DrawerContent>
+							<DrawerCloseButton />
+							<DrawerHeader>Filters</DrawerHeader>
+							<DrawerBody>
+								<Shared
+									initialFilters={filters}
+									onChange={applyFilters}
+									locations={locations}
+								/>
+							</DrawerBody>
+							<DrawerFooter>
+								<Button
+									variant="outline"
+									mr={3}
+									onClick={() => {
+										setFilters({
+											location: 'all',
+											type: 'both',
+										});
+									}}
+								>
+									Clear
+								</Button>
+								<Button onClick={onClose}>Close</Button>
+							</DrawerFooter>
+						</DrawerContent>
+					</Drawer>
+				</Flex>
+				<Box display={{ base: 'none', md: 'flex' }}>
+					<Shared
+						initialFilters={filters}
+						onChange={applyFilters}
+						locations={locations}
+					/>
+				</Box>
 				<Link
 					href="/request"
 					useButton={true}
@@ -200,9 +140,18 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 					columnGap: 4,
 				}}
 			>
-				{requests.map(request => (
-					<PrayerCard data={request} key={request.id}></PrayerCard>
-				))}
+				{filteredRequests?.length > 0 ? (
+					filteredRequests.map(request => (
+						<PrayerCard
+							data={request}
+							key={request.id}
+						></PrayerCard>
+					))
+				) : (
+					<>
+						<Text>No requests match your filter.</Text>
+					</>
+				)}
 			</Box>
 		</Box>
 	);

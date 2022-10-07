@@ -97,7 +97,7 @@ export function links() {
 // 	);
 // }
 
-interface DocumentProps {
+export interface DocumentProps {
 	children: React.ReactNode;
 	title?: string;
 }
@@ -154,11 +154,7 @@ const Document = withEmotionCache(
 							<SkipNavLink zIndex="skipLink">
 								Skip to content
 							</SkipNavLink>
-							<Header />
-							<SkipNavContent flexGrow={1}>
-								{children}
-							</SkipNavContent>
-							<Footer />
+							{children}
 						</VStack>
 					</ChakraProvider>
 					<ScrollRestoration />
