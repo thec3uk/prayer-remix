@@ -10,9 +10,11 @@ import {
 	RadioGroup,
 	VStack,
 	Stack,
+	Container,
 	StackDivider,
 	Textarea,
 	useToast,
+	Box,
 } from '@chakra-ui/react';
 import { useForm, useWatch } from 'react-hook-form';
 import { submitRequest } from '~/api/airTableApi';
@@ -56,20 +58,20 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 	};
 
 	return (
-		<VStack px={{ base: 3, md: 4 }} w={'100vw'} mb={4}>
+		<Box px={{ base: 3, md: 4 }}>
+			<Heading
+				as="h1"
+				size={{ base: 'xl', md: '3xl' }}
+				mb={{ base: 2, md: 4 }}
+				textTransform="uppercase"
+			>
+				Submit a request
+			</Heading>
 			<Form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
-				<Stack
+				<VStack
 					spacing={4}
 					divider={<StackDivider borderColor="#D9D9D9" />}
 				>
-					<Heading
-						as="h1"
-						size={{ base: 'xl', md: '3xl' }}
-						mb={{ base: 2, md: 4 }}
-						textTransform="uppercase"
-					>
-						Submit a request
-					</Heading>
 					<FormControl>
 						<FormLabel>Your name</FormLabel>
 						<Input
@@ -120,7 +122,12 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 							</Grid>
 						</RadioGroup>
 					</FormControl>
-					<Flex flexDir="column" alignItems="flex-end" gap={4}>
+					<Flex
+						flexDir="column"
+						w={'100%'}
+						alignItems="flex-end"
+						gap={4}
+					>
 						<FormControl isInvalid={!!errors.prayer}>
 							<FormLabel>Request</FormLabel>
 							<Textarea
@@ -142,9 +149,9 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 						</FormControl>
 						<Button type="submit">Add Request</Button>
 					</Flex>
-				</Stack>
+				</VStack>
 			</Form>
-		</VStack>
+		</Box>
 	);
 };
 
