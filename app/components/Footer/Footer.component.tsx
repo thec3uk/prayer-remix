@@ -23,9 +23,6 @@ const FooterList = ({
 };
 
 function Footer() {
-	const copyrightYear = new Date().getFullYear();
-	const height = { base: '2.5rem', md: '2.5rem' };
-
 	const data = [
 		{
 			primary: {
@@ -115,7 +112,7 @@ function Footer() {
 	];
 
 	return (
-		<Box as="footer" mt={4} px={{ base: 3, md: 4 }}>
+		<Box as="footer" w={'100vw'} mt={4} px={{ base: 3, md: 4 }}>
 			<Flex
 				flexDir={{ base: 'column', md: 'row' }}
 				justifyContent="space-between"

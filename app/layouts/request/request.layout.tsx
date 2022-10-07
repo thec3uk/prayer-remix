@@ -1,5 +1,4 @@
 import {
-	Box,
 	Button,
 	Flex,
 	FormErrorMessage,
@@ -9,6 +8,7 @@ import {
 	Input,
 	Radio,
 	RadioGroup,
+	VStack,
 	Stack,
 	StackDivider,
 	Textarea,
@@ -21,7 +21,6 @@ import { FormControl, FormLabel } from '@chakra-ui/react';
 import { Form, useNavigate } from '@remix-run/react';
 import PrayerHands from '~/components/PrayerHands';
 import Praise from '~/components/Praise';
-import Card from '~/components/Card';
 
 const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 	const navigate = useNavigate();
@@ -57,7 +56,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 	};
 
 	return (
-		<Flex px={{ base: 3, md: 4 }} flexGrow={1}>
+		<VStack px={{ base: 3, md: 4 }} w={'100vw'} mb={4}>
 			<Form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
 				<Stack
 					spacing={4}
@@ -141,23 +140,11 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 								{prayer?.length || 0} of 500 characters
 							</FormHelperText>
 						</FormControl>
-						<Button maxW={'50%'} type="submit">
-							Add Request
-						</Button>
+						<Button type="submit">Add Request</Button>
 					</Flex>
 				</Stack>
-				{/* Not in designs but having a weird width issue on this page*/}
-				{/* and this will resolve until Jon can have a look.*/}
-				<Box as="section" maxW={{ md: '1028px' }} my={8}>
-					<Card
-						title="Next Prayer Meeting..."
-						subTitle="Join us on Zoom"
-						text="Wednesday 5th October 7.30pm"
-						img="/pedro-lima-HtwsbbClBOs-unsplash 1.png"
-					></Card>
-				</Box>
 			</Form>
-		</Flex>
+		</VStack>
 	);
 };
 
