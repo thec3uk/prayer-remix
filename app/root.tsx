@@ -150,6 +150,9 @@ const Document = withEmotionCache(
 							minH="100vh"
 							minW={{ base: 'none', lg: '100ch' }}
 							maxW={'150ch'}
+							// backgroundImage={{ md: '/path6860.png' }}
+							// backgroundRepeat={{ md: 'no-repeat' }}
+							// backgroundPosition={{ md: 'right' }}
 						>
 							<SkipNavLink zIndex="skipLink">
 								Skip to content

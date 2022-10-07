@@ -36,7 +36,7 @@ function Carousel({ items }: ICarouselProps) {
 	const border = '1px solid rgba(255, 255, 255, 0.24)';
 
 	return (
-		<Grid bgColor="navy.500" templateColumns="repeat(5, 1fr)">
+		<Grid templateColumns="repeat(5, 1fr)">
 			<GridItem colSpan={2}>
 				<Text
 					mt={{ base: 4, md: 8 }}

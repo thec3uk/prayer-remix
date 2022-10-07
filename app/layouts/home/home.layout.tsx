@@ -74,6 +74,7 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
 				mb={8}
 				overflowX={'hidden'}
 				w={{ base: '95vw' }}
+				bgColor={'navy.500'}
 			>
 				<Carousel
 					items={verses.map(v => ({
