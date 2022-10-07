@@ -2,84 +2,114 @@ import type { ICarouselProps } from './Carousel.definition';
 import {
 	Stack,
 	Text,
-	Flex,
 	Box,
 	IconButton,
 	createIcon,
+	GridItem,
+	Grid,
 } from '@chakra-ui/react';
 import Nuka from 'nuka-carousel';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 export const CaretLeftIcon = createIcon({
 	displayName: 'CaretLeftIcon',
-	viewBox: '0 0 24 24',
-	d: 'M13.8045 19.8983L7.09666 12.7733C6.89158 12.5565 6.78906 12.2783 6.78906 11.9999C6.78906 11.7215 6.89163 11.443 7.09666 11.2264L13.8045 4.10141C14.2322 3.65024 14.944 3.63126 15.3949 4.05747C15.8491 4.4852 15.8651 5.20028 15.4389 5.64841L9.42013 12L15.4389 18.3515C15.8652 18.7998 15.849 19.5117 15.3949 19.9425C14.9482 20.367 14.2357 20.3483 13.8045 19.8983Z',
+	viewBox: '0 0 40 36',
+	defaultProps: {
+		color: 'white',
+		h: '36px',
+		w: '36px',
+	},
+	d: 'M0.839285 15.9695C-0.276785 17.0926 -0.276785 18.9164 0.839284 20.0394L15.125 34.4144C16.2411 35.5375 18.0536 35.5375 19.1696 34.4144C20.2857 33.2914 20.2857 31.4676 19.1696 30.3445L9.75 20.875L37.1429 20.875C38.7232 20.875 40 19.5902 40 18C40 16.4097 38.7232 15.125 37.1429 15.125L9.75893 15.125L19.1607 5.65545C20.2768 4.5324 20.2768 2.70857 19.1607 1.58552C18.0446 0.462473 16.2321 0.462473 15.1161 1.58552L0.830358 15.9605L0.839285 15.9695Z',
 });
 
 export const CaretRightIcon = createIcon({
 	displayName: 'CaretRightIcon',
-	viewBox: '0 0 24 24',
-	d: 'M10.193 4.10152L16.9008 11.2265C17.1059 11.4433 17.2084 11.7215 17.2084 12C17.2084 12.2782 17.1058 12.5564 16.9008 12.7734L10.193 19.8984C9.76548 20.3484 9.05345 20.3671 8.60252 19.9406C8.14839 19.5128 8.13236 18.7978 8.55857 18.3496L14.5773 11.9981L8.55857 5.64652C8.13236 5.19839 8.1483 4.48823 8.60252 4.05745C9.05345 3.63136 9.76548 3.65011 10.193 4.10152Z',
+	viewBox: '0 0 40 36',
+	defaultProps: {
+		color: 'white',
+		h: '36px',
+		w: '36px',
+	},
+	d: 'M39.1607 20.0305C40.2768 18.9074 40.2768 17.0836 39.1607 15.9606L24.875 1.58557C23.7589 0.462524 21.9464 0.462524 20.8304 1.58557C19.7143 2.70862 19.7143 4.53245 20.8304 5.65549L30.25 15.125H2.85714C1.27679 15.125 0 16.4098 0 18C0 19.5903 1.27679 20.875 2.85714 20.875H30.2411L20.8393 30.3446C19.7232 31.4676 19.7232 33.2914 20.8393 34.4145C21.9554 35.5375 23.7679 35.5375 24.8839 34.4145L39.1696 20.0395L39.1607 20.0305Z',
 });
 
 function Carousel({ items }: ICarouselProps) {
+	const border = '1px solid rgba(255, 255, 255, 0.24)';
+
 	return (
-		<Flex bgColor="navy.500" justifyContent="space-between">
-			<Text
-				mt={8}
-				ml={{ base: 4, md: 6 }}
-				color="white"
-				fontWeight="bold"
-				as="h2"
-				size={{ base: 'md', md: '2xl' }}
-				minW={{ base: '40%', md: '30%' }}
-			>
-				Be inspired...
-			</Text>
-			<Stack borderLeft={'1px solid rgba(255, 255, 255, 0.24)'}>
-				<Box width="100%">
+		<Grid bgColor="navy.500" templateColumns="repeat(5, 1fr)">
+			<GridItem colSpan={2}>
+				<Text
+					mt={{ base: 4, md: 8 }}
+					ml={{ base: 4, md: 6 }}
+					color="white"
+					fontWeight="bold"
+					as="h2"
+					size={{ base: 'md', md: '2xl' }}
+					minW={{ base: '40%', md: '30%' }}
+				>
+					Be inspired...
+				</Text>
+			</GridItem>
+			<GridItem colSpan={3} borderLeft={border}>
+				<Box mr={{ base: 4, md: 8 }} mb={2}>
 					<Nuka
+						slidesToShow={1}
+						wrapAround={true}
 						renderBottomRightControls={({
 							nextSlide,
 							previousSlide,
 						}) => (
-							<>
+							<Box>
 								<IconButton
-									variant={'ghost'}
-									color={'white'}
-									size={'lg'}
-									onClick={previousSlide}
-									transform={{
-										base: 'translate(-110px, 0px)',
-										xl: 'translate(-100%,0px)',
+									variant={'link'}
+									_focus={{
+										boxShadow: 'none',
+										outline: 'none',
+										outlineOffset: '0px',
+										outlineColor: 'none',
 									}}
-									icon={<ArrowBackIcon />}
+									onClick={previousSlide}
+									icon={
+										<CaretLeftIcon
+											h={{ base: 4, md: 'auto' }}
+										/>
+									}
 									aria-label="Show the previous set of resources in the resource carousel"
 								/>
 								<IconButton
-									variant={'ghost'}
-									color={'white'}
-									size={'lg'}
-									mr={{ base: 4, lg: 0 }}
-									transform={{
-										base: 'translate(-110px, 0px)',
-										xl: 'translate(-100%,0px)',
+									variant={'link'}
+									_focus={{
+										boxShadow: 'none',
+										outline: 'none',
+										outlineOffset: '0px',
+										outlineColor: 'none',
 									}}
 									onClick={nextSlide}
-									icon={<ArrowForwardIcon />}
+									ml={{ base: 'none', md: 4 }}
+									icon={
+										<CaretRightIcon
+											h={{ base: 4, md: 'auto' }}
+										/>
+									}
 									aria-label="Show the next set of resources in the resource carousel"
 								/>
-							</>
+							</Box>
 						)}
 						renderBottomCenterControls={null}
 						renderCenterLeftControls={null}
 						renderCenterRightControls={null}
 					>
 						{items.map((item, idx) => (
-							<Stack key={idx} my={8} ml={6} gap={1} maxW={'70%'}>
+							<Stack
+								key={idx}
+								mb={{ base: 10 }}
+								mt={{ base: 4, md: 8 }}
+								ml={{ base: 2, md: 4 }}
+								gap={1}
+							>
 								<Text
 									color="white"
-									size={{ sm: 'sm', md: '2xl' }}
+									size={{ base: 'sm', md: '1xl' }}
 								>
 									{item.title}
 								</Text>
@@ -90,8 +120,8 @@ function Carousel({ items }: ICarouselProps) {
 						))}
 					</Nuka>
 				</Box>
-			</Stack>
-		</Flex>
+			</GridItem>
+		</Grid>
 	);
 }
 

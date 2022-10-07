@@ -1,5 +1,13 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Flex, Grid, Heading, Image, Text } from '@chakra-ui/react';
+import {
+	Box,
+	Flex,
+	Grid,
+	Heading,
+	Image,
+	Text,
+	useBreakpointValue,
+} from '@chakra-ui/react';
 import Card from '~/components/Card';
 import Carousel from '~/components/Carousel';
 import Link from '~/components/Link';
@@ -60,7 +68,13 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
 					href={link.text}
 				></Card>
 			</Box>
-			<Box as="section" maxW={{ md: '1028px' }} mb={8}>
+			<Box
+				as="section"
+				maxW={{ md: '1028px' }}
+				mb={8}
+				overflowX={'hidden'}
+				w={{ base: '95vw' }}
+			>
 				<Carousel
 					items={verses.map(v => ({
 						title: v.content,
