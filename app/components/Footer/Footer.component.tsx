@@ -2,6 +2,7 @@ import { Box, Flex, Text, Link } from '@chakra-ui/react';
 import { Link as RemixLink } from '@remix-run/react';
 import type { ReactNode } from 'react';
 import React from 'react';
+import { footerItems } from './Footer.definition';
 
 const FooterList = ({
 	title,
@@ -23,94 +24,6 @@ const FooterList = ({
 };
 
 function Footer() {
-	const data = [
-		{
-			primary: {
-				title: 'Our Church',
-			},
-			fields: [
-				{
-					link_url: '',
-					link_title: 'about',
-				},
-				{
-					link_url: '',
-					link_title: 'leaders',
-				},
-				{
-					link_url: '',
-					link_title: 'locations',
-				},
-				{
-					link_url: '',
-					link_title: 'join us',
-				},
-				{
-					link_url: '',
-					link_title: 'contact us',
-				},
-			],
-		},
-		{
-			primary: {
-				title: 'Our Policies',
-			},
-			fields: [
-				{
-					link_url: '',
-					link_title: 'privacy',
-				},
-				{
-					link_url: '',
-					link_title: 'terms',
-				},
-				{
-					link_url: '',
-					link_title: 'copyright',
-				},
-				{
-					link_url: '',
-					link_title: 'safeguarding',
-				},
-				{
-					link_url: '',
-					link_title: 'cookies',
-				},
-			],
-		},
-		{
-			primary: {
-				title: 'Our Network',
-			},
-			fields: [
-				{
-					link_url: '',
-					link_title: 'Coldhams Coffee',
-				},
-				{
-					link_url: '',
-					link_title: 'C3 Impact',
-				},
-				{
-					link_url: '',
-					link_title: 'Breathe',
-				},
-				{
-					link_url: '',
-					link_title: 'The C3 Academy',
-				},
-				{
-					link_url: '',
-					link_title: 'Tim Creamer Prayer Room',
-				},
-				{
-					link_url: '',
-					link_title: 'The C3 Store',
-				},
-			],
-		},
-	];
-
 	return (
 		<Box as="footer" w={'100vw'} mt={4} px={{ base: 3, md: 4 }}>
 			<Flex
@@ -119,11 +32,10 @@ function Footer() {
 				borderTop="1px solid black"
 				pt="4"
 			>
-				{data.map(({ primary, fields }, idx) => {
+				{footerItems.map(({ primary, fields }, idx) => {
 					return (
 						<FooterList key={primary.title} title={primary.title}>
 							{fields.map(link => {
-								// const url = linkResolver(link.link_url);
 								return (
 									<React.Fragment key={link.link_title}>
 										<Link

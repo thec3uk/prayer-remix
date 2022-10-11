@@ -5,7 +5,6 @@ import ClientStyleContext from './context.client';
 
 import { hydrateRoot } from 'react-dom/client';
 import { RemixBrowser } from '@remix-run/react';
-import { hydrate } from 'react-dom';
 
 interface ClientCacheProviderProps {
 	children: React.ReactNode;
@@ -31,4 +30,3 @@ hydrateRoot(
 		<RemixBrowser />
 	</ClientCacheProvider>
 );
-//hydrate(<RemixBrowser />, document);

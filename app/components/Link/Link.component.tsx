@@ -14,9 +14,6 @@ function Link({ href, text, useButton, isExternal, buttonProps }: ILinkProps) {
 	return (
 		<>
 			{useButton ? (
-				// <Button as="a" {...externalLinkProps} {...buttonProps}>
-				// 	{text}
-				// </Button>
 				<ChakraLink
 					as={RemixLink}
 					to={href}

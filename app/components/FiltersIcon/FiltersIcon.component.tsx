@@ -2,7 +2,6 @@ import { createIcon } from '@chakra-ui/react';
 
 export const FiltersIcon = createIcon({
 	displayName: 'FiltersIcon',
-	// path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
 	path: (
 		<>
 			<line

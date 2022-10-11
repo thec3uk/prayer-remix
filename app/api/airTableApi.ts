@@ -7,14 +7,12 @@ import type {
 	ISetting,
 } from '~/types/global.definition';
 import config from '../config.json';
+import type { IRequestFilters } from './api.definition';
 import { mapResponseToPrayerPraiseRequests } from './requestMapper';
 
 const apiUrl = (tableName: string) =>
 	`${config.airTableUrl}/v0/${config.airTableBase}/${tableName}`;
 
-export interface IRequestFilters {
-	location?: string;
-}
 export async function fetchRequests({
 	location,
 }: IRequestFilters = {}): Promise<IRequest[]> {
