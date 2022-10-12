@@ -20,7 +20,7 @@ function Carousel({ items }: ICarouselProps) {
           color="white"
           fontWeight="bold"
           as="h2"
-          fontSize={{ base: "2xl", md: "4xl" }}
+          fontSize={{ base: "3xl", md: "5xl" }}
         >
           Be inspired...
         </Text>
@@ -71,7 +71,7 @@ function Carousel({ items }: ICarouselProps) {
                 ml={4}
                 gap={1}
               >
-                <Text color="white" fontSize={{ base: "2xl", md: "2xl" }}>
+                <Text color="white" fontSize="2xl">
                   {item.title}
                 </Text>
                 <Text fontWeight="bold" color="teal.500">
