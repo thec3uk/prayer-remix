@@ -16,11 +16,11 @@ function Filters({ locations, onChange, initialFilters }: IFiltersProps) {
 		onChange(filters);
 	}, [onChange, filters]);
 	return (
-		<Flex flexDir={{ base: 'column', md: 'row' }} gap={8}>
+		<Flex flexDir={{ base: 'column', lg: 'row' }} gap={8}>
 			<FormControl>
 				<FormLabel>Location</FormLabel>
 				<Select
-					w={{ base: 'inherit', md: 'sm' }}
+					w={{ base: 'inherit', lg: 'sm' }}
 					onChange={e =>
 						setFilters({
 							location: e.target.value,

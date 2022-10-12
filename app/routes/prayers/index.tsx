@@ -6,6 +6,7 @@ import { Box } from '@chakra-ui/react';
 import PrayerCard from '~/components/PrayerCard';
 
 export const loader: LoaderFunction = async () => {
+	console.log('load');
 	const requests = await fetchRequests();
 	return { requests };
 };
@@ -25,7 +26,11 @@ const PrayerWall = () => {
 			}}
 		>
 			{data.requests.map(request => (
-				<PrayerCard data={request} key={request.id}></PrayerCard>
+				<PrayerCard
+					featureView
+					data={request}
+					key={request.id}
+				></PrayerCard>
 			))}
 		</Box>
 	);

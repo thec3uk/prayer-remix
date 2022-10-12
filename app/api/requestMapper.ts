@@ -9,7 +9,6 @@ export function mapResponseToPrayerPraiseRequests(
 ): IRequest[] {
 	let requests = airTableRecords.records;
 	if (location !== '') {
-		console.log(location);
 		requests = requests.filter(
 			(r: any) =>
 				location.toLowerCase() ===
