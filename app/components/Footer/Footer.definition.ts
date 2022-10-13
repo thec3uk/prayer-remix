@@ -15,18 +15,6 @@ export const footerItems = [
 				link_title: 'about',
 			},
 			{
-				link_url: `${baseUrl}/our-leaders`,
-				link_title: 'leaders',
-			},
-			{
-				link_url: `${baseUrl}/locations`,
-				link_title: 'locations',
-			},
-			{
-				link_url: `${baseUrl}/join-us`,
-				link_title: 'join us',
-			},
-			{
 				link_url: `${baseUrl}/we-use-cookies-to-help-improve-your-experience-of-our`,
 				link_title: 'contact us',
 			},
@@ -41,22 +29,6 @@ export const footerItems = [
 				link_url: `${baseUrl}/privacy`,
 				link_title: 'privacy',
 			},
-			{
-				link_url: `${baseUrl}/terms`,
-				link_title: 'terms',
-			},
-			{
-				link_url: `${baseUrl}/copyright`,
-				link_title: 'copyright',
-			},
-			{
-				link_url: `${baseUrl}/safeguarding`,
-				link_title: 'safeguarding',
-			},
-			{
-				link_url: `${baseUrl}/cookies`,
-				link_title: 'cookies',
-			},
 		],
 	},
 	{
@@ -64,6 +36,10 @@ export const footerItems = [
 			title: 'Our Network',
 		},
 		fields: [
+			{
+				link_url: baseUrl,
+				link_title: 'The C3 Church',
+			},
 			{
 				link_url: 'https://www.coldhamscoffee.co.uk/',
 				link_title: 'Coldhams Coffee',
@@ -79,10 +55,6 @@ export const footerItems = [
 			{
 				link_url: 'https://thec3.academy/',
 				link_title: 'The C3 Academy',
-			},
-			{
-				link_url: 'https://prayer.thec3.uk/',
-				link_title: 'Tim Creamer Prayer Room',
 			},
 			{
 				link_url: 'https://store.thec3.uk/',

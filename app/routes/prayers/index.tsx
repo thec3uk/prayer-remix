@@ -16,22 +16,23 @@ const PrayerWall = () => {
 		requests: IRequest[];
 	}>();
 	return (
-		<Box
-			my={6}
-			w="100%"
-			mx="auto"
-			sx={{
-				columnCount: [1, 1, 1, 2, 3],
-				columnGap: 4,
-			}}
-		>
-			{data.requests.map(request => (
-				<PrayerCard
-					featureView
-					data={request}
-					key={request.id}
-				></PrayerCard>
-			))}
+		<Box h={'90vh'}>
+			<Box
+				mt={33}
+				w="100%"
+				sx={{
+					columnCount: [1, 1, 1, 2, 3],
+					columnGap: 4,
+				}}
+			>
+				{data.requests.map(request => (
+					<PrayerCard
+						featureView
+						data={request}
+						key={request.id}
+					></PrayerCard>
+				))}
+			</Box>
 		</Box>
 	);
 };

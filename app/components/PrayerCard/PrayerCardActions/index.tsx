@@ -1,3 +1,3 @@
-import PrayerCardActions from './PrayCardActions.component';
+import PrayerCardActions from './PrayerCardActions.component';
 
 export default PrayerCardActions;

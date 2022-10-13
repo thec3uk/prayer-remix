@@ -6,6 +6,10 @@ const baseStyle: SystemStyleObject = {
 };
 
 const sizes: Record<string, SystemStyleObject> = {
+	xl: {
+		fontSize: ['lg', null, null, 'xl', '2xl'],
+		lineHeight: ['base', null, null, '1.5', '1.6'],
+	},
 	lg: {
 		fontSize: ['md', null, null, 'lg', 'xl'],
 		lineHeight: ['base', null, null, '1.33333333333', '1.4'],

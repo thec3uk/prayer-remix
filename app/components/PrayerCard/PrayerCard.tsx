@@ -9,6 +9,7 @@ const PrayerCard = ({
 	featureView = false,
 }: IPrayerCardProps) => {
 	const bgColor = data.type == 'praise' ? 'yellow.500' : 'teal.500';
+	const fontSize = featureView ? 'xl' : 'lg';
 
 	return (
 		<Box
@@ -20,12 +21,16 @@ const PrayerCard = ({
 		>
 			<Box w="100%" bgColor={bgColor} h={1}></Box>
 			<Flex flexDir={'column'} p={5} gap={2}>
-				<Text>{data.prayer}</Text>
-				<Text fontWeight="bold">
-					{`${data.name} ${
-						data.location ? ` (${data.location})` : ''
-					}`}
-				</Text>
+				<Text size={fontSize}>{data.prayer}</Text>
+
+				<Flex flexDir={'row'} justifyContent="space-between">
+					<Text fontWeight="bold">
+						{`${data.name} ${
+							data.location ? ` (${data.location})` : ''
+						}`}
+					</Text>
+					{featureView && <Text>{data.created_at}</Text>}
+				</Flex>
 				{!featureView && (
 					<PrayerCardActions
 						data={data}
