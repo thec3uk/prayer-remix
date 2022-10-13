@@ -24,10 +24,10 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 -   [x] Improve Home page layout on mobile. Hide main image and fix margins on "Join Us" card
 -   [x] Restrict max width for Submit Request page on desktop
 -   [x] Fix width for Logo on wide desktop view
--   [ ] Ensure we are loading all requests on full screen view
+-   [x] Ensure we are loading all requests on full screen view
 -   [ ] QA test site on Mobile, Tablet and Desktop
 -   [ ] Add correct images & copy
--   [ ] Add styled error handling pages (404 / 500)
+-   [x] Add styled error handling pages (404 / 500)
 -   [ ] Are the radio button styles correct?
 
 ## Future features

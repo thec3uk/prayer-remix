@@ -1,48 +1,30 @@
-import type { MetaFunction } from '@remix-run/node';
+import {
+	ChakraProvider,
+	Heading,
+	VStack,
+	Text,
+	Container,
+	Box,
+} from '@chakra-ui/react';
+import { SkipNavLink } from '@chakra-ui/skip-nav';
+import { withEmotionCache } from '@emotion/react';
 import {
 	Links,
 	LiveReload,
 	Meta,
-	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useCatch,
 } from '@remix-run/react';
-import Layout from './components/Layout';
-import styles from '~/styles/global.css';
-import { ChakraProvider, VStack } from '@chakra-ui/react';
-import { SkipNavLink } from '@chakra-ui/skip-nav';
 import { useContext, useEffect } from 'react';
-import ClientStyleContext from './context.client';
-import ServerStyleContext from './context.server';
-import { withEmotionCache } from '@emotion/react';
-import C3Theme from './theme';
-import Fonts from './fonts';
-import ErrorLayout from './components/ErrorLayout';
-
-export const meta: MetaFunction = () => ({
-	charset: 'utf-8',
-	title: 'Tim Creamer Prayer Room',
-	viewport: 'width=device-width,initial-scale=1',
-});
-
-export function links() {
-	return [{ rel: 'stylesheet', href: styles }];
-}
-
-export interface DocumentProps {
-	children: React.ReactNode;
-	title?: string;
-}
-
-export function ErrorBoundary(error: any) {
-	return <ErrorLayout error={error} />;
-}
-
-export function CatchBoundary() {
-	const caught = useCatch();
-	return <ErrorLayout caught={caught} />;
-}
+import ClientStyleContext from '~/context.client';
+import ServerStyleContext from '~/context.server';
+import Fonts from '~/fonts';
+import type { DocumentProps } from '~/root';
+import C3Theme from '~/theme';
+import Footer from '../Footer';
+import Header from '../Header';
+import MenuLink from '../MenuLink';
+import type { IErrorLayoutProps } from './ErrorLayout.definition';
 
 const Document = withEmotionCache(
 	({ children, title }: DocumentProps, emotionCache) => {
@@ -108,12 +90,26 @@ const Document = withEmotionCache(
 	}
 );
 
-export default function App() {
+function ErrorLayout({ error, caught }: IErrorLayoutProps) {
+	const title = caught ? caught.statusText : 'Sorry, something went wrong';
+	const text =
+		caught?.status === 404
+			? "We couldn't find what you were looking for."
+			: "We weren't expecting this to happen";
 	return (
 		<Document>
-			<Layout>
-				<Outlet />
-			</Layout>
+			<Header />
+			<Box h={'75vh'}>
+				<Heading mb={6}>{title}</Heading>
+				<Text mb={2}>{text}</Text>
+				<Text mb={6}>
+					Click on the link below to head home and try again.
+				</Text>
+				<MenuLink to="/" text="Return home"></MenuLink>
+			</Box>
+			<Footer />
 		</Document>
 	);
 }
+
+export default ErrorLayout;

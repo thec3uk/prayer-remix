@@ -7,7 +7,7 @@ import PrayerCard from '~/components/PrayerCard';
 
 export const loader: LoaderFunction = async () => {
 	console.log('load');
-	const requests = await fetchRequests();
+	const requests = await fetchRequests({ maxRecords: '1000' });
 	return { requests };
 };
 
@@ -16,22 +16,25 @@ const PrayerWall = () => {
 		requests: IRequest[];
 	}>();
 	return (
-		<Box h={'90vh'}>
-			<Box
-				mt={33}
-				w="100%"
-				sx={{
-					columnCount: [1, 1, 1, 2, 3],
-					columnGap: 4,
-				}}
-			>
-				{data.requests.map(request => (
-					<PrayerCard
-						featureView
-						data={request}
-						key={request.id}
-					></PrayerCard>
-				))}
+		<Box>
+			<Box>
+				<Box
+					mt={33}
+					w="100%"
+					overflowY={'auto'}
+					sx={{
+						columnCount: [1, 1, 1, 2, 3],
+						columnGap: 4,
+					}}
+				>
+					{data.requests.map(request => (
+						<PrayerCard
+							featureView
+							data={request}
+							key={request.id}
+						></PrayerCard>
+					))}
+				</Box>
 			</Box>
 		</Box>
 	);
