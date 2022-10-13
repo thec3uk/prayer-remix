@@ -6,6 +6,8 @@ import type { IPrayerCardProps } from '../PrayerCard.definition';
 
 function PrayerCardActions({ data, onAmen, onReport }: IPrayerCardProps) {
 	const [counter, setCounter] = useState(data.count);
+	const circleColor = data.type == 'praise' ? '#FDF0CE' : '#DDF3F5';
+
 	return (
 		<Flex
 			flexDir={{ base: 'column', md: 'row' }}
@@ -47,7 +49,7 @@ function PrayerCardActions({ data, onAmen, onReport }: IPrayerCardProps) {
 					{data.type === 'prayer' ? 'Pray' : 'Praise'}
 					<Circle
 						p={'10px'}
-						bg="blue.500"
+						bg={circleColor}
 						borderRadius="50%"
 						size={6}
 					>
