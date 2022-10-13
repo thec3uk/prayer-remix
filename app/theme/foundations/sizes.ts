@@ -20,16 +20,12 @@ const largeSizes = {
   '8xl': '90rem'
 };
 
-// split is used for image split component where the balance is more like 54% / 46%;
-// splitSml is used for the 46% split on the content split component
 const container = {
-  splitWide: 'calc(640px + 4vw)',
-  splitNarrow: 'calc(640px - 4vw)',
   sm: '640px',
   md: '768px',
   lg: '1024px',
   xl: '1280px',
-  xxl: '1440px'
+  "2xl": '1440px',
 };
 
 const sizes = {

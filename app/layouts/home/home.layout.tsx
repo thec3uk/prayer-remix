@@ -13,13 +13,13 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
         templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
         mb={{ base: 8, md: 16 }}
       >
-        <Flex alignItems="center" mb={{ base: 2 }}>
+        <Flex alignItems="center" mb={{ base: 2 }} mr={5}>
           <Box maxW={{ md: "xl" }}>
             <Box my={{ base: 2, md: 14 }}>
               <Heading
                 as="h1"
-                size={{ base: "md", md: "3xl" }}
-                mb={{ base: 2, md: 4 }}
+                size="3xl"
+                mb={{ base: 4, md: 6 }}
                 textTransform="uppercase"
               >
                 The{" "}
@@ -28,10 +28,10 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
                 </Box>{" "}
                 Prayer Room
               </Heading>
-              <Text fontWeight="bold" mb={{ base: 2, md: 4 }}>
+              <Text fontWeight="bold" size="lg" mb={{ base: 4, md: 6 }}>
                 a time to be silent and a time to speak
               </Text>
-              <Text size={{ base: "sm" }} mb={{ base: 2, md: 4 }}>
+              <Text size="md" mb={{ base: 4, md: 6 }}>
                 This space was created in honour of Tim Creamer. A man of
                 passionate faith who was always first to pray. Sadly missed but
                 an inspiration to us all to 'run the race with perseverance'.
@@ -64,7 +64,6 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
         maxW={{ md: "1028px" }}
         mb={8}
         overflowX={"hidden"}
-        w={{ base: "95vw" }}
         bgColor={"navy.500"}
         bgImage="url(/logomark-transparent.svg)"
         bgRepeat="no-repeat"

@@ -16,7 +16,7 @@ const baseStyle: SystemStyleObject = {
 
 const sizes: Record<string, SystemStyleObject> = {
 	lg: {
-		fontSize: '2xl',
+		fontSize: 'xl',
 		lineHeight: '1',
 		px: 5,
 		py: 3,
@@ -24,7 +24,7 @@ const sizes: Record<string, SystemStyleObject> = {
 		minH: 12,
 	},
 	md: {
-		fontSize: 'xl',
+		fontSize: 'lg',
 		lineHeight: '1.2',
 		px: 4,
 		py: 4,
@@ -32,7 +32,7 @@ const sizes: Record<string, SystemStyleObject> = {
 		minH: 10,
 	},
 	sm: {
-		fontSize: 'lg',
+		fontSize: 'md',
 		lineHeight: 1.333333,
 		px: 3,
 		py: 2,
