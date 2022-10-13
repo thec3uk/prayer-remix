@@ -9,7 +9,7 @@ const PrayerCard = ({
 	featureView = false,
 }: IPrayerCardProps) => {
 	const bgColor = data.type == 'praise' ? 'yellow.500' : 'teal.500';
-	const fontSize = featureView ? 'xl' : 'lg';
+	const fontSize = featureView ? 'xl' : 'md';
 
 	return (
 		<Box

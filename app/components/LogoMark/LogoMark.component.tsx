@@ -1,7 +1,7 @@
 import { Box, useBreakpointValue } from '@chakra-ui/react';
 
 function LogoMark() {
-	const display = useBreakpointValue({ base: 'none', md: 'block' });
+	const display = useBreakpointValue({ base: 'none', lg: 'block' });
 	const w = '1332';
 	const h = '1154';
 	const vb = `0 0 ${w} ${h}`;

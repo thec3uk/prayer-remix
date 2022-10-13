@@ -17,18 +17,23 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 
 ## v1.0
 
--   [ ] Refactor full screen mode changes to not impact the standard prayer card
--   [ ] Improve Home page layout on mobile. Hide main image and fix margins on "Join Us" card
--   [ ] Restrict max width for Submit Request page on desktop
--   [ ] Fix width for Logo on wide desktop view
+-   [x] Navigation highlight
+-   [x] Footer position full screen
+-   [x] Refactor full screen mode changes to not impact the standard prayer card
+-   [ ] Scroll all requests on the full screen view
+-   [x] Improve Home page layout on mobile. Hide main image and fix margins on "Join Us" card
+-   [x] Restrict max width for Submit Request page on desktop
+-   [x] Fix width for Logo on wide desktop view
 -   [ ] Ensure we are loading all requests on full screen view
 -   [ ] QA test site on Mobile, Tablet and Desktop
 -   [ ] Add correct images & copy
 -   [ ] Add styled error handling pages (404 / 500)
+-   [ ] Are the radio button styles correct?
 
 ## Future features
 
 -   [ ] Add a dark mode.
+-   [ ] Empty prayer wall message
 -   [ ] Add icons for prayer / praise on when showing prayers full screen
 -   [ ] Hook up URL params to UI filters when viewing requests for a specific location
 -   [ ] Get all content from Air Table / Prismic

@@ -1,5 +1,6 @@
-import { Flex, Box, HStack, Image, Text } from '@chakra-ui/react';
+import { Flex, Box, HStack, Image } from '@chakra-ui/react';
 import { NavLink } from '@remix-run/react';
+import MenuLink from '../MenuLink';
 import MobileMenu from '../MobileMenu';
 
 function Header() {
@@ -22,25 +23,9 @@ function Header() {
 					<Image src="/LogoBlack.png" h="51px" w="63px"></Image>
 				</NavLink>
 				<HStack display={isDesktop} gap="8">
-					<NavLink to="/">
-						<Text
-							fontWeight="bold"
-							textTransform="uppercase"
-							color="red.500"
-						>
-							Home
-						</Text>
-					</NavLink>
-					<NavLink to="/prayerwall">
-						<Text fontWeight="bold" textTransform="uppercase">
-							Prayer wall
-						</Text>
-					</NavLink>
-					<NavLink to="/request">
-						<Text fontWeight="bold" textTransform="uppercase">
-							Submit a request
-						</Text>
-					</NavLink>
+					<MenuLink to="/" text="Home" />
+					<MenuLink to="/prayerwall" text="Prayer Wall" />
+					<MenuLink to="/request" text="Submit a request" />
 				</HStack>
 				<MobileMenu />
 			</Flex>

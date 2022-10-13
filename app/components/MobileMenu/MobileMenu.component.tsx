@@ -1,8 +1,8 @@
-import { IconButton, VStack, Text, Box } from '@chakra-ui/react';
-import { NavLink } from '@remix-run/react';
+import { IconButton, VStack, Box } from '@chakra-ui/react';
 import { useState } from 'react';
 import { use100vh } from 'react-div-100vh';
 import HamburgerIcon from '../HamburgerIcon';
+import MenuLink from '../MenuLink';
 
 function MobileMenu() {
 	const isMobile = { base: 'block', md: 'none' };
@@ -44,25 +44,21 @@ function MobileMenu() {
 						: 'translate3d(0, -100%, 0)'
 				}
 			>
-				<NavLink to="/" onClick={() => setMenuVisible(false)}>
-					<Text
-						fontWeight="bold"
-						textTransform="uppercase"
-						color="red.500"
-					>
-						Home
-					</Text>
-				</NavLink>
-				<NavLink to="/prayerwall" onClick={() => setMenuVisible(false)}>
-					<Text fontWeight="bold" textTransform="uppercase">
-						Prayer wall
-					</Text>
-				</NavLink>
-				<NavLink to="/request" onClick={() => setMenuVisible(false)}>
-					<Text fontWeight="bold" textTransform="uppercase">
-						Submit a request
-					</Text>
-				</NavLink>
+				<MenuLink
+					to="/"
+					text="Home"
+					onClick={() => setMenuVisible(false)}
+				/>
+				<MenuLink
+					to="/prayerwall"
+					text="Prayer Wall"
+					onClick={() => setMenuVisible(false)}
+				/>
+				<MenuLink
+					to="/request"
+					text="Submit a request"
+					onClick={() => setMenuVisible(false)}
+				/>
 			</VStack>
 		</Box>
 	);
