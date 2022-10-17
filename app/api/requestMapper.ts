@@ -8,6 +8,7 @@ export function mapResponseToPrayerPraiseRequests(
 	location: string = ''
 ): IRequest[] {
 	let requests = airTableRecords.records;
+	requests = requests.filter((r: any) => r.fields['Archived'] !== true);
 	if (location !== '') {
 		requests = requests.filter(
 			(r: any) =>

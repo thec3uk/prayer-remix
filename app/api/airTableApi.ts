@@ -21,7 +21,7 @@ export async function fetchRequests({
 	const res = await fetch(
 		`${apiUrl(tableName)}?maxRecords=${
 			maxRecords || '100'
-		}&view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at`,
+		}&view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at&archived=false`,
 		{
 			headers: new Headers({
 				Authorization: `Bearer ${config.apiKey}`,
