@@ -20,7 +20,7 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 -   [x] Navigation highlight
 -   [x] Footer position full screen
 -   [x] Refactor full screen mode changes to not impact the standard prayer card
--   [ ] Scroll all requests on the full screen view
+-   [x] Scroll all requests on the full screen view
 -   [x] Improve Home page layout on mobile. Hide main image and fix margins on "Join Us" card
 -   [x] Restrict max width for Submit Request page on desktop
 -   [x] Fix width for Logo on wide desktop view
@@ -28,7 +28,6 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 -   [ ] QA test site on Mobile, Tablet and Desktop
 -   [ ] Add correct images & copy
 -   [x] Add styled error handling pages (404 / 500)
--   [ ] Are the radio button styles correct?
 
 ## Future features
 
@@ -38,6 +37,7 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 -   [ ] Hook up URL params to UI filters when viewing requests for a specific location
 -   [ ] Get all content from Air Table / Prismic
 -   [ ] Explore to show notifications (e.g cookie or local storage based?)
+-   [ ] Radio styled don't match design (1px border not 2px)
 
 ## Technical Debt
 

@@ -11,7 +11,7 @@ const baseStyleControl: SystemStyleFunction = () => {
 		w: '100%',
 		transitionProperty: 'box-shadow',
 		transitionDuration: 'normal',
-		border: '1px solid',
+		border: '2px solid',
 		borderRadius: 'base',
 		borderColor: 'gray.300',
 		color: 'white',
