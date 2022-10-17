@@ -64,7 +64,7 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
 				<Card
 					title="Next Prayer Meeting..."
 					subTitle="Join us on Zoom"
-					text="Wednesdays at 7.30pm"
+					text="Wednesdays at 7.30am & 7.30pm"
 					img="/pedro-lima-HtwsbbClBOs-unsplash 1.png"
 					href={link.text}
 				></Card>

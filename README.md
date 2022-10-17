@@ -43,7 +43,7 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 ## Technical Debt
 
 -   [ ] Review application for optimisations
--   [ ] Filter prayer requests by location and type in API calls
+-   [ ] Filter prayer requests by location, type & archived in API calls
 -   [ ] Standardise API calls / write an API client
 
 # Getting started
