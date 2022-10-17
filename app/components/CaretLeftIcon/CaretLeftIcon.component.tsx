@@ -4,7 +4,7 @@ const CaretLeftIcon = createIcon({
 	displayName: 'CaretLeftIcon',
 	viewBox: '0 0 40 36',
 	defaultProps: {
-		color: 'white',
+		color: '#00919F',
 		h: '36px',
 		w: '36px',
 	},

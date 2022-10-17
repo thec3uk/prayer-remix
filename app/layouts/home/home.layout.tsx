@@ -64,7 +64,7 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
 				<Card
 					title="Next Prayer Meeting..."
 					subTitle="Join us on Zoom"
-					text="Wednesday 5th October 7.30pm"
+					text="Wednesdays at 7.30pm"
 					img="/pedro-lima-HtwsbbClBOs-unsplash 1.png"
 					href={link.text}
 				></Card>
@@ -74,11 +74,12 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
 				maxW={{ md: '1028px' }}
 				mb={sectionMargin}
 				overflowX={'hidden'}
-				bgColor={'navy.500'}
+				bgColor={'white'}
 				bgImage="url(/logomark-transparent.svg)"
 				bgRepeat="no-repeat"
 				bgSize="450px 405px"
 				bgPosition="right"
+				filter={'drop-shadow(0px 5px 15px rgba(0, 0, 0, 0.1))'}
 			>
 				<Carousel
 					items={verses.map(v => ({
