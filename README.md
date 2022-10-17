@@ -25,7 +25,7 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 -   [x] Restrict max width for Submit Request page on desktop
 -   [x] Fix width for Logo on wide desktop view
 -   [x] Ensure we are loading all requests on full screen view
--   [ ] QA test site on Mobile, Tablet and Desktop
+-   [x] QA test site on Mobile, Tablet and Desktop
 -   [ ] Add correct images & copy
 -   [x] Add styled error handling pages (404 / 500)
 
@@ -38,6 +38,7 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 -   [ ] Get all content from Air Table / Prismic
 -   [ ] Explore to show notifications (e.g cookie or local storage based?)
 -   [ ] Radio styled don't match design (1px border not 2px)
+-   [ ] Bigger radio buttons on mobile.
 
 ## Technical Debt
 
