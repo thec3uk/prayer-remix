@@ -26,7 +26,7 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 -   [x] Fix width for Logo on wide desktop view
 -   [x] Ensure we are loading all requests on full screen view
 -   [x] QA test site on Mobile, Tablet and Desktop
--   [ ] Add correct images & copy
+-   [x] Add correct images & copy
 -   [x] Add styled error handling pages (404 / 500)
 
 ## Future features
