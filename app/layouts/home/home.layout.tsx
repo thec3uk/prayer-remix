@@ -56,16 +56,16 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
 				</Flex>
 				<Image
 					display={{ base: 'none', md: 'block' }}
-					src="/home.jpg"
+					src="/home-main.jpeg"
 					alt="People praying"
 				></Image>
 			</Grid>
 			<Box as="section" maxW={{ md: '1028px' }} mb={sectionMargin}>
 				<Card
-					title="Next Prayer Meeting..."
+					title="Weekly prayer meetings..."
 					subTitle="Join us on Zoom"
 					text="Wednesdays at 7.30am & 7.30pm"
-					img="/pedro-lima-HtwsbbClBOs-unsplash 1.png"
+					img="/home-card.jpeg"
 					href={link.text}
 				></Card>
 			</Box>
