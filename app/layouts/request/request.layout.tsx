@@ -1,151 +1,147 @@
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { submitRequest } from '~/api/airTableApi';
-import BoxButton from '~/components/boxButton';
-import Layout from '~/components/Layout';
-import Menu from '~/components/Menu';
-import PrayerPraiseToggle from '~/components/prayerPraise';
-import type { ILocation } from '~/types/global.definition';
-
-type IRequestForm = {
-	title?: string;
-	name?: string;
-	prayer?: string;
-	location?: string;
-	type: 'prayer' | 'praise';
-};
-
-export interface IRequestLayoutProps {
-	locations: ILocation[];
-}
+import {
+  Button,
+  Flex,
+  FormErrorMessage,
+  FormHelperText,
+  Grid,
+  Heading,
+  Input,
+  Radio,
+  RadioGroup,
+  VStack,
+  StackDivider,
+  Textarea,
+  useToast,
+  Box,
+} from "@chakra-ui/react";
+import { useForm, useWatch } from "react-hook-form";
+import { submitRequest } from "~/api/airTableApi";
+import type { IRequestForm, IRequestLayoutProps } from "./request.definition";
+import { FormControl, FormLabel } from "@chakra-ui/react";
+import { Form, useNavigate } from "@remix-run/react";
+import PrayerHands from "~/components/PrayerHands";
+import Praise from "~/components/Praise";
 
 const RequestLayout = ({ locations }: IRequestLayoutProps) => {
-	const [error, setError] = React.useState('');
-	const [isPraise, setIsPraise] = React.useState(false);
-	const { register, handleSubmit, setValue } = useForm<IRequestForm>();
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<IRequestForm>();
+  const prayer = useWatch({ control, name: "prayer" });
+  const toast = useToast();
 
-	useEffect(() => {
-		setValue('type', isPraise ? 'praise' : 'prayer');
-	}, [isPraise, setValue]);
+  const onSubmit = async (data: any) => {
+    try {
+      await submitRequest(data);
+      navigate("/prayerwall");
+      toast({
+        title: "Thank you",
+        description: "Your request has been submitted successfully.",
+        status: "success",
+        duration: 10000,
+        isClosable: true,
+      });
+    } catch {
+      toast({
+        title: "Sorry",
+        description: "Something went wrong, please try again.",
+        status: "error",
+        duration: 10000,
+        isClosable: true,
+      });
+    }
+  };
 
-	const onSubmit = async (data: any) => {
-		try {
-			await submitRequest(data);
-			window.location.href = '/thanks';
-		} catch {
-			setError('Unable to submit your request');
-		}
-	};
-
-	const RequestPageMenu = (
-		<Menu links={[{ label: 'View Prayers', url: '/list' }]} />
-	);
-
-	return (
-		<Layout title={`make a request`} menu={RequestPageMenu}>
-			<div>
-				<div className="w-screen px-4 py-2 mb-24 font-sans text-lg bg-gray-500 shadow md:w-full text-gray-50">
-					Submit a public request
-				</div>
-
-				<div className="relative md:h-full md:flex md:flex-col md:justify-center md:mx-32">
-					<div className="rounded md:bg-gray-50 md:shadow-lg md:p-4">
-						{error && (
-							<div className="bg-red-200 px-4 py-2">{error}</div>
-						)}
-						<form
-							name="prayer-request"
-							className="mx-2 space-y-2"
-							onSubmit={handleSubmit(onSubmit)}
-						>
-							<div>
-								<label
-									htmlFor="name"
-									className="block text-sm font-medium text-gray-700 capitalize"
-								>
-									Name
-								</label>
-								<div className="mt-1">
-									<input
-										autoComplete="name"
-										type="text"
-										className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-										{...register('name', {
-											required: true,
-										})}
-										required
-									/>
-								</div>
-							</div>
-							<PrayerPraiseToggle
-								enabled={isPraise}
-								setEnabled={setIsPraise}
-							/>
-							<div>
-								<label
-									htmlFor="location"
-									className="block text-sm font-medium text-gray-700 capitalize"
-								>
-									Location
-								</label>
-								<select {...register('location')}>
-									<option> - </option>
-									{locations.map(l => (
-										<option key={l.name} value={l.name}>
-											{l.name}
-										</option>
-									))}
-								</select>
-							</div>
-							<div>
-								<label
-									htmlFor="title"
-									className="block text-sm font-medium text-gray-700 capitalize"
-								>
-									Title
-								</label>
-								<div className="mt-1">
-									<input
-										autoComplete="off"
-										type="text"
-										className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-										{...register('title', {
-											required: true,
-										})}
-										required
-									/>
-								</div>
-							</div>
-							<div>
-								<label
-									htmlFor="request"
-									className="block text-sm font-medium text-gray-700 capitalize"
-								>
-									Request
-								</label>
-								<div className="mt-1">
-									<textarea
-										rows={7}
-										className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-										{...register('prayer', {
-											required: true,
-										})}
-										required
-									/>
-								</div>
-							</div>
-							<div className="pt-4 -mx-2 md:-mx-6">
-								<BoxButton
-									title={`Submit your request`}
-									alignment="right"
-								/>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</Layout>
-	);
+  return (
+    <Box
+      px={{ base: 4, md: 8 }}
+      maxWidth={{ base: "full", md: "container.lg" }}
+    >
+      <Heading
+        as="h1"
+        size="2xl"
+        mb={{ base: 8, md: 12 }}
+        textTransform="uppercase"
+      >
+        Submit a request
+      </Heading>
+      <Form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
+        <VStack
+          mb={16}
+          spacing={6}
+          align="flex-start"
+          divider={<StackDivider borderColor="#D9D9D9" />}
+        >
+          <FormControl maxWidth="container.sm">
+            <FormLabel>Your name</FormLabel>
+            <Input
+              {...register("name", {
+                required: true,
+              })}
+              required
+              autoComplete="name"
+              type="text"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Location</FormLabel>
+            <RadioGroup>
+              <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                {locations.map((l) => (
+                  <Radio
+                    size={"lg"}
+                    key={l.name}
+                    {...register("location")}
+                    value={l.id}
+                  >
+                    {l.name}
+                  </Radio>
+                ))}
+              </Grid>
+            </RadioGroup>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Prayer or praise?</FormLabel>
+            <RadioGroup>
+              <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                <Radio {...register("type")} value={"prayer"} size={"lg"}>
+                  Prayer <PrayerHands ml={1} w="24px" h="26px" />
+                </Radio>
+                <Radio {...register("type")} value={"praise"} size={"lg"}>
+                  Praise <Praise ml={1} w="22px" h="26px" />
+                </Radio>
+              </Grid>
+            </RadioGroup>
+          </FormControl>
+          <Flex flexDir="column" w={"100%"} alignItems="flex-end" gap={4}>
+            <FormControl isInvalid={!!errors.prayer}>
+              <FormLabel>Request</FormLabel>
+              <Textarea
+                {...register("prayer", {
+                  required: true,
+                  maxLength: 500,
+                })}
+                required
+                autoComplete="off"
+                size="md"
+                maxLength={500}
+              />
+              <FormErrorMessage>
+                Please keep the request to 500 characters.
+              </FormErrorMessage>
+              <FormHelperText color={"gray.500"}>
+                {prayer?.length || 0} of 500 characters
+              </FormHelperText>
+            </FormControl>
+            <Button type="submit">Add Request</Button>
+          </Flex>
+        </VStack>
+      </Form>
+    </Box>
+  );
 };
 
 export default RequestLayout;

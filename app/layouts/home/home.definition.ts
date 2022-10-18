@@ -1,5 +1,6 @@
-import type { IRequest } from '~/types/global.definition';
+import type { IBibleVerse, ISetting } from '~/types/global.definition';
 
-export interface IPrayerRoomProps {
-	data: IRequest[];
+export interface IHomeProps {
+	link: ISetting;
+	verses: IBibleVerse[];
 }

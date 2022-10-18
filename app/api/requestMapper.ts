@@ -2,10 +2,21 @@ import dayjs from 'dayjs';
 import type { IRequest } from '~/types/global.definition';
 
 // TODO: strongly type the air table response
+// The filter should be server side but Air Table is a bit of a nightmare
 export function mapResponseToPrayerPraiseRequests(
-	airTableRecords: any
+	airTableRecords: any,
+	location: string = ''
 ): IRequest[] {
-	return airTableRecords.records.map((r: any) => {
+	let requests = airTableRecords.records;
+	requests = requests.filter((r: any) => r.fields['Archived'] !== true);
+	if (location !== '') {
+		requests = requests.filter(
+			(r: any) =>
+				location.toLowerCase() ===
+				r.fields['Name (from Location)']?.[0]?.toLowerCase()
+		);
+	}
+	return requests.map((r: any) => {
 		return {
 			name: r.fields.name,
 			prayer: r.fields.prayer,
@@ -14,7 +25,7 @@ export function mapResponseToPrayerPraiseRequests(
 			id: r.id,
 			created_at: dayjs(r.fields.created_at).format('ddd DD MMM YYYY'),
 			count: r.fields['Prayer Count'] || 0,
-			location: r.fields['Name (from Location)'],
+			location: r.fields['Name (from Location)']?.[0] || '',
 		};
 	});
 }

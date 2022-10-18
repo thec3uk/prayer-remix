@@ -1,22 +1,27 @@
 import dayjs from 'dayjs';
 import type {
+	IBibleVerse,
 	ILocation,
 	IRequest,
 	IRequestForm,
-	ISettings,
+	ISetting,
 } from '~/types/global.definition';
 import config from '../config.json';
+import type { IRequestFilters } from './api.definition';
 import { mapResponseToPrayerPraiseRequests } from './requestMapper';
 
 const apiUrl = (tableName: string) =>
 	`${config.airTableUrl}/v0/${config.airTableBase}/${tableName}`;
 
-export async function fetchRequests(): Promise<IRequest[]> {
+export async function fetchRequests({
+	location,
+	maxRecords,
+}: IRequestFilters = {}): Promise<IRequest[]> {
 	const tableName = 'Prayer%2FPraise%20Requests';
 	const res = await fetch(
-		`${apiUrl(
-			tableName
-		)}?maxRecords=100&view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at`,
+		`${apiUrl(tableName)}?maxRecords=${
+			maxRecords || '100'
+		}&view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at&archived=false`,
 		{
 			headers: new Headers({
 				Authorization: `Bearer ${config.apiKey}`,
@@ -24,21 +29,36 @@ export async function fetchRequests(): Promise<IRequest[]> {
 		}
 	);
 	const response = await res.json();
-	return mapResponseToPrayerPraiseRequests(response);
+	return mapResponseToPrayerPraiseRequests(response, location);
 }
 
-export async function fetchSettings(): Promise<ISettings> {
+export async function fetchSettings(): Promise<ISetting[]> {
 	const tableName = 'Settings';
-	const res = await fetch(`${apiUrl(tableName)}/rec1fSqbN4koqpktH`, {
+	const res = await fetch(`${apiUrl(tableName)}`, {
 		headers: new Headers({
 			Authorization: `Bearer ${config.apiKey}`,
 		}),
 	});
-	const setting = await res.json();
-	return {
-		groupCallEnabled: setting.fields.Enabled,
-		buttonText: setting.fields['Button Text'],
-	};
+	const settings = await res.json();
+	return settings.records.map((setting: any) => ({
+		enabled: setting.fields.Enabled,
+		text: setting.fields['Button Text'],
+		name: setting.fields['name'],
+	}));
+}
+
+export async function fetchVerses(): Promise<IBibleVerse[]> {
+	const tableName = 'Prayer Inspiration';
+	const res = await fetch(`${apiUrl(tableName)}`, {
+		headers: new Headers({
+			Authorization: `Bearer ${config.apiKey}`,
+		}),
+	});
+	const verses = await res.json();
+	return verses.records.map((verse: any) => ({
+		verse: verse.fields.Verse,
+		content: verse.fields.Content,
+	}));
 }
 
 export async function submitRequest(request: IRequestForm): Promise<any> {
@@ -54,7 +74,7 @@ export async function submitRequest(request: IRequestForm): Promise<any> {
 		prayer: request?.prayer,
 		created_at: dayjs(),
 		'Prayer Count': 0,
-		location: request?.location,
+		Location: [request?.location],
 	});
 }
 
@@ -96,9 +116,12 @@ export async function fetchLocations(): Promise<ILocation[]> {
 	});
 	const locations = await res.json();
 	if (!locations.records) return [];
-	return locations.records.map((location: { fields: { Name: string } }) => ({
-		name: location.fields.Name,
-	}));
+	return locations.records.map(
+		(location: { id: string; fields: { Name: string } }) => ({
+			name: location.fields.Name,
+			id: location.id,
+		})
+	);
 }
 
 export async function flagRequest(id: string): Promise<boolean> {
