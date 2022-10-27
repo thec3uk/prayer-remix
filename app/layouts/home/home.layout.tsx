@@ -57,9 +57,9 @@ const HomeLayout = ({ link, verses }: IHomeProps) => {
       </Grid>
       <Box as="section" maxW={{ md: "1028px" }} mb={sectionMargin}>
         <Card
-          title="Daily Prayer & Fast prayer meetings at 7:30 am & pm"
+          title="Prayer & Fast prayer meetings"
           subTitle="Join us on Zoom"
-          text="Wednesdays at 7.30am & 7.30pm"
+          text="Daily at 7.30am & 7.30pm"
           img="/home-card.jpeg"
           href={link.text}
         ></Card>
