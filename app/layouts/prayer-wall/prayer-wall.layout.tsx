@@ -15,6 +15,8 @@ import {
 	DrawerOverlay,
 	Text,
 	useToast,
+	Grid,
+	SimpleGrid,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { flagRequest, incrementPrayerCount } from '~/api/airTableApi';
@@ -181,15 +183,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 					/>
 				</Flex>
 			)}
-			<Box
-				my={6}
-				w="100%"
-				mx="auto"
-				sx={{
-					columnCount: [1, 1, 1, 2, 3],
-					columnGap: 4,
-				}}
-			>
+			<SimpleGrid minChildWidth={'400px'} spacing={6} my={4}>
 				{filteredRequests?.length > 0 ? (
 					filteredRequests.map(request => (
 						<PrayerCard
@@ -204,7 +198,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 						<Text>No requests match your filter.</Text>
 					</>
 				)}
-			</Box>
+			</SimpleGrid>
 		</Box>
 	);
 };

@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, Text, useColorModeValue } from '@chakra-ui/react';
 import type { IPrayerCardProps } from './PrayerCard.definition';
 import PrayerCardActions from './PrayerCardActions';
 
@@ -13,31 +13,30 @@ const PrayerCard = ({
 	const textColor = useColorModeValue('inherit', 'whiteAlpha.900');
 
 	return (
-		<Box
-			w="100%"
-			mb={4}
-			display="inline-block"
+		<Grid
 			bgColor={useColorModeValue('gray.100', 'gray.800')}
 			boxShadow={useColorModeValue(
 				'0px 0px 2px rgba(0, 0, 0, 0.25)',
 				'0px 0px 2px rgba(255, 255, 255, 0.25)'
 			)}
+			templateColumns="1"
+			rowGap={4}
+			py={4}
+			alignContent={'space-between'}
+			borderTop={'0.25em solid'}
+			borderColor={bgColor}
 		>
-			<Box w="100%" bgColor={bgColor} h={1}></Box>
-			<Flex flexDir={'column'} p={5} gap={2}>
+			<GridItem mx={4}>
 				<Text color={textColor} size={fontSize}>
 					{data.prayer}
 				</Text>
-				<Flex flexDir={'row'} justifyContent="space-between">
-					<Text fontWeight="bold" color={textColor}>
-						{`${data.name} ${
-							data.location ? ` (${data.location})` : ''
-						}`}
-					</Text>
-					{featureView && (
-						<Text color={textColor}>{data.created_at}</Text>
-					)}
-				</Flex>
+			</GridItem>
+			<GridItem mx={4}>
+				<Text fontWeight="bold" color={textColor} mb={2}>
+					{`${data.name} ${
+						data.location ? ` (${data.location})` : ''
+					}`}
+				</Text>
 				{!featureView && (
 					<PrayerCardActions
 						data={data}
@@ -45,8 +44,8 @@ const PrayerCard = ({
 						onReport={onReport}
 					/>
 				)}
-			</Flex>
-		</Box>
+			</GridItem>
+		</Grid>
 	);
 };
 
