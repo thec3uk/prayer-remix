@@ -27,13 +27,14 @@ function PrayerModal({
 			size="xl"
 			motionPreset="slideInBottom"
 		>
-			<ModalOverlay />
+			<ModalOverlay backdropFilter="blur(5px)" />
 			<ModalContent
 				bgColor={useColorModeValue('gray.100', 'gray.800')}
 				borderTop={'0.25em solid'}
 				borderColor={bgColor}
 				py={10}
 				px={10}
+				maxW="75vw"
 			>
 				<ModalBody>
 					<Text color={textColor} size={'xxl'} mb={5}>
