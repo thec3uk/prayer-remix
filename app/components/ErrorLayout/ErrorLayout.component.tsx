@@ -89,9 +89,9 @@ function ErrorLayout({ error, caught }: IErrorLayoutProps) {
 		caught?.status === 404
 			? "We couldn't find what you were looking for."
 			: "We weren't expecting this to happen";
-	const cookies = useLoaderData();
+
 	return (
-		<Document cookies={cookies}>
+		<Document cookies={''}>
 			<Header />
 			<Box h={'75vh'}>
 				<Heading mb={6}>{title}</Heading>
