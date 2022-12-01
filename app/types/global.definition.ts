@@ -4,6 +4,7 @@ export interface IRequest {
 	title: string;
 	type: 'prayer' | 'praise';
 	created_at: string;
+	fromNow: string;
 	count: number;
 	id: string;
 	location: string;

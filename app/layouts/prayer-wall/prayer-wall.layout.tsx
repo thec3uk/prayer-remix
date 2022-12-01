@@ -183,7 +183,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 					/>
 				</Flex>
 			)}
-			<SimpleGrid minChildWidth={'400px'} spacing={6} my={4}>
+			<SimpleGrid minChildWidth={'400px'} spacing={4} my={4}>
 				{filteredRequests?.length > 0 ? (
 					filteredRequests.map(request => (
 						<PrayerCard

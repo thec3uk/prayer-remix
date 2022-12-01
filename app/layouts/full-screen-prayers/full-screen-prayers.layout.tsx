@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Switch, useColorMode } from '@chakra-ui/react';
-import PrayerCard from '~/components/PrayerCard';
+import FeaturePrayerCard from '~/components/FeaturePrayerCard';
 import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
 
 const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
@@ -7,13 +7,12 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	return (
 		<Box>
 			<Box overflow="visible">
-				<SimpleGrid mt={33} minChildWidth={'400px'} spacing={6} mb={4}>
+				<SimpleGrid mt={33} minChildWidth={'400px'} spacing={4} mb={4}>
 					{requests.map(request => (
-						<PrayerCard
-							featureView
+						<FeaturePrayerCard
 							data={request}
 							key={request.id}
-						></PrayerCard>
+						></FeaturePrayerCard>
 					))}
 				</SimpleGrid>
 			</Box>
