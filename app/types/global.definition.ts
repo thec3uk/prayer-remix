@@ -1,3 +1,5 @@
+import type { ICardProps } from '~/components/Card/Card.definition';
+
 export interface IRequest {
 	name: string;
 	prayer: string;
@@ -28,6 +30,11 @@ export interface ISetting {
 export interface ILocation {
 	id: string;
 	name: string;
+}
+
+export interface IHomePageContent {
+	subTitle: string;
+	card: ICardProps;
 }
 
 export interface IBibleVerse {
