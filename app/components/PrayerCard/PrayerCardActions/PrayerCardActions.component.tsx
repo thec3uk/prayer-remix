@@ -17,9 +17,7 @@ function PrayerCardActions({ data, onAmen, onReport }: IPrayerCardProps) {
 			alignItems="baseline"
 		>
 			<Flex justifyContent="flex-start" gap={2} alignItems="baseline">
-				<Text size={'sm'} title={data.created_at}>
-					{data.fromNow}
-				</Text>
+				<Text title={data.created_at}>{data.fromNow}</Text>
 				<Box w={0.5} h={4} bgColor="gray.200"></Box>
 				{onReport && (
 					<Flex
@@ -29,9 +27,7 @@ function PrayerCardActions({ data, onAmen, onReport }: IPrayerCardProps) {
 						onClick={() => onReport(data.id)}
 					>
 						<Flag color={data.flagged ? 'gray.500' : 'white'} />
-						<Text size={'sm'} textDecor={'underline'}>
-							Report
-						</Text>
+						<Text textDecor={'underline'}>Report</Text>
 					</Flex>
 				)}
 			</Flex>

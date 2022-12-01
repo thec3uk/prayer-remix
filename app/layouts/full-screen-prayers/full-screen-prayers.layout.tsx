@@ -1,20 +1,25 @@
-import { Box, SimpleGrid, Switch, useColorMode } from '@chakra-ui/react';
+import { Box, Switch, useColorMode } from '@chakra-ui/react';
+import Masonry from 'react-masonry-css';
 import FeaturePrayerCard from '~/components/FeaturePrayerCard';
 import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
 
 const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	const { toggleColorMode } = useColorMode();
 	return (
-		<Box>
+		<Box mt={33}>
 			<Box overflow="visible">
-				<SimpleGrid mt={33} minChildWidth={'400px'} spacing={4} mb={4}>
+				<Masonry
+					breakpointCols={3}
+					className="masonry-grid"
+					columnClassName="masonry-grid_column"
+				>
 					{requests.map(request => (
 						<FeaturePrayerCard
 							data={request}
 							key={request.id}
 						></FeaturePrayerCard>
 					))}
-				</SimpleGrid>
+				</Masonry>
 			</Box>
 			<Box my={5} display={'flex'} flexDirection={'row-reverse'}>
 				<Switch
