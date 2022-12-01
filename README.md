@@ -31,13 +31,13 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 
 ## Future features
 
--   [ ] Add a dark mode.
+-   [x] Add a dark mode.
 -   [ ] Empty prayer wall message
 -   [ ] Add icons for prayer / praise on when showing prayers full screen
 -   [ ] Hook up URL params to UI filters when viewing requests for a specific location
 -   [ ] Get all content from Air Table / Prismic
 -   [ ] Explore to show notifications (e.g cookie or local storage based?)
--   [ ] Radio styled don't match design (1px border not 2px)
+-   [x] Radio styled don't match design (1px border not 2px)
 -   [ ] Bigger radio buttons on mobile.
 
 ## Technical Debt

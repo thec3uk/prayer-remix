@@ -19,12 +19,12 @@ import styles from '~/styles/global.css';
 import { ChakraProvider, VStack } from '@chakra-ui/react';
 import { SkipNavLink } from '@chakra-ui/skip-nav';
 import { useContext, useEffect } from 'react';
-import ClientStyleContext from './context.client';
-import ServerStyleContext from './context.server';
 import { withEmotionCache } from '@emotion/react';
 import C3Theme from './theme';
 import Fonts from './fonts';
 import ErrorLayout from './components/ErrorLayout';
+import { ServerStyleContext } from './context';
+import ClientStyleContext from './context.client';
 
 export const meta: MetaFunction = () => ({
 	charset: 'utf-8',
@@ -78,12 +78,6 @@ const Document = withEmotionCache(
 		return (
 			<html lang="en">
 				<head>
-					<meta charSet="utf-8" />
-					<meta
-						name="viewport"
-						content="width=device-width,initial-scale=1"
-					/>
-					<meta name="robots" content="index, follow" />
 					{title ? <title>{title}</title> : null}
 					<Meta />
 					<Links />

@@ -1,49 +1,73 @@
-import { renderToString } from 'react-dom/server';
+import { PassThrough } from 'stream';
 
-import createEmotionServer from '@emotion/server/create-instance';
-import { CacheProvider } from '@emotion/react';
-import createEmotionCache from './createEmotionCache';
-import ServerStyleContext from './context.server';
-import { routes as otherRoutes } from './other-routes.server';
 import type { EntryContext } from '@remix-run/node';
+import { Response } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
+import { renderToPipeableStream } from 'react-dom/server';
+import createEmotionCache from '@emotion/cache';
+import { CacheProvider as EmotionCacheProvider } from '@emotion/react';
+import createEmotionServer from '@emotion/server/create-instance';
 
-export default async function handleRequest(
+const ABORT_DELAY = 5000;
+
+const handleRequest = (
 	request: Request,
 	responseStatusCode: number,
 	responseHeaders: Headers,
 	remixContext: EntryContext
-) {
-	for (const handler of otherRoutes) {
-		const otherRouteResponse = await handler(request, remixContext);
-		if (otherRouteResponse) return otherRouteResponse;
-	}
-
-	const cache = createEmotionCache();
-	const { extractCriticalToChunks } = createEmotionServer(cache);
-
-	const html = renderToString(
-		<ServerStyleContext.Provider value={null}>
-			<CacheProvider value={cache}>
-				<RemixServer context={remixContext} url={request.url} />
-			</CacheProvider>
-		</ServerStyleContext.Provider>
+) =>
+	handleBrowserRequest(
+		request,
+		responseStatusCode,
+		responseHeaders,
+		remixContext
 	);
+export default handleRequest;
 
-	const chunks = extractCriticalToChunks(html);
+const handleBrowserRequest = (
+	request: Request,
+	responseStatusCode: number,
+	responseHeaders: Headers,
+	remixContext: EntryContext
+) =>
+	new Promise((resolve, reject) => {
+		let didError = false;
+		const emotionCache = createEmotionCache({ key: 'css' });
 
-	const markup = renderToString(
-		<ServerStyleContext.Provider value={chunks.styles}>
-			<CacheProvider value={cache}>
+		const { pipe, abort } = renderToPipeableStream(
+			<EmotionCacheProvider value={emotionCache}>
 				<RemixServer context={remixContext} url={request.url} />
-			</CacheProvider>
-		</ServerStyleContext.Provider>
-	);
+			</EmotionCacheProvider>,
+			{
+				onShellReady: () => {
+					const reactBody = new PassThrough();
+					const emotionServer = createEmotionServer(emotionCache);
 
-	responseHeaders.set('Content-Type', 'text/html');
+					const bodyWithStyles =
+						emotionServer.renderStylesToNodeStream();
+					reactBody.pipe(bodyWithStyles);
 
-	return new Response(`<!DOCTYPE html>${markup}`, {
-		status: responseStatusCode,
-		headers: responseHeaders,
+					responseHeaders.set('Content-Type', 'text/html');
+
+					resolve(
+						new Response(bodyWithStyles, {
+							headers: responseHeaders,
+							status: didError ? 500 : responseStatusCode,
+						})
+					);
+
+					pipe(reactBody);
+				},
+				onShellError: (error: unknown) => {
+					reject(error);
+				},
+				onError: (error: unknown) => {
+					didError = true;
+
+					console.error(error);
+				},
+			}
+		);
+
+		setTimeout(abort, ABORT_DELAY);
 	});
-}
