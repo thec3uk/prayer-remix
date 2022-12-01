@@ -23,8 +23,7 @@ import { withEmotionCache } from '@emotion/react';
 import C3Theme from './theme';
 import Fonts from './fonts';
 import ErrorLayout from './components/ErrorLayout';
-import { ServerStyleContext } from './context';
-import ClientStyleContext from './context.client';
+import { ClientStyleContext, ServerStyleContext } from '~/lib/emotion/context';
 
 export const meta: MetaFunction = () => ({
 	charset: 'utf-8',
@@ -67,7 +66,7 @@ const Document = withEmotionCache(
 				(emotionCache.sheet as any)._insertTag(tag);
 			});
 			// reset cache to reapply global styles
-			clientStyleData.reset();
+			clientStyleData?.reset();
 		}, []);
 
 		const colorModeManager =
@@ -78,6 +77,11 @@ const Document = withEmotionCache(
 		return (
 			<html lang="en">
 				<head>
+					<meta charSet="utf-8" />
+					<meta
+						name="viewport"
+						content="width=device-width,initial-scale=1"
+					/>
 					{title ? <title>{title}</title> : null}
 					<Meta />
 					<Links />

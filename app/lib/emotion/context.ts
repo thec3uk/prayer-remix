@@ -1,5 +1,4 @@
-// context.tsx
-import { createContext } from 'react';
+import * as React from 'react';
 
 export interface ServerStyleContextData {
 	key: string;
@@ -7,7 +6,7 @@ export interface ServerStyleContextData {
 	css: string;
 }
 
-export const ServerStyleContext = createContext<
+export const ServerStyleContext = React.createContext<
 	ServerStyleContextData[] | null
 >(null);
 
@@ -15,6 +14,5 @@ export interface ClientStyleContextData {
 	reset: () => void;
 }
 
-export const ClientStyleContext = createContext<ClientStyleContextData | null>(
-	null
-);
+export const ClientStyleContext =
+	React.createContext<ClientStyleContextData | null>(null);

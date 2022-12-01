@@ -1,11 +1,4 @@
-import {
-	ChakraProvider,
-	Heading,
-	VStack,
-	Text,
-	Container,
-	Box,
-} from '@chakra-ui/react';
+import { ChakraProvider, Heading, VStack, Text, Box } from '@chakra-ui/react';
 import { SkipNavLink } from '@chakra-ui/skip-nav';
 import { withEmotionCache } from '@emotion/react';
 import {
@@ -14,11 +7,11 @@ import {
 	Meta,
 	Scripts,
 	ScrollRestoration,
+	useLoaderData,
 } from '@remix-run/react';
 import { useContext, useEffect } from 'react';
-import ClientStyleContext from '~/context.client';
-import ServerStyleContext from '~/context.server';
 import Fonts from '~/fonts';
+import { ClientStyleContext, ServerStyleContext } from '~/lib/emotion/context';
 import type { DocumentProps } from '~/root';
 import C3Theme from '~/theme';
 import Footer from '../Footer';
@@ -42,7 +35,7 @@ const Document = withEmotionCache(
 				(emotionCache.sheet as any)._insertTag(tag);
 			});
 			// reset cache to reapply global styles
-			clientStyleData.reset();
+			clientStyleData?.reset();
 		}, []);
 
 		return (
@@ -96,8 +89,9 @@ function ErrorLayout({ error, caught }: IErrorLayoutProps) {
 		caught?.status === 404
 			? "We couldn't find what you were looking for."
 			: "We weren't expecting this to happen";
+	const cookies = useLoaderData();
 	return (
-		<Document>
+		<Document cookies={cookies}>
 			<Header />
 			<Box h={'75vh'}>
 				<Heading mb={6}>{title}</Heading>
