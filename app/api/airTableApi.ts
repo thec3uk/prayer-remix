@@ -165,6 +165,7 @@ export async function fetchHomePageContent(): Promise<IHomePageContent> {
 			subTitle: getValue(keyValuePairs, 'card_subtitle'),
 			href: getValue(keyValuePairs, 'card_link'),
 			text: getValue(keyValuePairs, 'card_description'),
+			img: '',
 		},
 	};
 }

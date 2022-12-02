@@ -1,4 +1,4 @@
-import { NavLink } from '@remix-run/react';
+import { NavLink, PrefetchPageLinks } from '@remix-run/react';
 import type { CSSProperties } from 'react';
 import type { IMenuLinkProps } from './MenuLink.definition';
 
@@ -14,13 +14,16 @@ function MenuLink({ text, to: href, onClick }: IMenuLinkProps) {
 		return styles;
 	};
 	return (
-		<NavLink
-			to={href}
-			style={({ isActive }) => styles(isActive)}
-			onClick={onClick}
-		>
-			{text}
-		</NavLink>
+		<>
+			<NavLink
+				to={href}
+				style={({ isActive }) => styles(isActive)}
+				onClick={onClick}
+			>
+				{text}
+			</NavLink>
+			<PrefetchPageLinks page={href} />
+		</>
 	);
 }
 

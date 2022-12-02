@@ -32,7 +32,33 @@ export const meta: MetaFunction = () => ({
 });
 
 export function links() {
-	return [{ rel: 'stylesheet', href: styles }];
+	return [
+		{ rel: 'stylesheet', href: styles },
+		{
+			rel: 'preload',
+			href: '/LogoBlack.png',
+			as: 'image',
+			type: 'image/png',
+		},
+		{
+			rel: 'preload',
+			href: '/home-main.jpeg',
+			as: 'image',
+			type: 'image/jpeg',
+		},
+		{
+			rel: 'preload',
+			href: '/home-card.jpeg',
+			as: 'image',
+			type: 'image/jpeg',
+		},
+		{
+			rel: 'preload',
+			href: '/logomark-transparent.svg',
+			as: 'image',
+			type: 'image/svg+xml',
+		},
+	];
 }
 
 export interface DocumentProps {
