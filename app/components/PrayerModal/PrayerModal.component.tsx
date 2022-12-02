@@ -27,7 +27,7 @@ function PrayerModal({
 			size="xl"
 			motionPreset="slideInBottom"
 		>
-			<ModalOverlay backdropFilter="blur(5px)" />
+			<ModalOverlay />
 			<ModalContent
 				bgColor={useColorModeValue('gray.100', 'gray.800')}
 				borderTop={'0.25em solid'}
