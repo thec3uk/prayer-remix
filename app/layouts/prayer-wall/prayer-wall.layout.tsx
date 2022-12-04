@@ -25,6 +25,7 @@ import type {
 } from '~/components/Filters/Filters.definition';
 import FiltersIcon from '~/components/FiltersIcon';
 import Link from '~/components/Link';
+import Masonry from 'react-masonry-css';
 import PrayerCard from '~/components/PrayerCard';
 import type { IRequest } from '~/types/global.definition';
 import type { IPrayerWallProps } from './prayer-wall.definition';
@@ -101,6 +102,11 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 				)
 			);
 		}
+	};
+	const breakpointColumnsObj = {
+		default: 3,
+		1100: 2,
+		700: 1,
 	};
 
 	return (
@@ -181,14 +187,10 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 					/>
 				</Flex>
 			)}
-			<Box
-				my={6}
-				w="100%"
-				mx="auto"
-				sx={{
-					columnCount: [1, 1, 1, 2, 3],
-					columnGap: 4,
-				}}
+			<Masonry
+				breakpointCols={breakpointColumnsObj}
+				className="masonry-grid"
+				columnClassName="masonry-grid_column"
 			>
 				{filteredRequests?.length > 0 ? (
 					filteredRequests.map(request => (
@@ -204,7 +206,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 						<Text>No requests match your filter.</Text>
 					</>
 				)}
-			</Box>
+			</Masonry>
 		</Box>
 	);
 };

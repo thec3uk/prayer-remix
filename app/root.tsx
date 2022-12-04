@@ -19,12 +19,11 @@ import styles from '~/styles/global.css';
 import { ChakraProvider, VStack } from '@chakra-ui/react';
 import { SkipNavLink } from '@chakra-ui/skip-nav';
 import { useContext, useEffect } from 'react';
-import ClientStyleContext from './context.client';
-import ServerStyleContext from './context.server';
 import { withEmotionCache } from '@emotion/react';
 import C3Theme from './theme';
 import Fonts from './fonts';
 import ErrorLayout from './components/ErrorLayout';
+import { ClientStyleContext, ServerStyleContext } from '~/lib/emotion/context';
 
 export const meta: MetaFunction = () => ({
 	charset: 'utf-8',
@@ -33,7 +32,33 @@ export const meta: MetaFunction = () => ({
 });
 
 export function links() {
-	return [{ rel: 'stylesheet', href: styles }];
+	return [
+		{ rel: 'stylesheet', href: styles },
+		{
+			rel: 'preload',
+			href: '/LogoBlack.png',
+			as: 'image',
+			type: 'image/png',
+		},
+		{
+			rel: 'preload',
+			href: '/home-main.jpeg',
+			as: 'image',
+			type: 'image/jpeg',
+		},
+		{
+			rel: 'preload',
+			href: '/home-card.jpeg',
+			as: 'image',
+			type: 'image/jpeg',
+		},
+		{
+			rel: 'preload',
+			href: '/logomark-transparent.svg',
+			as: 'image',
+			type: 'image/svg+xml',
+		},
+	];
 }
 
 export interface DocumentProps {
@@ -67,7 +92,7 @@ const Document = withEmotionCache(
 				(emotionCache.sheet as any)._insertTag(tag);
 			});
 			// reset cache to reapply global styles
-			clientStyleData.reset();
+			clientStyleData?.reset();
 		}, []);
 
 		const colorModeManager =
@@ -83,7 +108,6 @@ const Document = withEmotionCache(
 						name="viewport"
 						content="width=device-width,initial-scale=1"
 					/>
-					<meta name="robots" content="index, follow" />
 					{title ? <title>{title}</title> : null}
 					<Meta />
 					<Links />

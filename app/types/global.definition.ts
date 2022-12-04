@@ -1,9 +1,12 @@
+import type { ICardProps } from '~/components/Card/Card.definition';
+
 export interface IRequest {
 	name: string;
 	prayer: string;
 	title: string;
 	type: 'prayer' | 'praise';
 	created_at: string;
+	fromNow: string;
 	count: number;
 	id: string;
 	location: string;
@@ -27,6 +30,11 @@ export interface ISetting {
 export interface ILocation {
 	id: string;
 	name: string;
+}
+
+export interface IHomePageContent {
+	subTitle: string;
+	card: ICardProps;
 }
 
 export interface IBibleVerse {

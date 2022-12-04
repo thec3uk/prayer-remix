@@ -1,8 +1,16 @@
 import type { LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { fetchSettings, fetchVerses } from '~/api/airTableApi';
+import {
+	fetchHomePageContent,
+	fetchSettings,
+	fetchVerses,
+} from '~/api/airTableApi';
 import HomeLayout from '~/layouts/home/home.layout';
-import type { IBibleVerse, ISetting } from '~/types/global.definition';
+import type {
+	IBibleVerse,
+	IHomePageContent,
+	ISetting,
+} from '~/types/global.definition';
 
 const WeeklyPrayerLink = 'Weekly Meeting Link';
 
@@ -12,13 +20,22 @@ export const loader: LoaderFunction = async () => {
 		setting => setting.name === WeeklyPrayerLink
 	);
 	const verses = await fetchVerses();
-	return { upcomingMeeting, verses };
+	const home = await fetchHomePageContent();
+	return { upcomingMeeting, verses, home };
 };
 
 export default function Index() {
-	const { upcomingMeeting, verses } = useLoaderData<{
+	const { upcomingMeeting, verses, home } = useLoaderData<{
 		upcomingMeeting: ISetting;
 		verses: IBibleVerse[];
+		home: IHomePageContent;
 	}>();
-	return <HomeLayout link={upcomingMeeting} verses={verses} />;
+	return (
+		<HomeLayout
+			link={upcomingMeeting}
+			verses={verses}
+			card={home.card}
+			subTitle={home.subTitle}
+		/>
+	);
 }

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import type {
 	IBibleVerse,
+	IHomePageContent,
 	ILocation,
 	IRequest,
 	IRequestForm,
@@ -142,4 +143,39 @@ export async function flagRequest(id: string): Promise<boolean> {
 	);
 
 	return true;
+}
+
+export async function fetchHomePageContent(): Promise<IHomePageContent> {
+	const tableName = 'Home Page Content';
+	const res = await fetch(`${apiUrl(tableName)}`, {
+		headers: new Headers({
+			Authorization: `Bearer ${config.apiKey}`,
+		}),
+	});
+	const content = await res.json();
+	const keyValuePairs: KeyValuePair[] = content.records.map(
+		(record: { fields: KeyValuePair[] }) => {
+			return record.fields;
+		}
+	);
+	return {
+		subTitle: getValue(keyValuePairs, 'page_subtitle'),
+		card: {
+			title: getValue(keyValuePairs, 'card_title'),
+			subTitle: getValue(keyValuePairs, 'card_subtitle'),
+			href: getValue(keyValuePairs, 'card_link'),
+			text: getValue(keyValuePairs, 'card_description'),
+			img: '',
+		},
+	};
+}
+
+type KeyValuePair = { key: string; value: string };
+
+function getValue(
+	values: KeyValuePair[],
+	key: string,
+	defaultVal: string = ''
+) {
+	return values.find(f => f.key === key)?.value || defaultVal;
 }

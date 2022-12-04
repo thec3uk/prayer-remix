@@ -1,10 +1,14 @@
 import type { SystemStyleObject } from '@chakra-ui/theme-tools';
 
 const baseStyle: SystemStyleObject = {
-	fontFamily: 'body'
+	fontFamily: 'body',
 };
 
 const sizes: Record<string, SystemStyleObject> = {
+	xxl: {
+		fontSize: ['xl', null, null, '2xl', '3xl'],
+		lineHeight: ['base', null, null, '1.5', '1.8'],
+	},
 	xl: {
 		fontSize: ['lg', null, null, 'xl', '2xl'],
 		lineHeight: ['base', null, null, '1.5', '1.6'],
