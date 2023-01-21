@@ -1,4 +1,9 @@
-import { Box, Switch, useColorMode } from '@chakra-ui/react';
+import {
+	Box,
+	Switch,
+	useColorMode,
+	useSafeLayoutEffect,
+} from '@chakra-ui/react';
 import Masonry from 'react-masonry-css';
 import FeaturePrayerCard from '~/components/FeaturePrayerCard';
 import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
@@ -15,7 +20,7 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 		transitionDuration: '1s',
 	});
 
-	return (
+	msnry.return(
 		<Box mt={33}>
 			<Box overflow="visible">
 				<Masonry
