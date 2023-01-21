@@ -2,9 +2,19 @@ import { Box, Switch, useColorMode } from '@chakra-ui/react';
 import Masonry from 'react-masonry-css';
 import FeaturePrayerCard from '~/components/FeaturePrayerCard';
 import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
+import mas from 'masonry-layout';
 
 const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	const { toggleColorMode } = useColorMode();
+	var grid = document.querySelector('.masonry-grid') as HTMLElement;
+	var msnry = new mas(grid, {
+		// options...
+		itemSelector: '.grid-item',
+		columnWidth: 200,
+		horizontalOrder: true,
+		transitionDuration: '1s',
+	});
+
 	return (
 		<Box mt={33}>
 			<Box overflow="visible">
