@@ -13,6 +13,9 @@ import {
   Textarea,
   useToast,
   Box,
+  Text,
+  Checkbox,
+  Link,
 } from "@chakra-ui/react";
 import { useForm, useWatch } from "react-hook-form";
 import { submitRequest } from "~/api/airTableApi";
@@ -56,32 +59,30 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
   };
 
   return (
-    <Box
-      px={{ base: 4, md: 8 }}
-      maxWidth={{ base: "full", md: "container.lg" }}
-    >
-      <Heading
-        as="h1"
-        size="2xl"
-        mb={{ base: 8, md: 12 }}
-        textTransform="uppercase"
-      >
+    <Box px={{ base: 4, md: 8 }} maxWidth={{ base: "full", md: "container.lg" }}>
+      <Heading as="h1" size="2xl" mb={{ base: 8, md: 12 }} textTransform="uppercase">
         Submit a request
       </Heading>
+
+      <Text mb={{ base: 2, md: 3 }}>Thank you for bringing your prayer requests and praise reports.</Text>
+      <Text mb={{ base: 2, md: 3 }}>
+        These will be visible to others who view our prayer wall and shown at our Sunday services during our prayer
+        time. Please only use names if you have permission from the individual to do so.
+      </Text>
+      <Text mb={{ base: 4, md: 6 }}>
+        If you wish to send a private prayer, please email{" "}
+        <Link isExternal href="mailto:prayer@thec3.uk">
+          prayer@thec3.uk
+        </Link>
+      </Text>
       <Form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
-        <VStack
-          mb={16}
-          spacing={6}
-          align="flex-start"
-          divider={<StackDivider borderColor="#D9D9D9" />}
-        >
+        <VStack mb={16} spacing={6} align="flex-start" divider={<StackDivider borderColor="#D9D9D9" />}>
           <FormControl maxWidth="container.sm">
-            <FormLabel>Your name</FormLabel>
+            <FormLabel>Your name (optional)</FormLabel>
             <Input
               {...register("name", {
                 required: true,
               })}
-              required
               autoComplete="name"
               type="text"
             />
@@ -91,12 +92,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                 {locations.map((l) => (
-                  <Radio
-                    size={"lg"}
-                    key={l.name}
-                    {...register("location")}
-                    value={l.id}
-                  >
+                  <Radio size={"lg"} key={l.name} {...register("location")} value={l.id}>
                     {l.name}
                   </Radio>
                 ))}
@@ -129,12 +125,20 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
                 size="md"
                 maxLength={500}
               />
-              <FormErrorMessage>
-                Please keep the request to 500 characters.
-              </FormErrorMessage>
-              <FormHelperText color={"gray.500"}>
-                {prayer?.length || 0} of 500 characters
-              </FormHelperText>
+              <FormErrorMessage>Please keep the request to 500 characters.</FormErrorMessage>
+              <FormHelperText color={"gray.500"}>{prayer?.length || 0} of 500 characters</FormHelperText>
+            </FormControl>
+            <FormControl isInvalid={!!errors.prayer}>
+              <Checkbox required autoComplete="off" size="md">
+                <FormLabel>
+                  I consent to this prayer information to be visible on our prayer wall and during our Sunday services.
+                  See our{" "}
+                  <Link isExternal href="https://thec3.uk/privacy">
+                    privacy policy
+                  </Link>{" "}
+                  for more information
+                </FormLabel>
+              </Checkbox>
             </FormControl>
             <Button type="submit">Add Request</Button>
           </Flex>
