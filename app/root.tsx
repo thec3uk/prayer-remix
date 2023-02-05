@@ -95,7 +95,7 @@ const Document = withEmotionCache(({ children, title, cookies }: DocumentProps, 
           async
           defer
           data-website-id="c9061907-a82b-4a6b-b3e0-ced2cbe43c8f"
-          src="https://analytics.myc3.life/umami.js"></script>
+          src="https://analytics.thec3.uk/umami.js"></script>
         {serverSyleData?.map(({ key, ids, css }) => (
           <style
             key={key}
