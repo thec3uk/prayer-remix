@@ -66,8 +66,8 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 
       <Text mb={{ base: 2, md: 3 }}>Thank you for bringing your prayer requests and praise reports.</Text>
       <Text mb={{ base: 2, md: 3 }}>
-        These will be visible to others who view our prayer wall and shown at our Sunday services during our prayer
-        time. Please only use names if you have permission from the individual to do so.
+        These will be visible to anyone who views our online prayer wall and shown at our Sunday services during our
+        prayer time. Please only use names if you have permission from the individual to do so.
       </Text>
       <Text mb={{ base: 4, md: 6 }}>
         If you wish to send a private prayer, please email{" "}
@@ -131,8 +131,8 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
             <FormControl isInvalid={!!errors.prayer}>
               <Checkbox required autoComplete="off" size="md">
                 <FormLabel>
-                  I consent to this prayer information to be visible on our prayer wall and during our Sunday services.
-                  See our{" "}
+                  I consent to this prayer information to be visible on our online prayer wall and during our Sunday
+                  services. See our{" "}
                   <Link isExternal href="https://thec3.uk/privacy">
                     privacy policy
                   </Link>{" "}
