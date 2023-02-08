@@ -1,13 +1,4 @@
-import {
-	Box,
-	Flex,
-	Grid,
-	GridItem,
-	HStack,
-	Text,
-	useColorModeValue,
-	useDisclosure,
-} from '@chakra-ui/react';
+import { Flex, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import PrayerModal from '../PrayerModal';
 import type { IFeaturePrayerCardProps } from './FeaturePrayerCard.definition';
 
