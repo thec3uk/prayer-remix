@@ -1,4 +1,4 @@
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import {
 	Box,
 	Heading,
@@ -203,7 +203,24 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 					))
 				) : (
 					<>
-						<Text>No requests match your filter.</Text>
+						<Text mb={2}>
+							Looks like we couldn't find any requests that
+							matched your filter.
+						</Text>
+						<Text mb={4}>
+							Why not click the button below to submit your
+							request and get us started?
+						</Text>
+						<Link
+							href="/request"
+							useButton={true}
+							text={'Add a prayer request'}
+							aria-label={'Add a prayer request'}
+							buttonProps={{
+								rightIcon: <ArrowForwardIcon />,
+								size: { base: 'xs', md: 'md' },
+							}}
+						/>
 					</>
 				)}
 			</Masonry>

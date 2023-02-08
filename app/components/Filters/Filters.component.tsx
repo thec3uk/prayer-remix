@@ -21,7 +21,7 @@ function Filters({ locations, onChange, initialFilters }: IFiltersProps) {
 				<FormLabel>Location</FormLabel>
 				<Select
 					w={{ base: 'inherit', lg: 'sm' }}
-					onChange={e =>
+					onChange={(e: any) =>
 						setFilters({
 							location: e.target.value,
 							type: initialFilters.type,
@@ -43,14 +43,20 @@ function Filters({ locations, onChange, initialFilters }: IFiltersProps) {
 				<FormLabel>Prayer / Praise</FormLabel>
 				<RadioGroup
 					value={initialFilters.type}
-					onChange={val =>
+					onChange={(val: any) =>
 						setFilters({ type: val, location: filters.location })
 					}
 				>
 					<Stack direction={{ base: 'column', md: 'row' }}>
-						<Radio value={'prayer'}>Prayer</Radio>
-						<Radio value={'praise'}>Praise</Radio>
-						<Radio value={'both'}>Both</Radio>
+						<Radio size={'lg'} value={'prayer'}>
+							Prayer
+						</Radio>
+						<Radio size={'lg'} value={'praise'}>
+							Praise
+						</Radio>
+						<Radio size={'lg'} value={'both'}>
+							Both
+						</Radio>
 					</Stack>
 				</RadioGroup>
 			</FormControl>
