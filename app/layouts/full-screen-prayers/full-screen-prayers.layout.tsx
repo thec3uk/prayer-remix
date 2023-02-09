@@ -86,8 +86,13 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 		if (allRequests.filter(f => f.pinned)?.length < 3) {
 			const newItems = allRequests.filter(f => f.id !== request.id);
 			setAllRequests([...newItems, { ...request, pinned: pinned }]);
+			const elem = document.querySelector(
+				`.grid-item-${allRequests[lastDisplayed + 1].id}`
+			) as HTMLElement;
+			grid.prepend(elem);
+			msnry.prepended(elem);
 			msnry.layout();
-			msnry.reloadItems();
+			setLastDisplayed(lastDisplayed + 1);
 		} else {
 			toast({
 				title: 'Max items pinned',
@@ -105,7 +110,14 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 			<Flex mb={2} direction="row-reverse">
 				<Switch onChange={toggleAutoPlay}></Switch>
 			</Flex>
-			<SimpleGrid columns={3} gap={6} mb={2} mt={33} w="100%">
+			<SimpleGrid
+				columns={3}
+				gap={6}
+				mb={2}
+				mt={33}
+				w="100%"
+				alignItems={'flex-start'}
+			>
 				{allRequests
 					?.filter(f => f.pinned)
 					.map(request => (
