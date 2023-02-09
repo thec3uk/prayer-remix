@@ -1,6 +1,5 @@
 import FeaturePrayerCard from '~/components/FeaturePrayerCard';
 import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
-import Masonry from 'masonry-layout';
 import type { IRequest } from '~/types/global.definition';
 import { useEffect, useState } from 'react';
 import { Flex, SimpleGrid, Switch } from '@chakra-ui/react';
@@ -31,9 +30,9 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	const initialLastDisplayedIdx = 14;
 	let msnry: any;
 	let grid: any;
-	if (typeof document !== 'undefined') {
+	if (typeof document !== 'undefined' && typeof window !== 'undefined') {
 		grid = document.querySelector('.grid') as HTMLElement;
-		msnry = new Masonry(grid, {
+		msnry = new window.Masonry(grid, {
 			// options...
 			itemSelector: '.grid-item',
 			columnWidth: '.grid-sizer',
@@ -82,18 +81,9 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 			clearInterval(interval);
 		};
 	});
+
 	const updatePinned = (request: IRequest, pinned: boolean) => {
-		if (allRequests.filter(f => f.pinned)?.length < 3) {
-			const newItems = allRequests.filter(f => f.id !== request.id);
-			setAllRequests([...newItems, { ...request, pinned: pinned }]);
-			const elem = document.querySelector(
-				`.grid-item-${allRequests[lastDisplayed + 1].id}`
-			) as HTMLElement;
-			grid.prepend(elem);
-			msnry.prepended(elem);
-			msnry.layout();
-			setLastDisplayed(lastDisplayed + 1);
-		} else {
+		if (pinned && allRequests.filter(f => f.pinned)?.length >= 3) {
 			toast({
 				title: 'Max items pinned',
 				description:
@@ -103,6 +93,21 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 				isClosable: true,
 			});
 		}
+
+		const newItems = allRequests.filter(f => f.id !== request.id);
+		setAllRequests([...newItems, { ...request, pinned: pinned }]);
+
+		let elems: HTMLElement[] = [];
+		for (let i = 1; i < (pinned ? 1 : 2); i++) {
+			const elem = document.querySelector(
+				`.grid-item-${allRequests[lastDisplayed + i].id}`
+			) as HTMLElement;
+			grid.prepend(elem);
+			elems.push(elem);
+		}
+		msnry.prepended(elems);
+		msnry.layout();
+		setLastDisplayed(lastDisplayed + (pinned ? 1 : 2));
 	};
 
 	return (
