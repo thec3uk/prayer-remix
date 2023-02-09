@@ -3,14 +3,8 @@ import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
 import Masonry from 'masonry-layout';
 import type { IRequest } from '~/types/global.definition';
 import { useEffect, useState } from 'react';
-import {
-	chakra,
-	Flex,
-	shouldForwardProp,
-	SimpleGrid,
-	Switch,
-} from '@chakra-ui/react';
-import { motion, isValidMotionProp } from 'framer-motion';
+import { Flex, SimpleGrid, Switch } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 const GridItem = ({
 	request,
@@ -61,6 +55,7 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 		msnry.layout();
 	};
 	const [allRequests, setAllRequests] = useState(requests);
+	const toast = useToast();
 
 	useEffect(() => {
 		if (initialLastDisplayedIdx !== lastDisplayed) {
@@ -94,105 +89,21 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 			msnry.layout();
 			msnry.reloadItems();
 		} else {
-			alert('Max 3 items pinned');
+			toast({
+				title: 'Max items pinned',
+				description:
+					'Only 3 requests can be pinned, please remove one then pin a new one.',
+				status: 'warning',
+				duration: 3000,
+				isClosable: true,
+			});
 		}
-	};
-
-	const ChakraBox = chakra(motion.div, {
-		shouldForwardProp: prop =>
-			isValidMotionProp(prop) || shouldForwardProp(prop),
-	});
-
-	const [content, setContent] = useState(false);
-	const cardVariant = {
-		back: {
-			x: 0,
-			scale: 1.2,
-			rotateY: 0,
-			zIndex: 10,
-			boxShadow:
-				'rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-			transition: {
-				type: 'spring',
-				duration: 0.4,
-			},
-		},
-		front: {
-			x: 0,
-			scale: 1.2,
-			rotateY: 180,
-			transition: {
-				type: 'spring',
-				duration: 0.4,
-			},
-		},
-	};
-
-	const handleClick = () => {
-		console.log('click');
-		setContent(() => !content);
 	};
 
 	return (
 		<>
 			<Flex mb={2} direction="row-reverse">
 				<Switch onChange={toggleAutoPlay}></Switch>
-			</Flex>
-			<Flex
-				w={'100vw'}
-				h={'40vh'}
-				alignItems="center"
-				justifyContent="center"
-			>
-				<ChakraBox
-					mt={2}
-					variants={cardVariant}
-					animate={content ? 'front' : ''}
-					initial={{ rotateY: 0, zIndex: 10 }}
-					onClick={handleClick}
-					padding="2"
-					display="flex"
-					justifyContent="center"
-					alignItems="center"
-					borderRadius={8}
-					w={32}
-					h={32}
-					textColor={'black'}
-					sx={{
-						WebkitBackfaceVisibility: 'hidden',
-						backfaceVisibility: 'hidden',
-					}}
-					position={'absolute'}
-					bgColor={'white'}
-					boxShadow={
-						'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px'
-					}
-				>
-					Front
-				</ChakraBox>
-				<ChakraBox
-					mt={2}
-					variants={cardVariant}
-					animate={content ? 'back' : ''}
-					initial={{ rotateY: 180 }}
-					onClick={handleClick}
-					bgColor={'teal.500'}
-					textColor={'white'}
-					w={32}
-					h={32}
-					borderRadius={8}
-					padding="2"
-					display="flex"
-					justifyContent="center"
-					alignItems="center"
-					width="100px"
-					height="100px"
-					boxShadow={
-						'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px'
-					}
-				>
-					Back
-				</ChakraBox>
 			</Flex>
 			<SimpleGrid columns={3} gap={6} mb={2} mt={33} w="100%">
 				{allRequests
