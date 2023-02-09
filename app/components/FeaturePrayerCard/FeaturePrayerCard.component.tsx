@@ -1,15 +1,29 @@
-import { Flex, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import {
+	Box,
+	Flex,
+	Icon,
+	Text,
+	useColorModeValue,
+	useDisclosure,
+} from '@chakra-ui/react';
+import Praise from '../Praise';
+import PrayerHands from '../PrayerHands';
 import PrayerModal from '../PrayerModal';
 import type { IFeaturePrayerCardProps } from './FeaturePrayerCard.definition';
+import { BsPinAngle, BsPinFill } from 'react-icons/bs';
 
-const FeaturePrayerCard = ({ data }: IFeaturePrayerCardProps) => {
+const FeaturePrayerCard = ({
+	data,
+	pinned,
+	togglePin,
+}: IFeaturePrayerCardProps) => {
 	const bgColor = data.type == 'praise' ? 'yellow.500' : 'teal.500';
 	const textColor = useColorModeValue('inherit', 'whiteAlpha.900');
 	const { isOpen, onClose, onOpen } = useDisclosure();
 
 	return (
 		<Flex
-			bgColor={useColorModeValue('gray.100', 'gray.800')}
+			bgColor={useColorModeValue('white', 'gray.800')}
 			boxShadow={useColorModeValue(
 				'0px 0px 2px rgba(0, 0, 0, 0.25)',
 				'0px 0px 2px rgba(255, 255, 255, 0.25)'
@@ -22,11 +36,30 @@ const FeaturePrayerCard = ({ data }: IFeaturePrayerCardProps) => {
 				background: 'white',
 				cursor: 'pointer',
 			}}
-			onClick={onOpen}
 			flexDirection="column"
 			justifyContent="space-between"
 		>
-			<Text color={textColor} size={'xl'} mb={2}>
+			<Flex justifyContent={'space-between'}>
+				{data.type == 'praise' ? (
+					<Praise w="24px" h="26px" />
+				) : (
+					<PrayerHands w="24px" h="26px" />
+				)}
+				{pinned ? (
+					<Icon
+						as={BsPinFill}
+						h="26px"
+						onClick={() => togglePin(!pinned)}
+					/>
+				) : (
+					<Icon
+						as={BsPinAngle}
+						h="26px"
+						onClick={() => togglePin(!pinned)}
+					/>
+				)}
+			</Flex>
+			<Text onClick={onOpen} color={textColor} size={'xl'} mb={2} mt={2}>
 				{data.prayer}
 			</Text>
 			<Flex direction="row" justifyContent={'space-between'}>
@@ -35,7 +68,6 @@ const FeaturePrayerCard = ({ data }: IFeaturePrayerCardProps) => {
 						data.location ? ` (${data.location})` : ''
 					}`}
 				</Text>
-				<Text>{data.created_at}</Text>
 			</Flex>
 			<PrayerModal
 				prayer={data.prayer}

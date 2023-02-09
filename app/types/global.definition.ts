@@ -11,6 +11,7 @@ export interface IRequest {
 	id: string;
 	location: string;
 	flagged: boolean;
+	pinned?: boolean;
 }
 
 export type IRequestForm = {
