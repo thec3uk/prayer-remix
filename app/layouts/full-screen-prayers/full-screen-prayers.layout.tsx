@@ -7,21 +7,20 @@ import MasonryGridItem from '~/components/FeaturePrayerCard/MasonryGridItem';
 import PinnedRequests from '~/components/FeaturePrayerCard/PinnedRequests';
 import {
 	initialiseMasonry,
-	masonryAddElement,
 	masonryPrependElements,
 	masonryRemoveElement,
 } from './masonry';
 import type Masonry from 'masonry-layout';
 
 /* Default values to control timings and number so items displayed */
-const AUTO_UPDATE_INTERVAL = 5000;
+const AUTO_UPDATE_INTERVAL = 500;
 const AUTO_UPDATE_REQUESTS = 3;
 const DEFAULT_REQUESTS_DISPLAYED = 15;
 const PINNED_REQUEST_LIMIT = 3;
 
 const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	/* Control the autoupdate */
-	const [autoUpdate, setAutoUpdate] = useState<boolean>(false);
+	const [autoUpdate, setAutoUpdate] = useState<boolean>(true);
 	const toggleAutoUpdate = () => setAutoUpdate(!autoUpdate);
 
 	/* Used to show alert messages */
@@ -88,7 +87,7 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	}
 
 	useEffect(() => {
-		addRequestsToGrid(27);
+		addRequestsToGrid(15);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -117,6 +116,11 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 			return;
 		}
 
+		const elem = document.querySelector(
+			`${pinned ? '.grid' : '.pinned'} .grid-item-${request.id}`
+		);
+		if (!elem) return;
+
 		const clickedRequest = requests.find(f => f.id === request.id);
 		if (clickedRequest) {
 			let newPinnedList: IRequest[] = [];
@@ -128,16 +132,10 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 			setPinnedRequests(newPinnedList);
 		}
 
-		const elem = document.querySelector(
-			`${pinned ? '.grid' : '.pinned'} .grid-item-${request.id}`
-		);
-		console.log(elem);
-		if (!elem) return;
 		if (pinned) {
 			masonryRemoveElement(masonry, elem);
 		} else {
-			// add back to grid
-			// masonryAddElement(masonry, gridElement, elem);
+			buffer.push(request);
 		}
 	};
 

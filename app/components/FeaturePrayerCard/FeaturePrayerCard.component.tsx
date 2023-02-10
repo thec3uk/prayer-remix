@@ -97,7 +97,7 @@ const FeaturePrayerCard = ({
 						) : (
 							<PrayerHands w="24px" h="26px" />
 						)}
-						{/* {togglePin &&
+						{togglePin &&
 							(pinned ? (
 								<Icon
 									as={BsPinFill}
@@ -110,7 +110,7 @@ const FeaturePrayerCard = ({
 									h="26px"
 									onClick={() => togglePin(!pinned)}
 								/>
-							))} */}
+							))}
 					</Flex>
 					<Text
 						color={textColor}

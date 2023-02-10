@@ -50,14 +50,3 @@ export function masonryRemoveElement(masonry: Masonry, elem: any) {
 	masonry.remove(elem);
 	masonry.layout();
 }
-
-export function masonryAddElement(
-	masonry: Masonry,
-	grid: Element,
-	elem: Element
-) {
-	if (!masonry || !masonry.prepended || !masonry.layout) return;
-	grid.append(elem);
-	masonry.prepended([elem]);
-	masonry.layout();
-}
