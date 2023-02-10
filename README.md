@@ -31,7 +31,8 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 
 ## Future features
 
--   [ ] Dynamic refresh on prayer wall for viewing on Sundays
+-   [?] Dynamic refresh on prayer wall for viewing on Sundays
+-   [ ] Paging of requests, currently only most recent 100 are shown. Infinite scroll?
 -   [ ] Add icons for prayer / praise on when showing prayers full screen
 -   [ ] Hook up URL params to UI filters when viewing requests for a specific location
 -   [ ] Get all content from Air Table / Prismic
@@ -44,7 +45,7 @@ It's deployed automatically via [Netlify](https://www.netlify.com/).
 ## Technical Debt
 
 -   [ ] Review application for optimisations
--   [ ] Filter prayer requests by location, type & archived in API calls
+-   [x] Filter prayer requests by location, type & archived in API calls
 -   [ ] Standardise API calls / write an API client
 
 # Getting started

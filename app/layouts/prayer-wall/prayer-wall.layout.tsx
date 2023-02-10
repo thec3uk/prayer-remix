@@ -15,6 +15,7 @@ import {
 	DrawerOverlay,
 	Text,
 	useToast,
+	VStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { flagRequest, incrementPrayerCount } from '~/api/airTableApi';
@@ -187,43 +188,43 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 					/>
 				</Flex>
 			)}
-			<Masonry
-				breakpointCols={breakpointColumnsObj}
-				className="masonry-grid"
-				columnClassName="masonry-grid_column"
-			>
-				{filteredRequests?.length > 0 ? (
-					filteredRequests.map(request => (
+			{filteredRequests.length ? (
+				<Masonry
+					breakpointCols={breakpointColumnsObj}
+					className="masonry-grid"
+					columnClassName="masonry-grid_column"
+				>
+					{filteredRequests.map(request => (
 						<PrayerCard
 							data={request}
 							key={request.id}
 							onAmen={amen}
 							onReport={report}
 						></PrayerCard>
-					))
-				) : (
-					<>
-						<Text mb={2}>
-							Looks like we couldn't find any requests that
-							matched your filter.
-						</Text>
-						<Text mb={4}>
-							Why not click the button below to submit your
-							request and get us started?
-						</Text>
-						<Link
-							href="/request"
-							useButton={true}
-							text={'Add a prayer request'}
-							aria-label={'Add a prayer request'}
-							buttonProps={{
-								rightIcon: <ArrowForwardIcon />,
-								size: { base: 'xs', md: 'md' },
-							}}
-						/>
-					</>
-				)}
-			</Masonry>
+					))}
+				</Masonry>
+			) : (
+				<Box mt={8}>
+					<Text mb={2}>
+						Looks like we couldn't find any requests that matched
+						your filter.
+					</Text>
+					<Text mb={4}>
+						Why not click the button below to submit your request
+						and get us started?
+					</Text>
+					<Link
+						href="/request"
+						useButton={true}
+						text={'Add a prayer request'}
+						aria-label={'Add a prayer request'}
+						buttonProps={{
+							rightIcon: <ArrowForwardIcon />,
+							size: { base: 'xs', md: 'md' },
+						}}
+					/>
+				</Box>
+			)}
 		</Box>
 	);
 };
