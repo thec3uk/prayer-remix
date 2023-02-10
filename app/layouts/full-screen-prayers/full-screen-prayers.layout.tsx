@@ -1,31 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
 import type { IRequest } from '~/types/global.definition';
 import { useEffect, useState } from 'react';
 import { Flex, Switch } from '@chakra-ui/react';
-import { useToast } from '@chakra-ui/react';
 import MasonryGridItem from '~/components/FeaturePrayerCard/MasonryGridItem';
-import PinnedRequests from '~/components/FeaturePrayerCard/PinnedRequests';
-import {
-	initialiseMasonry,
-	masonryAddElement,
-	masonryPrependElements,
-	masonryRemoveElement,
-} from './masonry';
+import { initialiseMasonry, masonryPrependElements } from './masonry';
 import type Masonry from 'masonry-layout';
 
 /* Default values to control timings and number so items displayed */
-const AUTO_UPDATE_INTERVAL = 5000;
+const AUTO_UPDATE_INTERVAL = 7500;
 const AUTO_UPDATE_REQUESTS = 3;
 const DEFAULT_REQUESTS_DISPLAYED = 15;
-const PINNED_REQUEST_LIMIT = 3;
 
 const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	/* Control the autoupdate */
 	const [autoUpdate, setAutoUpdate] = useState<boolean>(false);
 	const toggleAutoUpdate = () => setAutoUpdate(!autoUpdate);
-
-	/* Used to show alert messages */
-	const toast = useToast();
 
 	/*
 		If we are running in the browser, it's time to initialise masonry.
@@ -43,11 +33,7 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 		Buffer used to store elements in hidden display on load, these are "popped" 
 		into the main display based on autoupdate properties.
 	*/
-	const [buffer] = useState<Array<IRequest>>(
-		requests.slice(DEFAULT_REQUESTS_DISPLAYED)
-	);
-
-	const [pinnedRequests, setPinnedRequests] = useState<Array<IRequest>>([]);
+	const [buffer] = useState<Array<IRequest>>([...requests]);
 
 	/* 
 		If autoUpdate enabled and we have requests in buffer,
@@ -55,13 +41,11 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	*/
 	function addRequestsToGrid(countToAdd?: number) {
 		if (buffer.length === 0) return;
-
-		let x = 0;
-		if (countToAdd) {
-			x = countToAdd;
-		} else if (autoUpdate) {
-			x = AUTO_UPDATE_REQUESTS;
-		}
+		const x = countToAdd
+			? countToAdd
+			: autoUpdate
+			? AUTO_UPDATE_REQUESTS
+			: 0;
 
 		const requestsToAdd = selectNextRequestsFromBuffer(x);
 
@@ -81,15 +65,17 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	function selectNextRequestsFromBuffer(countToAdd: number): IRequest[] {
 		const requestsToDisplay: IRequest[] = [];
 		for (let i = 1; i <= countToAdd; i++) {
-			const request = buffer.pop();
+			const request = buffer.shift();
 			if (request) requestsToDisplay.push(request);
 		}
 		return requestsToDisplay;
 	}
 
+	/*
+		An initial population of 15 requests
+	*/
 	useEffect(() => {
-		addRequestsToGrid(27);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		addRequestsToGrid(DEFAULT_REQUESTS_DISPLAYED);
 	}, []);
 
 	/* 
@@ -104,52 +90,11 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 		};
 	});
 
-	const updatePinned = (request: IRequest, pinned: boolean) => {
-		if (pinned && pinnedRequests?.length === PINNED_REQUEST_LIMIT) {
-			toast({
-				title: 'Max items pinned',
-				description:
-					'Only 3 requests can be pinned, please remove one then pin a new one.',
-				status: 'warning',
-				duration: 3000,
-				isClosable: true,
-			});
-			return;
-		}
-
-		const clickedRequest = requests.find(f => f.id === request.id);
-		if (clickedRequest) {
-			let newPinnedList: IRequest[] = [];
-			if (pinned) {
-				newPinnedList = [...pinnedRequests, clickedRequest];
-			} else {
-				newPinnedList = pinnedRequests.filter(f => f.id !== request.id);
-			}
-			setPinnedRequests(newPinnedList);
-		}
-
-		const elem = document.querySelector(
-			`${pinned ? '.grid' : '.pinned'} .grid-item-${request.id}`
-		);
-		console.log(elem);
-		if (!elem) return;
-		if (pinned) {
-			masonryRemoveElement(masonry, elem);
-		} else {
-			// add back to grid
-			// masonryAddElement(masonry, gridElement, elem);
-		}
-	};
-
 	return (
 		<>
-			<Flex mb={2} direction="row-reverse">
+			<Flex mb={33} direction="row-reverse">
 				<Switch onChange={toggleAutoUpdate}></Switch>
 			</Flex>
-			<PinnedRequests
-				requests={pinnedRequests}
-				updatePinned={updatePinned}
-			></PinnedRequests>
 			<div className="grid-container">
 				<div className="grid">
 					<div className="grid-sizer"></div>
@@ -159,8 +104,6 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 			<div className="requestsBuffer" style={{ display: 'none' }}>
 				{requests.map(request => (
 					<MasonryGridItem
-						pinned={request.pinned}
-						togglePin={(val: boolean) => updatePinned(request, val)}
 						key={request.id}
 						request={request}
 					></MasonryGridItem>
