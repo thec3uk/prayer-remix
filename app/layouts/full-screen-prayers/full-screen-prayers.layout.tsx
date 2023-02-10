@@ -1,89 +1,111 @@
-import FeaturePrayerCard from '~/components/FeaturePrayerCard';
 import type { IFullScreenPrayersProps } from './full-screen-prayers.definition';
 import type { IRequest } from '~/types/global.definition';
 import { useEffect, useState } from 'react';
-import { Flex, SimpleGrid, Switch } from '@chakra-ui/react';
+import { Flex, Switch } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
+import MasonryGridItem from '~/components/FeaturePrayerCard/MasonryGridItem';
+import PinnedRequests from '~/components/FeaturePrayerCard/PinnedRequests';
+import {
+	initialiseMasonry,
+	masonryAddElement,
+	masonryPrependElements,
+	masonryRemoveElement,
+} from './masonry';
+import type Masonry from 'masonry-layout';
 
-const GridItem = ({
-	request,
-	pinned,
-	togglePin,
-}: {
-	request: IRequest;
-	pinned: boolean;
-	togglePin: (val: boolean) => void;
-}) => (
-	<div
-		className={!pinned ? `grid-item grid-item-${request.id}` : ''}
-		key={request.id}
-	>
-		<FeaturePrayerCard
-			pinned={pinned}
-			data={request}
-			togglePin={togglePin}
-		></FeaturePrayerCard>
-	</div>
-);
+/* Default values to control timings and number so items displayed */
+const AUTO_UPDATE_INTERVAL = 5000;
+const AUTO_UPDATE_REQUESTS = 3;
+const DEFAULT_REQUESTS_DISPLAYED = 15;
+const PINNED_REQUEST_LIMIT = 3;
 
 const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
-	const initialLastDisplayedIdx = 14;
-	let msnry: any;
-	let grid: any;
-	if (typeof document !== 'undefined' && typeof window !== 'undefined') {
-		grid = document.querySelector('.grid') as HTMLElement;
-		msnry = new window.Masonry(grid, {
-			// options...
-			itemSelector: '.grid-item',
-			columnWidth: '.grid-sizer',
-			percentPosition: true,
-			horizontalOrder: true,
-			transitionDuration: '0.8s',
-			gutter: '.gutter-sizer',
-			stamp: '.stamp',
-			fitWidth: true,
-		});
-		msnry.layout();
-	}
-	const [lastDisplayed, setLastDisplayed] = useState<number>(
-		initialLastDisplayedIdx
-	);
-	const [autoUpdate, setAutoupdate] = useState<boolean>(false);
-	const toggleAutoPlay = () => {
-		setAutoupdate(!autoUpdate);
-		msnry.layout();
-	};
-	const [allRequests, setAllRequests] = useState(requests);
+	/* Control the autoupdate */
+	const [autoUpdate, setAutoUpdate] = useState<boolean>(false);
+	const toggleAutoUpdate = () => setAutoUpdate(!autoUpdate);
+
+	/* Used to show alert messages */
 	const toast = useToast();
 
-	useEffect(() => {
-		if (initialLastDisplayedIdx !== lastDisplayed) {
-			let elems: HTMLElement[] = [];
-			for (let i = 1; i < 4; i++) {
-				const elem = document.querySelector(
-					`.grid-item-${allRequests[lastDisplayed + i].id}`
-				) as HTMLElement;
-				grid.prepend(elem);
-				elems.push(elem);
-			}
-			msnry.prepended(elems);
-			msnry.layout();
+	/*
+		If we are running in the browser, it's time to initialise masonry.
+		(masonry use "window" which we cannot access server side)
+	*/
+	let masonry: Masonry;
+	let gridElement: Element;
+	if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+		let { msnry, grid } = initialiseMasonry();
+		gridElement = grid;
+		masonry = msnry;
+	}
+
+	/* 
+		Buffer used to store elements in hidden display on load, these are "popped" 
+		into the main display based on autoupdate properties.
+	*/
+	const [buffer] = useState<Array<IRequest>>(
+		requests.slice(DEFAULT_REQUESTS_DISPLAYED)
+	);
+
+	const [pinnedRequests, setPinnedRequests] = useState<Array<IRequest>>([]);
+
+	/* 
+		If autoUpdate enabled and we have requests in buffer,
+	    use masonry to prepend elements to grid 
+	*/
+	function addRequestsToGrid(countToAdd?: number) {
+		if (buffer.length === 0) return;
+
+		let x = 0;
+		if (countToAdd) {
+			x = countToAdd;
+		} else if (autoUpdate) {
+			x = AUTO_UPDATE_REQUESTS;
 		}
-	}, [grid, lastDisplayed, msnry, allRequests]);
+
+		const requestsToAdd = selectNextRequestsFromBuffer(x);
+
+		let elems: Element[] = [];
+		requestsToAdd?.forEach(req => {
+			const elem = document.querySelector(
+				`.requestsBuffer .grid-item-${req.id}`
+			);
+			if (elem) elems.push(elem);
+		});
+		masonryPrependElements(masonry, gridElement, elems);
+	}
+
+	/*
+		Select requests from buffer based on AUTO_UPDATE_REQUEST variable.
+	*/
+	function selectNextRequestsFromBuffer(countToAdd: number): IRequest[] {
+		const requestsToDisplay: IRequest[] = [];
+		for (let i = 1; i <= countToAdd; i++) {
+			const request = buffer.pop();
+			if (request) requestsToDisplay.push(request);
+		}
+		return requestsToDisplay;
+	}
 
 	useEffect(() => {
+		addRequestsToGrid(27);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	/* 
+		Run based on timer interval to populate grid with more requests 
+	*/
+	useEffect(() => {
 		const interval = setInterval(() => {
-			if (autoUpdate && lastDisplayed < allRequests.length) {
-				setLastDisplayed(lastDisplayed + 3);
-			}
-		}, 7500);
+			addRequestsToGrid();
+		}, AUTO_UPDATE_INTERVAL);
 		return () => {
 			clearInterval(interval);
 		};
 	});
 
 	const updatePinned = (request: IRequest, pinned: boolean) => {
-		if (pinned && allRequests.filter(f => f.pinned)?.length >= 3) {
+		if (pinned && pinnedRequests?.length === PINNED_REQUEST_LIMIT) {
 			toast({
 				title: 'Max items pinned',
 				description:
@@ -92,78 +114,56 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 				duration: 3000,
 				isClosable: true,
 			});
+			return;
 		}
 
-		const newItems = allRequests.filter(f => f.id !== request.id);
-		setAllRequests([...newItems, { ...request, pinned: pinned }]);
-
-		let elems: HTMLElement[] = [];
-		for (let i = 1; i < (pinned ? 1 : 2); i++) {
-			const elem = document.querySelector(
-				`.grid-item-${allRequests[lastDisplayed + i].id}`
-			) as HTMLElement;
-			grid.prepend(elem);
-			elems.push(elem);
+		const clickedRequest = requests.find(f => f.id === request.id);
+		if (clickedRequest) {
+			let newPinnedList: IRequest[] = [];
+			if (pinned) {
+				newPinnedList = [...pinnedRequests, clickedRequest];
+			} else {
+				newPinnedList = pinnedRequests.filter(f => f.id !== request.id);
+			}
+			setPinnedRequests(newPinnedList);
 		}
-		msnry.prepended(elems);
-		msnry.layout();
-		setLastDisplayed(lastDisplayed + (pinned ? 1 : 2));
+
+		const elem = document.querySelector(
+			`${pinned ? '.grid' : '.pinned'} .grid-item-${request.id}`
+		);
+		console.log(elem);
+		if (!elem) return;
+		if (pinned) {
+			masonryRemoveElement(masonry, elem);
+		} else {
+			// add back to grid
+			// masonryAddElement(masonry, gridElement, elem);
+		}
 	};
 
 	return (
 		<>
 			<Flex mb={2} direction="row-reverse">
-				<Switch onChange={toggleAutoPlay}></Switch>
+				<Switch onChange={toggleAutoUpdate}></Switch>
 			</Flex>
-			<SimpleGrid
-				columns={3}
-				gap={6}
-				mb={2}
-				mt={33}
-				w="100%"
-				alignItems={'flex-start'}
-			>
-				{allRequests
-					?.filter(f => f.pinned)
-					.map(request => (
-						<GridItem
-							pinned
-							key={request.id}
-							request={request}
-							togglePin={(val: boolean) =>
-								updatePinned(request, val)
-							}
-						></GridItem>
-					))}
-			</SimpleGrid>
+			<PinnedRequests
+				requests={pinnedRequests}
+				updatePinned={updatePinned}
+			></PinnedRequests>
 			<div className="grid-container">
 				<div className="grid">
 					<div className="grid-sizer"></div>
 					<div className="gutter-sizer"></div>
-					{allRequests
-						.filter(f => !f.pinned)
-						.slice(0, 15)
-						.map(request => (
-							<GridItem
-								key={request.id}
-								request={request}
-								pinned={false}
-								togglePin={(val: boolean) =>
-									updatePinned(request, val)
-								}
-							></GridItem>
-						))}
 				</div>
 			</div>
-
-			<div className="shadowRequest" style={{ display: 'none' }}>
-				{allRequests.map(request => (
-					<GridItem
+			<div className="requestsBuffer" style={{ display: 'none' }}>
+				{requests.map(request => (
+					<MasonryGridItem
+						pinned={request.pinned}
+						togglePin={(val: boolean) => updatePinned(request, val)}
 						key={request.id}
 						request={request}
-						pinned={false}
-						togglePin={(val: boolean) => updatePinned(request, val)}
-					></GridItem>
+					></MasonryGridItem>
 				))}
 			</div>
 		</>

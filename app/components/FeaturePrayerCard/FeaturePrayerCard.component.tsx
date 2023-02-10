@@ -62,7 +62,7 @@ const FeaturePrayerCard = ({
 			position={'relative'}
 		>
 			<ChakraBox
-				onClick={handleClick}
+				// onClick={handleClick}
 				variants={cardVariant}
 				animate={content ? 'front' : ''}
 				initial={{ rotateY: 0, zIndex: 10 }}
@@ -85,9 +85,9 @@ const FeaturePrayerCard = ({
 					borderTop={'0.25em solid'}
 					borderColor={bgColor}
 					_hover={{
-						background: 'white',
 						cursor: 'pointer',
 					}}
+					w={'100%'}
 					flexDirection="column"
 					justifyContent="space-between"
 				>
@@ -97,21 +97,28 @@ const FeaturePrayerCard = ({
 						) : (
 							<PrayerHands w="24px" h="26px" />
 						)}
-						{pinned ? (
-							<Icon
-								as={BsPinFill}
-								h="26px"
-								onClick={() => togglePin(!pinned)}
-							/>
-						) : (
-							<Icon
-								as={BsPinAngle}
-								h="26px"
-								onClick={() => togglePin(!pinned)}
-							/>
-						)}
+						{/* {togglePin &&
+							(pinned ? (
+								<Icon
+									as={BsPinFill}
+									h="26px"
+									onClick={() => togglePin(!pinned)}
+								/>
+							) : (
+								<Icon
+									as={BsPinAngle}
+									h="26px"
+									onClick={() => togglePin(!pinned)}
+								/>
+							))} */}
 					</Flex>
-					<Text color={textColor} size={'xl'} mb={2} mt={2}>
+					<Text
+						color={textColor}
+						size={'xl'}
+						mb={2}
+						mt={2}
+						onClick={onOpen}
+					>
 						{data.prayer}
 					</Text>
 					<Flex direction="row" justifyContent={'space-between'}>
