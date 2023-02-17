@@ -5,7 +5,7 @@ import type { IRequest } from '~/types/global.definition';
 import FullScreenPrayerLayout from '~/layouts/full-screen-prayers/full-screen-prayers.layout';
 
 export const loader: LoaderFunction = async () => {
-	const requests = await fetchRequests({ maxRecords: '1000' });
+	const requests = await fetchRequests();
 	return { requests };
 };
 

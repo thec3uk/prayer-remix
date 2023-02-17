@@ -5,20 +5,10 @@ import type { IRequest } from '~/types/global.definition';
 
 dayjs.extend(relativeTime);
 // TODO: strongly type the air table response
-// The filter should be server side but Air Table is a bit of a nightmare
 export function mapResponseToPrayerPraiseRequests(
-	airTableRecords: any,
-	location: string = ''
+	airTableRecords: any
 ): IRequest[] {
 	let requests = airTableRecords.records;
-	requests = requests.filter((r: any) => r.fields['Archived'] !== true);
-	if (location !== '') {
-		requests = requests.filter(
-			(r: any) =>
-				location.toLowerCase() ===
-				r.fields['Name (from Location)']?.[0]?.toLowerCase()
-		);
-	}
 	return requests.map((r: any) => {
 		const date = dayjs(r.fields.created_at);
 		return {

@@ -16,13 +16,19 @@ const apiUrl = (tableName: string) =>
 
 export async function fetchRequests({
 	location,
-	maxRecords,
 }: IRequestFilters = {}): Promise<IRequest[]> {
+	console.log(location);
 	const tableName = 'Prayer%2FPraise%20Requests';
+	const filterArchivedAndFlagged =
+		'NOT(%7BArchived%7D)%2C+NOT(%7BFlagged%7D)';
+	const locationFilter = `SEARCH(LOWER(%22${location}%22)%2C+LOWER(%7BLocation%7D))%2C+`;
+	const filter = `&filterByFormula=AND(${
+		location ? locationFilter : ''
+	}${filterArchivedAndFlagged})`;
 	const res = await fetch(
-		`${apiUrl(tableName)}?maxRecords=${
-			maxRecords || '100'
-		}&view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at&archived=false`,
+		`${apiUrl(
+			tableName
+		)}?view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at&archived=false${filter}`,
 		{
 			headers: new Headers({
 				Authorization: `Bearer ${config.apiKey}`,
@@ -30,7 +36,7 @@ export async function fetchRequests({
 		}
 	);
 	const response = await res.json();
-	return mapResponseToPrayerPraiseRequests(response, location);
+	return mapResponseToPrayerPraiseRequests(response);
 }
 
 export async function fetchSettings(): Promise<ISetting[]> {

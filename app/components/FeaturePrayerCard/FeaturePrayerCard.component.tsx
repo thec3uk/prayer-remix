@@ -1,13 +1,6 @@
-import {
-	Box,
-	Flex,
-	Grid,
-	GridItem,
-	HStack,
-	Text,
-	useColorModeValue,
-	useDisclosure,
-} from '@chakra-ui/react';
+import { Flex, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import Praise from '../Praise';
+import PrayerHands from '../PrayerHands';
 import PrayerModal from '../PrayerModal';
 import type { IFeaturePrayerCardProps } from './FeaturePrayerCard.definition';
 
@@ -15,10 +8,9 @@ const FeaturePrayerCard = ({ data }: IFeaturePrayerCardProps) => {
 	const bgColor = data.type == 'praise' ? 'yellow.500' : 'teal.500';
 	const textColor = useColorModeValue('inherit', 'whiteAlpha.900');
 	const { isOpen, onClose, onOpen } = useDisclosure();
-
 	return (
 		<Flex
-			bgColor={useColorModeValue('gray.100', 'gray.800')}
+			bgColor={useColorModeValue('white', 'gray.800')}
 			boxShadow={useColorModeValue(
 				'0px 0px 2px rgba(0, 0, 0, 0.25)',
 				'0px 0px 2px rgba(255, 255, 255, 0.25)'
@@ -28,14 +20,20 @@ const FeaturePrayerCard = ({ data }: IFeaturePrayerCardProps) => {
 			borderTop={'0.25em solid'}
 			borderColor={bgColor}
 			_hover={{
-				background: 'white',
 				cursor: 'pointer',
 			}}
-			onClick={onOpen}
+			w={'100%'}
 			flexDirection="column"
 			justifyContent="space-between"
 		>
-			<Text color={textColor} size={'xl'} mb={2}>
+			<Flex justifyContent={'flex-end'}>
+				{data.type == 'praise' ? (
+					<Praise w="24px" h="26px" />
+				) : (
+					<PrayerHands w="24px" h="26px" />
+				)}
+			</Flex>
+			<Text color={textColor} size={'xl'} mb={2} mt={2} onClick={onOpen}>
 				{data.prayer}
 			</Text>
 			<Flex direction="row" justifyContent={'space-between'}>
@@ -44,7 +42,6 @@ const FeaturePrayerCard = ({ data }: IFeaturePrayerCardProps) => {
 						data.location ? ` (${data.location})` : ''
 					}`}
 				</Text>
-				<Text>{data.created_at}</Text>
 			</Flex>
 			<PrayerModal
 				prayer={data.prayer}

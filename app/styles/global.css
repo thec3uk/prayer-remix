@@ -1,3 +1,12 @@
+/* Styles for the full screen prayer wall  */
+.grid-sizer,
+.grid-item { width: 32%; margin-bottom: 30px; }
+.gutter-sizer { width: 2%;}
+.grid {
+  margin: 0 auto;
+}
+
+/* Styles for /prayerwall masonry grid */
 .masonry-grid {
   display: -webkit-box; /* Not needed if autoprefixing */
   display: -ms-flexbox; /* Not needed if autoprefixing */
