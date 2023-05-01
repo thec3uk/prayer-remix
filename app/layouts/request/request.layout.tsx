@@ -47,7 +47,8 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
         duration: 10000,
         isClosable: true,
       });
-    } catch {
+    } catch (error) {
+      console.error(error)
       toast({
         title: "Sorry",
         description: "Something went wrong, please try again.",
