@@ -1,3 +1,3 @@
 export interface IRequestFilters {
-	location?: string;
+  location?: string;
 }
