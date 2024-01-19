@@ -24,8 +24,10 @@ import { FormControl, FormLabel } from "@chakra-ui/react";
 import { Form, useNavigate } from "@remix-run/react";
 import PrayerHands from "~/components/PrayerHands";
 import Praise from "~/components/Praise";
+import getEnv from "~/get-env";
 
 const RequestLayout = ({ locations }: IRequestLayoutProps) => {
+  const env = getEnv();
   const navigate = useNavigate();
   const {
     register,
@@ -38,7 +40,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 
   const onSubmit = async (data: any) => {
     try {
-      await submitRequest(data);
+      await submitRequest(data, env.AIRTABLE_PAT as string);
       navigate("/prayerwall");
       toast({
         title: "Thank you",
@@ -47,7 +49,8 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
         duration: 10000,
         isClosable: true,
       });
-    } catch {
+    } catch (error) {
+      console.error(error);
       toast({
         title: "Sorry",
         description: "Something went wrong, please try again.",
