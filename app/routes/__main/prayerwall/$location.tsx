@@ -9,7 +9,7 @@ import getEnv from "~/get-env";
 export const loader: LoaderFunction = async ({ params }) => {
   const env = getEnv();
   invariant(params.location, "Expected params");
-  const requests = await fetchRequests({ location: params.location }, env.AIRTABLE_PAT as string);
+  const requests = await fetchRequests({ location: params.location }, env.AIRTABLE_PAT as string, env.API_URL as string);
 
   return { requests };
 };
