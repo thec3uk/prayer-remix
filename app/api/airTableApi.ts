@@ -68,6 +68,7 @@ export async function submitRequest(
       Authorization: `Token ${AIRTABLE_PAT}`,
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({
       title: request?.title,
       type: request.type,
