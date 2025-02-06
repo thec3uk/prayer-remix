@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import type {
   IBibleVerse,
   IHomePageContent,
@@ -7,149 +6,140 @@ import type {
   IRequestForm,
   ISetting,
 } from "~/types/global.definition";
-import config from "../config.json";
 import type { IRequestFilters } from "./api.definition";
 import { mapResponseToPrayerPraiseRequests } from "./requestMapper";
 
-const apiUrl = (tableName: string) => `${config.airTableUrl}/v0/${config.airTableBase}/${tableName}`;
+import fetch from "node-fetch";
 
-export async function fetchRequests({ location }: IRequestFilters = {}, AIRTABLE_PAT: string): Promise<IRequest[]> {
-  const tableName = "Prayer%2FPraise%20Requests";
-  const filterArchivedAndFlagged = "NOT(%7BArchived%7D)%2C+NOT(%7BFlagged%7D)";
-  const locationFilter = `SEARCH(LOWER(%22${location}%22)%2C+LOWER(%7BLocation%7D))%2C+`;
-  const filter = `&filterByFormula=AND(${location ? locationFilter : ""}${filterArchivedAndFlagged})`;
-  const res = await fetch(
-    `${apiUrl(
-      tableName
-    )}?view=Raw%20Submitted%20Requests&sort%5B0%5D%5Bdirection%5D=desc&sort%5B0%5D%5Bfield%5D=created_at&archived=false${filter}`,
-    {
-      headers: new Headers({
-        Authorization: `Bearer ${AIRTABLE_PAT}`,
-      }),
-    }
-  );
+export async function fetchRequests(
+  { location }: IRequestFilters = {},
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<IRequest[]> {
+  const searchParams = new URLSearchParams({ location: location as string });
+  const baseurl = `${API_URL}/prayer-requests/`;
+  const url = location ? `${baseurl}?${searchParams.toString()}` : baseurl;
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Token ${AIRTABLE_PAT}`,
+    },
+  });
   const response = await res.json();
+  if (response.detail) {
+    throw Error(response.detail);
+  }
   return mapResponseToPrayerPraiseRequests(response);
 }
 
-export async function fetchSettings(AIRTABLE_PAT: string): Promise<ISetting[]> {
-  const tableName = "Settings";
-  const res = await fetch(`${apiUrl(tableName)}`, {
-    headers: new Headers({
-      Authorization: `Bearer ${AIRTABLE_PAT}`,
-    }),
-  });
+export async function fetchSettings(
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<ISetting[]> {
+  const res = await fetch(`${API_URL}/settings/`);
   const settings = await res.json();
-  return settings.records.map((setting: any) => ({
-    enabled: setting.fields.Enabled,
-    text: setting.fields["Button Text"],
-    name: setting.fields["name"],
+  return settings.map((setting: any) => ({
+    enabled: setting.is_enabled,
+    text: setting.button_text,
+    name: setting.name,
   }));
 }
 
-export async function fetchVerses(AIRTABLE_PAT: string): Promise<IBibleVerse[]> {
-  const tableName = "Prayer Inspiration";
-  const res = await fetch(`${apiUrl(tableName)}`, {
-    headers: new Headers({
-      Authorization: `Bearer ${AIRTABLE_PAT}`,
-    }),
-  });
+export async function fetchVerses(
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<IBibleVerse[]> {
+  const res = await fetch(`${API_URL}/prayer-inspiration/`);
   const verses = await res.json();
-  return verses.records.map((verse: any) => ({
-    verse: verse.fields.Verse,
-    content: verse.fields.Content,
-  }));
+  return verses;
 }
 
-export async function submitRequest(request: IRequestForm, AIRTABLE_PAT: string): Promise<any> {
+export async function submitRequest(
+  request: IRequestForm,
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<any> {
   if (!request) {
     return false;
   }
-  const base = getBase(AIRTABLE_PAT);
 
-  return await base("Prayer/Praise Requests").create({
-    title: request?.title,
-    type: request.type,
-    name: request?.name,
-    prayer: request?.prayer,
-    created_at: dayjs(),
-    "Prayer Count": 0,
-    Location: [request?.location],
-  });
-}
-
-function getBase(AIRTABLE_PAT: string): any {
-  // move this to a constructor?
-  var Airtable = require("airtable");
-  return new Airtable({ apiKey: AIRTABLE_PAT }).base(config.airTableBase);
-}
-
-export async function incrementPrayerCount(id: string, currentCount: number, AIRTABLE_PAT: string): Promise<number> {
-  const base = getBase(AIRTABLE_PAT);
-  const updatedCount = currentCount + 1;
-
-  base("Prayer/Praise Requests").update(
-    id,
-    {
-      "Prayer Count": updatedCount,
+  return await fetch(`${API_URL}/prayer-requests/`, {
+    method: "POST",
+    headers: {
+      Authorization: `Token ${AIRTABLE_PAT}`,
+      "Content-Type": "application/json",
     },
-
-    function (err: any) {
-      if (err) {
-        console.error(err);
-        return currentCount;
-      }
-    }
-  );
-  return updatedCount;
-}
-
-export async function fetchLocations(AIRTABLE_PAT: string): Promise<ILocation[]> {
-  const tableName = "Locations";
-  const res = await fetch(`${apiUrl(tableName)}`, {
-    headers: new Headers({
-      Authorization: `Bearer ${AIRTABLE_PAT}`,
+    body: JSON.stringify({
+      title: request?.title,
+      type: request.type,
+      name: request?.name,
+      content: request?.prayer,
+      location: request?.location,
     }),
   });
+}
+
+export async function incrementPrayerCount(
+  id: string,
+  currentCount: number,
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<number> {
+  const res = await fetch(
+    `${API_URL}/prayer-requests/${id}/increment_prayer_count/`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${AIRTABLE_PAT}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const data = await res.json();
+  return data.prayer_count;
+}
+
+export async function fetchLocations(
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<ILocation[]> {
+  const res = await fetch(`${API_URL}/locations/`);
   const locations = await res.json();
-  if (!locations.records) return [];
-  return locations.records.map((location: { id: string; fields: { Name: string } }) => ({
-    name: location.fields.Name,
+  if (!locations) return [];
+  return locations.map((location: { id: string; name: string }) => ({
+    name: location.name,
     id: location.id,
   }));
 }
 
-export async function flagRequest(id: string, AIRTABLE_PAT: string): Promise<boolean> {
-  const base = getBase(AIRTABLE_PAT);
-
-  base("Prayer/Praise Requests").update(
-    id,
-    {
-      Flagged: true,
+export async function flagRequest(
+  id: string,
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<boolean> {
+  const res = await fetch(`${API_URL}/prayer-requests/${id}/mark_flagged/`, {
+    method: "POST",
+    headers: {
+      Authorization: `Token ${AIRTABLE_PAT}`,
+      "Content-Type": "application/json",
     },
+  });
 
-    function (err: any) {
-      if (err) {
-        console.error(err);
-        return false;
-      }
-    }
-  );
-
-  return true;
+  const data = await res.json();
+  return data.flagged_at;
 }
 
-export async function fetchHomePageContent(AIRTABLE_PAT: string): Promise<IHomePageContent> {
-  const tableName = "Home Page Content";
-  const res = await fetch(`${apiUrl(tableName)}`, {
-    headers: new Headers({
-      Authorization: `Bearer ${AIRTABLE_PAT}`,
-    }),
-  });
+export async function fetchHomePageContent(
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<IHomePageContent> {
+  const res = await fetch(`${API_URL}/content/`);
   const content = await res.json();
-  const keyValuePairs: KeyValuePair[] = content.records.map((record: { fields: KeyValuePair[] }) => {
-    return record.fields;
-  });
+  const keyValuePairs: KeyValuePair[] = content.map(
+    (record: KeyValuePair[]) => {
+      return record;
+    }
+  );
   return {
     subTitle: getValue(keyValuePairs, "page_subtitle"),
     card: {
@@ -164,6 +154,6 @@ export async function fetchHomePageContent(AIRTABLE_PAT: string): Promise<IHomeP
 
 type KeyValuePair = { key: string; value: string };
 
-function getValue(values: KeyValuePair[], key: string, defaultVal: string = "") {
+function getValue(values: KeyValuePair[], key: string, defaultVal = "") {
   return values.find((f) => f.key === key)?.value || defaultVal;
 }

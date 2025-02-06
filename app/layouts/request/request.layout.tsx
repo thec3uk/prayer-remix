@@ -40,7 +40,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
 
   const onSubmit = async (data: any) => {
     try {
-      await submitRequest(data, env.AIRTABLE_PAT as string);
+      await submitRequest(data, env.AIRTABLE_PAT as string, env.API_URL as string);
       navigate("/prayerwall");
       toast({
         title: "Thank you",

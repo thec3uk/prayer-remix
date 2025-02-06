@@ -71,11 +71,11 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
   );
 
   const amen = async (id: string, count: number) => {
-    await incrementPrayerCount(id, count, env.AIRTABLE_PAT as string);
+    await incrementPrayerCount(id, count, env.AIRTABLE_PAT as string, env.API_URL as string);
   };
 
   const report = async (id: string) => {
-    const resp = await flagRequest(id, env.AIRTABLE_PAT as string);
+    const resp = await flagRequest(id, env.AIRTABLE_PAT as string, env.API_URL as string);
     if (resp) {
       toast(makeToast("Thank you", "We have flagged the request and will review shortly.", "success"));
     } else {
