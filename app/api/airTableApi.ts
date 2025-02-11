@@ -71,7 +71,7 @@ export async function submitRequest(
     body: JSON.stringify({
       title: request?.title,
       type: request.type,
-      name: request?.name,
+      name: request?.name || "Anon",
       content: request?.prayer,
       location: request?.location,
     }),
