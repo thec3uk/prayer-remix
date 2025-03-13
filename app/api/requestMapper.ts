@@ -23,7 +23,7 @@ export function mapResponseToPrayerPraiseRequests(
       created_at: date.format("ddd DD MMM YYYY"),
       fromNow: date.fromNow(),
       count: r.prayer_count || 0,
-      location: r.location || "",
+      location: r.location_name || "",
     };
   });
 }
