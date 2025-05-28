@@ -13,14 +13,11 @@ const PrayerCard = ({ data, onAmen, onReport }: IPrayerCardProps) => {
       alignContent={"space-between"}
       borderTop={"0.25em solid"}
       borderColor={bgColor}
-      // _hover={{
-      // 	background: 'white',
-      // }}
     >
-      <GridItem mx={4}>
+      <GridItem>
         <Text>{data.prayer}</Text>
       </GridItem>
-      <GridItem mx={4}>
+      <GridItem>
         <Text fontWeight="bold" mb={2}>
           {`${data.name} ${data.location ? ` (${data.location})` : ""}`}
         </Text>
