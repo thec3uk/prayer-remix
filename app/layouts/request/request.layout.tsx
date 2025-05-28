@@ -101,7 +101,8 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
             </Box>
             <Text>
               <Link
-                href="/login"
+                href="https://login.churchsuite.com/"
+                isExternal
                 text="Sign into your ChurchSuite account"
                 aria-label="Sign into your ChurchSuite account"
               />{" "}
