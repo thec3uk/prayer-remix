@@ -78,21 +78,21 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
       </Heading>
       <Text mb={10}>Your request has been submitted successfully.</Text>
       <Box py={10} borderTop="1px solid" borderColor="gray.200">
-        <Heading as="h2" size="xxs" mb={6}>
+        <Text as="h2" size="sm" mb={6} fontWeight="bold">
           DO YOU WANT TO RECEIVE NOTIFICATIONS?
-        </Heading>
+        </Text>
         <Text mb={8}>
           If you choose, we can send you email notifications when your request
           receives a response from The C3 Church. We can also send you a daily
           email to update you on how many people are engaging with your request.
         </Text>
         <Link
-          href="/"
+          href="/manage-preferences"
           text="Manage your notification preferences"
           aria-label="Manage your notification preferences"
         />
       </Box>
-      <Box py={6} borderTop="1px solid" borderColor="gray.200">
+      <Box py={10} borderTop="1px solid" borderColor="gray.200">
         <Link
           href="/prayerwall"
           useButton={true}
