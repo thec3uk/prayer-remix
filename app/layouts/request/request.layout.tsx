@@ -149,26 +149,22 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
               type="text"
             />
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="location">Location</FormLabel>
+          <FormControl isRequired={true} isInvalid={!!errors.location}>
+            <FormLabel>Location</FormLabel>
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                {locations.map((l) => {
-                  return (
-                    <Radio
-                      size={"lg"}
-                      key={l.name}
-                      {...register("location")}
-                      value={l.id}
-                    >
-                      {l.name}
-                    </Radio>
-                  );
-                })}
+                {locations.map((l) => (
+                  <Radio {...register("location")} value={l.id+''} size="lg">
+                    {l.name}
+                  </Radio>
+                ))}
               </Grid>
             </RadioGroup>
+            <FormErrorMessage>
+              Please selection your location
+            </FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={!!errors.type}>
             <FormLabel htmlFor="type">Prayer or praise?</FormLabel>
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
@@ -180,6 +176,9 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
                 </Radio>
               </Grid>
             </RadioGroup>
+            <FormErrorMessage>
+              Please select
+            </FormErrorMessage>
           </FormControl>
           <Flex flexDir="column" w={"100%"} alignItems="flex-end" gap={4}>
             <FormControl isInvalid={!!errors.prayer}>

@@ -64,7 +64,7 @@ const HomeLayout = ({ link, verses, card, subTitle }: IHomeProps) => {
 					subTitle={card?.subTitle || 'Join us on Zoom'}
 					text={card?.text || 'Daily at 7.30am & 7.30pm'}
 					img="/home-card.jpeg"
-					href={card?.href || link.text}
+					href={card?.href || link?.text}
 				></Card>
 			</Box>
 			<Box
