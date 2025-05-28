@@ -1,5 +1,5 @@
-export interface IMobileMenuProps {
+export interface IMenuAccountProps {
   loggedIn: boolean;
-  name: string;
+  name?: string;
   handleAuthClick?: (param: any) => void;
 }

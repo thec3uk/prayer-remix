@@ -1,10 +1,22 @@
-import { Flex, Box, HStack, Image, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, useColorModeValue } from "@chakra-ui/react";
 import { NavLink } from "@remix-run/react";
 import MenuLink from "../MenuLink";
 import MobileMenu from "../MobileMenu";
-
+import MenuAccount from "../MenuAccount";
 function Header() {
   const isDesktop = { base: "none", md: "flex" };
+
+  //TO DO - Placeholder bits
+  const loggedIn = true;
+  const name = "Joe Bloggs";
+
+  const handleAuthClick = () => {
+    if (loggedIn) {
+      console.log("Signing out...");
+    } else {
+      console.log("Signing in...");
+    }
+  };
 
   return (
     <Box
@@ -22,12 +34,21 @@ function Header() {
         <NavLink to="/">
           <Image src="/LogoBlack.png" h="51px" w="63px"></Image>
         </NavLink>
-        <HStack display={isDesktop} gap="8">
+        <HStack display={isDesktop} gap="8" fontSize={{ base: "sm", lg: "md" }}>
           <MenuLink to="/" text="Home" />
           <MenuLink to="/prayerwall" text="Prayer Wall" />
           <MenuLink to="/request" text="Submit a request" />
+          <MenuAccount
+            loggedIn={loggedIn}
+            name={name}
+            handleAuthClick={handleAuthClick}
+          />
         </HStack>
-        <MobileMenu />
+        <MobileMenu
+          loggedIn={loggedIn}
+          name={name}
+          handleAuthClick={handleAuthClick}
+        />
       </Flex>
     </Box>
   );
