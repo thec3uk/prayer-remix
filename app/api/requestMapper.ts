@@ -20,6 +20,7 @@ export function mapResponseToPrayerPraiseRequests(
       type: r.type,
       title: r.title,
       id: r.id,
+      response: r.response_comment,
       created_at: date.format("ddd DD MMM YYYY"),
       fromNow: date.fromNow(),
       count: r.prayer_count || 0,

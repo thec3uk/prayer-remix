@@ -25,20 +25,20 @@ const PrayerCard = ({ data, onAmen, onReport }: IPrayerCardProps) => {
           {`${data.name} ${data.location ? ` (${data.location})` : ""}`}
         </Text>
         <PrayerCardActions data={data} onAmen={onAmen} onReport={onReport} />
-        <Flex
-          flexDirection="column"
-          gap={4}
-          py={6}
-          px={4}
-          mt={3.5}
-          bgColor={"gray.150"}
-          borderRadius={8}
-        >
-          <Image src="/LogoBlack.png" h="30px" w="35px"></Image>
-          {data.title}
-          Morbi accumsan pharetra neque a molestie. Mauris nulla arcu, euismod
-          vel faucibus nec, tristique nec eros.
-        </Flex>
+        {data.response && (
+          <Flex
+            flexDirection="column"
+            gap={4}
+            py={6}
+            px={4}
+            mt={3.5}
+            bgColor={"gray.150"}
+            borderRadius={8}
+          >
+            <Image src="/LogoBlack.png" h="30px" w="35px"></Image>
+            {data.response}
+          </Flex>
+        )}
       </GridItem>
     </Grid>
   );
