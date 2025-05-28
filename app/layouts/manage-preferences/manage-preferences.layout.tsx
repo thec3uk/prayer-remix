@@ -51,15 +51,23 @@ const MangagePreferences = () => {
           borderColor="gray.200"
         >
           <FormControl>
-            <Checkbox autoComplete="off" size="md">
-              <FormLabel>
+            <Checkbox autoComplete="off" size="lg">
+              <FormLabel
+                textTransform="none"
+                fontWeight="regular"
+                fontSize="md"
+              >
                 Send me an email when The C3 Church responds to my requests
               </FormLabel>
             </Checkbox>
           </FormControl>
           <FormControl>
-            <Checkbox autoComplete="off" size="md">
-              <FormLabel>
+            <Checkbox autoComplete="off" size="lg">
+              <FormLabel
+                textTransform="none"
+                fontWeight="regular"
+                fontSize="md"
+              >
                 Send me a daily email to let me know how many people are
                 engaging with my requests
               </FormLabel>
@@ -74,7 +82,7 @@ const MangagePreferences = () => {
           href="/prayerwall"
           useButton={true}
           text="RETURN TO THE PRAYER WALL"
-          aria-label="RETURN TO THE PRAYER WALL"
+          aria-label="Return to the prayer wall"
         />
       </Box>
     </Box>
