@@ -6,6 +6,7 @@ import MenuAccount from "../MenuAccount";
 function Header() {
   const isDesktop = { base: "none", md: "flex" };
 
+  //TO DO - Placeholder bits
   const loggedIn = true;
   const name = "Joe Bloggs";
 
