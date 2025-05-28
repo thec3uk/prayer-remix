@@ -28,12 +28,14 @@ import PrayerHands from "~/components/PrayerHands";
 import Praise from "~/components/Praise";
 import getEnv from "~/get-env";
 import Link from "~/components/Link";
+import ChurchSuiteMark from "~/components/ChurchSuiteMark";
 
 const RequestLayout = ({ locations }: IRequestLayoutProps) => {
+  //TO DO - add in correct login data
+  const loggedIn = false;
+
   const [showSuccess, setShowSuccess] = useState(false);
-
   const env = getEnv();
-
   const {
     register,
     handleSubmit,
@@ -63,7 +65,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
     }
   };
 
-  return showSuccess ? (
+  return !showSuccess ? (
     <Box
       px={{ base: 4, md: 8 }}
       maxWidth={{ base: "full", md: "container.lg" }}
@@ -86,11 +88,27 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
           receives a response from The C3 Church. We can also send you a daily
           email to update you on how many people are engaging with your request.
         </Text>
-        <Link
-          href="/manage-preferences"
-          text="Manage your notification preferences"
-          aria-label="Manage your notification preferences"
-        />
+        {loggedIn ? (
+          <Link
+            href="/manage-preferences"
+            text="Manage your notification preferences"
+            aria-label="Manage your notification preferences"
+          />
+        ) : (
+          <Flex gap={2}>
+            <Box>
+              <ChurchSuiteMark />
+            </Box>
+            <Text>
+              <Link
+                href="/login"
+                text="Sign into your ChurchSuite account"
+                aria-label="Sign into your ChurchSuite account"
+              />{" "}
+              to manage your notification preferences
+            </Text>
+          </Flex>
+        )}
       </Box>
       <Box py={10} borderTop="1px solid" borderColor="gray.200">
         <Link
