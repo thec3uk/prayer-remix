@@ -6,7 +6,7 @@ import HamburgerIcon from "../HamburgerIcon";
 import MenuLink from "../MenuLink";
 import MenuAccount from "../MenuAccount";
 
-function MobileMenu({ loggedIn }: IMobileMenuProps) {
+function MobileMenu({ loggedIn, name, handleAuthClick }: IMobileMenuProps) {
   const isMobile = { base: "block", md: "none" };
   const [menuVisible, setMenuVisible] = useState(false);
   const viewportHeight = use100vh();
@@ -55,7 +55,11 @@ function MobileMenu({ loggedIn }: IMobileMenuProps) {
           text="Submit a request"
           onClick={() => setMenuVisible(false)}
         />
-        <MenuAccount loggedIn={loggedIn} name="Joe Bloggs" />
+        <MenuAccount
+          loggedIn={loggedIn}
+          name={name}
+          handleAuthClick={handleAuthClick}
+        />
       </VStack>
     </Box>
   );

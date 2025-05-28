@@ -9,6 +9,14 @@ function Header() {
   const loggedIn = true;
   const name = "Joe Bloggs";
 
+  const handleAuthClick = () => {
+    if (loggedIn) {
+      console.log("Signing out...");
+    } else {
+      console.log("Signing in...");
+    }
+  };
+
   return (
     <Box
       position="sticky"
@@ -29,10 +37,17 @@ function Header() {
           <MenuLink to="/" text="Home" />
           <MenuLink to="/prayerwall" text="Prayer Wall" />
           <MenuLink to="/request" text="Submit a request" />
-          <MenuAccount loggedIn={loggedIn} name={name} />
+          <MenuAccount
+            loggedIn={loggedIn}
+            name={name}
+            handleAuthClick={handleAuthClick}
+          />
         </HStack>
-
-        <MobileMenu loggedIn={loggedIn} name={name} />
+        <MobileMenu
+          loggedIn={loggedIn}
+          name={name}
+          handleAuthClick={handleAuthClick}
+        />
       </Flex>
     </Box>
   );
