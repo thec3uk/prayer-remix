@@ -6,9 +6,11 @@ function MenuAccount({ loggedIn, name, handleAuthClick }: IMenuAccountProps) {
   return (
     <Flex gap={2} alignItems="center" flexWrap="wrap">
       <ChurchSuiteMark />
-      <Text as="span" fontWeight="bold">
-        {name}
-      </Text>
+      {loggedIn && name && (
+        <Text as="span" fontWeight="bold">
+          {name}
+        </Text>
+      )}
       <Link
         textDecoration="underline"
         _hover={{ textDecoration: "none" }}
