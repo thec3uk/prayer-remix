@@ -1,3 +1,4 @@
-export interface IMobileMenuProps { 
-  prop: string;
+export interface IMobileMenuProps {
+  loggedIn: boolean;
+  name: string;
 }
