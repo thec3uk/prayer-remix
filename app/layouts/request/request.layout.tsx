@@ -1,8 +1,11 @@
+import { useState } from "react";
 import {
   Button,
   Flex,
   FormErrorMessage,
   FormHelperText,
+  FormControl,
+  FormLabel,
   Grid,
   Heading,
   Input,
@@ -15,20 +18,22 @@ import {
   Box,
   Text,
   Checkbox,
-  Link,
 } from "@chakra-ui/react";
 import { useForm, useWatch } from "react-hook-form";
 import { submitRequest } from "~/api/airTableApi";
 import type { IRequestForm, IRequestLayoutProps } from "./request.definition";
-import { FormControl, FormLabel } from "@chakra-ui/react";
-import { Form, useNavigate } from "@remix-run/react";
+
+import { Form } from "@remix-run/react";
 import PrayerHands from "~/components/PrayerHands";
 import Praise from "~/components/Praise";
 import getEnv from "~/get-env";
+import Link from "~/components/Link";
 
 const RequestLayout = ({ locations }: IRequestLayoutProps) => {
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const env = getEnv();
-  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -45,14 +50,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
         env.AIRTABLE_PAT as string,
         env.API_URL as string
       );
-      navigate("/prayerwall");
-      toast({
-        title: "Thank you",
-        description: "Your request has been submitted successfully.",
-        status: "success",
-        duration: 10000,
-        isClosable: true,
-      });
+      setShowSuccess(true);
     } catch (error) {
       console.error(error);
       toast({
@@ -65,7 +63,45 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
     }
   };
 
-  return (
+  return showSuccess ? (
+    <Box
+      px={{ base: 4, md: 8 }}
+      maxWidth={{ base: "full", md: "container.lg" }}
+    >
+      <Heading
+        as="h1"
+        size="2xl"
+        mb={{ base: 8, md: 12 }}
+        textTransform="uppercase"
+      >
+        THANK YOU
+      </Heading>
+      <Text mb={10}>Your request has been submitted successfully.</Text>
+      <Box py={10} borderTop="1px solid" borderColor="gray.200">
+        <Text as="h2" size="sm" mb={6} fontWeight="bold">
+          DO YOU WANT TO RECEIVE NOTIFICATIONS?
+        </Text>
+        <Text mb={8}>
+          If you choose, we can send you email notifications when your request
+          receives a response from The C3 Church. We can also send you a daily
+          email to update you on how many people are engaging with your request.
+        </Text>
+        <Link
+          href="/manage-preferences"
+          text="Manage your notification preferences"
+          aria-label="Manage your notification preferences"
+        />
+      </Box>
+      <Box py={10} borderTop="1px solid" borderColor="gray.200">
+        <Link
+          href="/prayerwall"
+          useButton={true}
+          text="Return to the prayer wall"
+          aria-label="Return to the prayer wall"
+        />
+      </Box>
+    </Box>
+  ) : (
     <Box
       px={{ base: 4, md: 8 }}
       maxWidth={{ base: "full", md: "container.lg" }}
@@ -89,9 +125,12 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
       </Text>
       <Text mb={{ base: 4, md: 6 }}>
         If you wish to send a private prayer, please email{" "}
-        <Link isExternal href="mailto:prayer@thec3.uk">
-          prayer@thec3.uk
-        </Link>
+        <Link
+          isExternal
+          href="mailto:prayer@thec3.uk"
+          text="prayer@thec3.uk"
+          aria-label="prayer@thec3.uk"
+        />
       </Text>
       <Form name="prayer-request" onSubmit={handleSubmit(onSubmit)}>
         <VStack
@@ -167,9 +206,14 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
                 <FormLabel>
                   I consent to this prayer information to be visible on our
                   online prayer wall and during our Sunday services. See our{" "}
-                  <Link isExternal href="https://thec3.uk/privacy">
-                    privacy policy
-                  </Link>{" "}
+                  <Link
+                    isExternal
+                    href="https://thec3.uk/privacy"
+                    text="prayer@thec3.uk"
+                    aria-label="prayer@thec3.uk"
+                  />{" "}
+                  {/* privacy policy
+                  </Link>{" "} */}
                   for more information
                 </FormLabel>
               </Checkbox>

@@ -15,12 +15,14 @@ import {
   DrawerOverlay,
   Text,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { flagRequest, incrementPrayerCount } from "~/api/airTableApi";
 import Filters from "~/components/Filters";
-import type { IFilterOptions, IFiltersProps } from "~/components/Filters/Filters.definition";
+import type {
+  IFilterOptions,
+  IFiltersProps,
+} from "~/components/Filters/Filters.definition";
 import FiltersIcon from "~/components/FiltersIcon";
 import Link from "~/components/Link";
 import Masonry from "react-masonry-css";
@@ -31,7 +33,11 @@ import getEnv from "~/get-env";
 
 const env = getEnv();
 
-const makeToast = (title: string, description: string, status: "success" | "error") => ({
+const makeToast = (
+  title: string,
+  description: string,
+  status: "success" | "error"
+) => ({
   title,
   description,
   status,
@@ -47,7 +53,8 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
     md: "Add a prayer request",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [filteredRequests, setFilteredRequests] = useState<IRequest[]>(requests);
+  const [filteredRequests, setFilteredRequests] =
+    useState<IRequest[]>(requests);
   const [filters, setFilters] = useState<IFilterOptions>({
     location: "all",
     type: "both",
@@ -67,19 +74,44 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
   };
 
   const Shared = ({ initialFilters, onChange, locations }: IFiltersProps) => (
-    <Filters initialFilters={initialFilters} onChange={onChange} locations={locations} />
+    <Filters
+      initialFilters={initialFilters}
+      onChange={onChange}
+      locations={locations}
+    />
   );
 
   const amen = async (id: string, count: number) => {
-    await incrementPrayerCount(id, count, env.AIRTABLE_PAT as string, env.API_URL as string);
+    await incrementPrayerCount(
+      id,
+      count,
+      env.AIRTABLE_PAT as string,
+      env.API_URL as string
+    );
   };
 
   const report = async (id: string) => {
-    const resp = await flagRequest(id, env.AIRTABLE_PAT as string, env.API_URL as string);
+    const resp = await flagRequest(
+      id,
+      env.AIRTABLE_PAT as string,
+      env.API_URL as string
+    );
     if (resp) {
-      toast(makeToast("Thank you", "We have flagged the request and will review shortly.", "success"));
+      toast(
+        makeToast(
+          "Thank you",
+          "We have flagged the request and will review shortly.",
+          "success"
+        )
+      );
     } else {
-      toast(makeToast("Sorry", "Something went wrong, please try again or contact us.", "error"));
+      toast(
+        makeToast(
+          "Sorry",
+          "Something went wrong, please try again or contact us.",
+          "error"
+        )
+      );
     }
   };
   const breakpointColumnsObj = {
@@ -90,7 +122,12 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
 
   return (
     <Box px={{ base: 3, md: 4 }} minH={"75vh"}>
-      <Heading as="h1" size="2xl" mb={{ base: 6, md: 8 }} textTransform="uppercase">
+      <Heading
+        as="h1"
+        size="2xl"
+        mb={{ base: 6, md: 8 }}
+        textTransform="uppercase"
+      >
         Prayer Wall
       </Heading>
       {locations && (
@@ -103,7 +140,11 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
                 <DrawerCloseButton />
                 <DrawerHeader>Filters</DrawerHeader>
                 <DrawerBody>
-                  <Shared initialFilters={filters} onChange={applyFilters} locations={locations} />
+                  <Shared
+                    initialFilters={filters}
+                    onChange={applyFilters}
+                    locations={locations}
+                  />
                 </DrawerBody>
                 <DrawerFooter>
                   <Button
@@ -114,7 +155,8 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
                         location: "all",
                         type: "both",
                       });
-                    }}>
+                    }}
+                  >
                     Clear
                   </Button>
                   <Button onClick={onClose}>Close</Button>
@@ -123,7 +165,11 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
             </Drawer>
           </Flex>
           <Box display={{ base: "none", lg: "flex" }}>
-            <Shared initialFilters={filters} onChange={applyFilters} locations={locations} />
+            <Shared
+              initialFilters={filters}
+              onChange={applyFilters}
+              locations={locations}
+            />
           </Box>
           <Link
             href="/request"
@@ -138,15 +184,29 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
         </Flex>
       )}
       {filteredRequests.length ? (
-        <Masonry breakpointCols={breakpointColumnsObj} className="masonry-grid" columnClassName="masonry-grid_column">
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="masonry-grid"
+          columnClassName="masonry-grid_column"
+        >
           {filteredRequests.map((request) => (
-            <PrayerCard data={request} key={request.id} onAmen={amen} onReport={report}></PrayerCard>
+            <PrayerCard
+              data={request}
+              key={request.id}
+              onAmen={amen}
+              onReport={report}
+            ></PrayerCard>
           ))}
         </Masonry>
       ) : (
         <Box mt={8}>
-          <Text mb={2}>Looks like we couldn't find any requests that matched your filter.</Text>
-          <Text mb={4}>Why not click the button below to submit your request and get us started?</Text>
+          <Text mb={2}>
+            Looks like we couldn't find any requests that matched your filter.
+          </Text>
+          <Text mb={4}>
+            Why not click the button below to submit your request and get us
+            started?
+          </Text>
           <Link
             href="/request"
             useButton={true}
