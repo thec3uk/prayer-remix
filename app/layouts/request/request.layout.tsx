@@ -178,7 +178,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
                       size={"lg"}
                       key={l.name}
                       {...register("location")}
-                      value={l.id}
+                      value={String(l.id)}
                     >
                       {l.name}
                     </Radio>
