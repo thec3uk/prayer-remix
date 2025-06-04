@@ -7,6 +7,7 @@ import type { ILocation } from "~/types/global.definition";
 
 export const loader: LoaderFunction = async () => {
   const env = getEnv();
+
   return await fetchLocations(
     env.AIRTABLE_PAT as string,
     env.API_URL as string

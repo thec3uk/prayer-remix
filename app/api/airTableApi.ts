@@ -5,6 +5,7 @@ import type {
   IRequest,
   IRequestForm,
   ISetting,
+  IUserProfile,
 } from "~/types/global.definition";
 import type { IRequestFilters } from "./api.definition";
 import { mapResponseToPrayerPraiseRequests } from "./requestMapper";
@@ -42,6 +43,37 @@ export async function fetchSettings(
     text: setting.button_text,
     name: setting.name,
   }));
+}
+
+export async function fetchUserProfile(
+  AIRTABLE_PAT: string,
+  API_URL: string
+  // token: string
+): Promise<IUserProfile> {
+  const res = await fetch(`${API_URL}/user-profile/`, {
+    headers: {
+      // Authorization: `Token ${token}`,
+      Authorization: `Token ${AIRTABLE_PAT}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch user profile: ${res.status}`);
+  }
+
+  const data = await res.json();
+
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error("User profile not found.");
+  }
+
+  const profile = data[0];
+
+  return {
+    user: profile.user,
+    digestNotifications: profile.enable_digest_notifications,
+    responseNotifications: profile.enable_repsonse_notifications,
+  };
 }
 
 export async function fetchVerses(

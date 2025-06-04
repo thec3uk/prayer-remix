@@ -1,3 +1,5 @@
+import { useState } from "react";
+import type { IManagePreferencesProps } from "./manage-preferences.definition";
 import {
   Button,
   Heading,
@@ -8,14 +10,30 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-// import type { IManagePreferencesProps } from "./request.definition";
 import { Form } from "@remix-run/react";
 import Link from "~/components/Link";
 
-const MangagePreferences = () => {
-  // const handleSubmit = () => {
-  //   console.log("submitted");
-  // };
+const ManagePreferences = ({ profile }: IManagePreferencesProps) => {
+  const [digest, setDigest] = useState(false);
+  const [response, setResponse] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const res = await fetch("http://localhost:8001/api/preferences/update/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        credentials: "include",
+      },
+      body: JSON.stringify({
+        digest,
+        response,
+      }),
+    });
+
+    const result = await res.json();
+    console.log("Preferences update result:", result);
+  };
 
   return (
     <Box
@@ -34,13 +52,13 @@ const MangagePreferences = () => {
         <Text mb={{ base: 2, md: 3 }}>
           Hi{" "}
           <Text as="span" fontWeight="bold">
-            ADD NAME
+            {/* {profile.user} */}
           </Text>
           ,
         </Text>
         Update your notification preferences below.
       </Box>
-      <Form name="prayer-request">
+      <Form name="prayer-request" onSubmit={handleSubmit}>
         <VStack
           mb={10}
           py={10}
@@ -51,7 +69,12 @@ const MangagePreferences = () => {
           borderColor="gray.200"
         >
           <FormControl>
-            <Checkbox autoComplete="off" size="lg">
+            <Checkbox
+              autoComplete="off"
+              size="lg"
+              isChecked={response}
+              onChange={(e) => setResponse(e.target.checked)}
+            >
               <FormLabel
                 textTransform="none"
                 fontWeight="regular"
@@ -61,8 +84,14 @@ const MangagePreferences = () => {
               </FormLabel>
             </Checkbox>
           </FormControl>
+
           <FormControl>
-            <Checkbox autoComplete="off" size="lg">
+            <Checkbox
+              autoComplete="off"
+              size="lg"
+              isChecked={digest}
+              onChange={(e) => setDigest(e.target.checked)}
+            >
               <FormLabel
                 textTransform="none"
                 fontWeight="regular"
@@ -89,4 +118,4 @@ const MangagePreferences = () => {
   );
 };
 
-export default MangagePreferences;
+export default ManagePreferences;

@@ -160,6 +160,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     ENV: {
       AIRTABLE_PAT: process.env.AIRTABLE_PAT,
       API_URL: process.env.API_URL,
+      AUTH_TOKEN: process.env.AUTH_TOKEN,
     },
   });
 };

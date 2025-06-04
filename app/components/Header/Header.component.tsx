@@ -3,20 +3,20 @@ import { NavLink } from "@remix-run/react";
 import MenuLink from "../MenuLink";
 import MobileMenu from "../MobileMenu";
 import MenuAccount from "../MenuAccount";
+
 function Header() {
   const isDesktop = { base: "none", md: "flex" };
-
-  //TO DO - Placeholder bits
-  const loggedIn = true;
+  const loggedIn = false;
   const name = "Joe Bloggs";
 
-  const handleAuthClick = () => {
+  function handleAuthClick() {
+    const backendUrl = "http://localhost:8001";
     if (loggedIn) {
-      console.log("Signing out...");
+      window.location.assign(`${backendUrl}/auth/logout/`);
     } else {
-      console.log("Signing in...");
+      window.location.assign(`${backendUrl}/auth/churchsuite/login/`);
     }
-  };
+  }
 
   return (
     <Box
