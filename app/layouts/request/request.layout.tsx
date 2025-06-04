@@ -65,7 +65,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
     }
   };
 
-  return !showSuccess ? (
+  return showSuccess ? (
     <Box
       px={{ base: 4, md: 8 }}
       maxWidth={{ base: "full", md: "container.lg" }}
