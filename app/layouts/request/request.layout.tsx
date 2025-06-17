@@ -99,8 +99,7 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
             </Box>
             <Text>
               <Link
-                href="https://login.churchsuite.com/"
-                isExternal
+                href="/auth/login?redirect=/manage-preferences"
                 text="Sign into your ChurchSuite account"
                 aria-label="Sign into your ChurchSuite account"
               />{" "}
@@ -179,7 +178,7 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
               </Grid>
             </RadioGroup>
             <FormErrorMessage>
-              Please selection your location
+              Please select your location
             </FormErrorMessage>
           </FormControl>
           <FormControl isRequired={true} isInvalid={!!errors.type}>

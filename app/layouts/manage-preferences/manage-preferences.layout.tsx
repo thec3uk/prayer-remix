@@ -9,34 +9,53 @@ import {
   FormLabel,
   Heading,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
-// import type { IManagePreferencesProps } from "./request.definition";
 import { Form } from "@remix-run/react";
 import Link from "~/components/Link";
+import getEnv from "~/get-env";
 import ChurchSuiteMark from "~/components/ChurchSuiteMark";
+import { updateUserProfile } from "~/api/airTableApi";
+import { useForm } from "react-hook-form";
+import type { IUserProfile } from "~/types/global.definition";
 
 const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
-  const loggedIn = false;
-  const [digest, setDigest] = useState(false);
-  const [response, setResponse] = useState(false);
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const loggedIn = !!user;
+  const env = getEnv();
+  const toast = useToast();
+  const {register, handleSubmit} = useForm<IUserProfile>({
+    defaultValues: {
+      user: user?.id,
+      digestNotifications: profile?.digestNotifications || true,
+      responseNotifications: profile?.responseNotifications || true,
+    },
+  });
 
-    const res = await fetch("http://localhost:8001/api/preferences/update/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        credentials: "include",
-      },
-      body: JSON.stringify({
-        digest,
-        response,
-      }),
-    });
-
-    const result = await res.json();
-    console.log("Preferences update result:", result);
+  const onSubmit = async (data:IUserProfile) => {
+     try {
+     await updateUserProfile(
+        data,
+        env.AIRTABLE_PAT as string,
+        env.API_URL as string
+    )
+     toast({
+        title: "Save",
+        description: "Your preferences have been updated.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+     })
+     } catch (error) {
+      console.error(error);
+      toast({
+        title: "Sorry",
+        description: "Something went wrong, please try again.",
+        status: "error",
+        duration: 10000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -58,13 +77,13 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
             <Text mb={{ base: 2, md: 3 }}>
               Hi{" "}
               <Text as="span" fontWeight="bold">
-                {/* {profile.user} */}
+                {user.name}
               </Text>
               ,
             </Text>
             Update your notification preferences below.
           </Box>
-          <Form name="prayer-request" onSubmit={handleSubmit}>
+          <Form name="update-notifications" onSubmit={handleSubmit(onSubmit)}>
             <VStack
               mb={10}
               py={10}
@@ -78,8 +97,8 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
                 <Checkbox
                   autoComplete="off"
                   size="lg"
-                  isChecked={response}
-                  onChange={(e) => setResponse(e.target.checked)}
+                  {...register("responseNotifications")}
+                  defaultChecked={profile?.responseNotifications || true}
                 >
                   <FormLabel
                     textTransform="none"
@@ -95,8 +114,8 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
                 <Checkbox
                   autoComplete="off"
                   size="lg"
-                  isChecked={digest}
-                  onChange={(e) => setDigest(e.target.checked)}
+                  {...register("digestNotifications")}
+                  defaultChecked={profile?.digestNotifications || true}
                 >
                   <FormLabel
                     textTransform="none"
@@ -109,7 +128,7 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
                 </Checkbox>
               </FormControl>
 
-              <Button>UPDATE MY NOTIFICATION SETTINGS</Button>
+              <Button type="submit">UPDATE MY NOTIFICATION SETTINGS</Button>
             </VStack>
           </Form>
           <Box mb={10}>
@@ -128,8 +147,7 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
           </Box>
           <Text>
             <Link
-              // TO DO - update link
-              href="https://login.churchsuite.com/"
+              href="/auth/login?redirect=/manage-preferences"
               isExternal
               text="Sign into your ChurchSuite account"
               aria-label="Sign into your ChurchSuite account"

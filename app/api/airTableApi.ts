@@ -49,7 +49,7 @@ export async function fetchUserProfile(
   AIRTABLE_PAT: string,
   API_URL: string
   // token: string
-): Promise<IUserProfile> {
+): Promise<IUserProfile | null> {
   const res = await fetch(`${API_URL}/user-profile/`, {
     headers: {
       // Authorization: `Token ${token}`,
@@ -58,7 +58,9 @@ export async function fetchUserProfile(
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch user profile: ${res.status}`);
+    // If the user profile is not found, return null instead of throwing an error
+    return null;
+    //throw new Error(`Failed to fetch user profile: ${res.status}`);
   }
 
   const data = await res.json();
@@ -74,6 +76,28 @@ export async function fetchUserProfile(
     digestNotifications: profile.enable_digest_notifications,
     responseNotifications: profile.enable_repsonse_notifications,
   };
+}
+
+export async function updateUserProfile(
+  profile: IUserProfile,
+  AIRTABLE_PAT: string,
+  API_URL: string
+  // token: string
+): Promise<any> {
+  const res = await fetch(`${API_URL}/preferences/update/`, {
+    method: "POST",
+      headers: {
+        Authorization: `Token ${AIRTABLE_PAT}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profile),
+    });
+
+  if (!res.ok) {
+    throw new Error(`Failed to save settings: ${res.status}`);
+  }
+
+  return res.json();
 }
 
 export async function fetchVerses(
