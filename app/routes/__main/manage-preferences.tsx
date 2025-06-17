@@ -3,7 +3,6 @@ import { sessionStorage } from "~/services/auth.server";
 import { useLoaderData } from "@remix-run/react";
 import { fetchUserProfile } from "~/api/airTableApi";
 import getEnv from "~/get-env";
-import type { IUserProfile } from "~/types/global.definition";
 import ManagePreferences from "~/layouts/manage-preferences/manage-preferences.layout";
 
 export const loader: LoaderFunction = async ({request}) => {
@@ -21,7 +20,7 @@ export const loader: LoaderFunction = async ({request}) => {
 };
 
 export default function AboutPage() {
-  const { user, settings } = useLoaderData<typeof loader>();
+  const { user, profile } = useLoaderData<typeof loader>();
 
   return <ManagePreferences profile={profile} user={user}/>;
 }
