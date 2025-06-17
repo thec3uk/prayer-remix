@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Form } from "@remix-run/react";
 import {
   Button,
   Flex,
@@ -23,13 +24,12 @@ import { useForm, useWatch } from "react-hook-form";
 import { submitRequest } from "~/api/airTableApi";
 import type { IRequestForm, IRequestLayoutProps } from "./request.definition";
 
-import { Form } from "@remix-run/react";
 import PrayerHands from "~/components/PrayerHands";
 import Praise from "~/components/Praise";
 import getEnv from "~/get-env";
 import Link from "~/components/Link";
 
-const RequestLayout = ({ locations }: IRequestLayoutProps) => {
+const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const env = getEnv();
@@ -42,7 +42,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
   } = useForm<IRequestForm>();
   const prayer = useWatch({ control, name: "prayer" });
   const toast = useToast();
-
+  
   const onSubmit = async (data: any) => {
     try {
       await submitRequest(
@@ -147,6 +147,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
               })}
               autoComplete="name"
               type="text"
+              value={user?.name || ""}
             />
           </FormControl>
           <FormControl isRequired={true} isInvalid={!!errors.location}>
@@ -154,7 +155,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                 {locations.map((l) => (
-                  <Radio {...register("location")} value={l.id+''} size="lg">
+                  <Radio {...register("location")} value={l.id+''} key={'k'+l.id} size="lg">
                     {l.name}
                   </Radio>
                 ))}

@@ -1,20 +1,28 @@
 import { Box, Flex, HStack, Image, useColorModeValue } from "@chakra-ui/react";
-import { NavLink } from "@remix-run/react";
+import { NavLink, useNavigate } from "@remix-run/react";
 import MenuLink from "../MenuLink";
 import MobileMenu from "../MobileMenu";
 import MenuAccount from "../MenuAccount";
-function Header() {
+import type { User } from "~/services/User.definition";
+
+type HeaderProps = {
+  user: User;
+};
+
+function Header({ user }: HeaderProps) {
+  let navigate = useNavigate();
   const isDesktop = { base: "none", md: "flex" };
 
   //TO DO - Placeholder bits
-  const loggedIn = true;
-  const name = "Joe Bloggs";
+  const loggedIn = !!user;
+  const name = user?.name || "";
 
   const handleAuthClick = () => {
-    if (loggedIn) {
-      console.log("Signing out...");
+    console.log("handleAuthClick called");
+    if (user) {
+      navigate('/auth/logout');
     } else {
-      console.log("Signing in...");
+      navigate('/auth/login');
     }
   };
 

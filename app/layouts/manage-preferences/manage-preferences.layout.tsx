@@ -8,11 +8,11 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-// import type { IManagePreferencesProps } from "./request.definition";
+import type { IManagePreferencesProps } from "./manage-preferences.definition";
 import { Form } from "@remix-run/react";
 import Link from "~/components/Link";
 
-const MangagePreferences = () => {
+const ManagePreferences = ({ settings, user }: IManagePreferencesProps) => {
   // const handleSubmit = () => {
   //   console.log("submitted");
   // };
@@ -34,7 +34,7 @@ const MangagePreferences = () => {
         <Text mb={{ base: 2, md: 3 }}>
           Hi{" "}
           <Text as="span" fontWeight="bold">
-            ADD NAME
+            {user?.name || ''}
           </Text>
           ,
         </Text>
@@ -89,4 +89,4 @@ const MangagePreferences = () => {
   );
 };
 
-export default MangagePreferences;
+export default ManagePreferences;
