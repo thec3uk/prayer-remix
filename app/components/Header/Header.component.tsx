@@ -1,20 +1,26 @@
 import { Box, Flex, HStack, Image, useColorModeValue } from "@chakra-ui/react";
-import { NavLink } from "@remix-run/react";
+import { NavLink, useNavigate } from "@remix-run/react";
 import MenuLink from "../MenuLink";
 import MobileMenu from "../MobileMenu";
 import MenuAccount from "../MenuAccount";
+import type { User } from "~/services/User.definition";
 
-function Header() {
+type HeaderProps = {
+  user: User;
+};
+
+function Header({ user }: HeaderProps) {
+  let navigate = useNavigate();
   const isDesktop = { base: "none", md: "flex" };
-  const loggedIn = false;
-  const name = "Joe Bloggs";
 
-  function handleAuthClick() {
-    const backendUrl = "http://localhost:8001";
-    if (loggedIn) {
-      window.location.assign(`${backendUrl}/auth/logout/`);
+  const loggedIn = !!user;
+  const name = user?.name || "";
+
+  const handleAuthClick = () => {
+    if (user) {
+      navigate('/auth/logout');
     } else {
-      window.location.assign(`${backendUrl}/auth/churchsuite/login/`);
+      navigate('/auth/login');
     }
   }
 

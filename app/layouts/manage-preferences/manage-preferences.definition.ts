@@ -1,5 +1,7 @@
-import type { IUserProfile } from "~/types/global.definition";
+import type { User } from '~/services/User.definition';
+import type { ISetting } from "~/types/global.definition";
 
 export interface IManagePreferencesProps {
-  profile?: IUserProfile;
+    settings: ISetting[],
+    user: User,
 }

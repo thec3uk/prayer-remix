@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Form } from "@remix-run/react";
 import {
   Button,
   Flex,
@@ -23,17 +24,14 @@ import { useForm, useWatch } from "react-hook-form";
 import { submitRequest } from "~/api/airTableApi";
 import type { IRequestForm, IRequestLayoutProps } from "./request.definition";
 
-import { Form } from "@remix-run/react";
 import PrayerHands from "~/components/PrayerHands";
 import Praise from "~/components/Praise";
 import getEnv from "~/get-env";
 import Link from "~/components/Link";
 import ChurchSuiteMark from "~/components/ChurchSuiteMark";
 
-const RequestLayout = ({ locations }: IRequestLayoutProps) => {
-  //TO DO - add in correct login data
-  const loggedIn = false;
-
+const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
+  const loggedIn = !!user;
   const [showSuccess, setShowSuccess] = useState(false);
   const env = getEnv();
   const {
@@ -44,7 +42,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
   } = useForm<IRequestForm>();
   const prayer = useWatch({ control, name: "prayer" });
   const toast = useToast();
-
+  
   const onSubmit = async (data: any) => {
     try {
       await submitRequest(
@@ -166,28 +164,25 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
               })}
               autoComplete="name"
               type="text"
+              value={user?.name || ""}
             />
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="location">Location</FormLabel>
+          <FormControl isRequired={true} isInvalid={!!errors.location}>
+            <FormLabel>Location</FormLabel>
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                {locations.map((l) => {
-                  return (
-                    <Radio
-                      size={"lg"}
-                      key={l.name}
-                      {...register("location")}
-                      value={String(l.id)}
-                    >
-                      {l.name}
-                    </Radio>
-                  );
-                })}
+                {locations.map((l) => (
+                  <Radio {...register("location")} value={l.id+''} key={'k'+l.id} size="lg">
+                    {l.name}
+                  </Radio>
+                ))}
               </Grid>
             </RadioGroup>
+            <FormErrorMessage>
+              Please selection your location
+            </FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={!!errors.type}>
             <FormLabel htmlFor="type">Prayer or praise?</FormLabel>
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
@@ -199,6 +194,9 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
                 </Radio>
               </Grid>
             </RadioGroup>
+            <FormErrorMessage>
+              Please select
+            </FormErrorMessage>
           </FormControl>
           <Flex flexDir="column" w={"100%"} alignItems="flex-end" gap={4}>
             <FormControl isInvalid={!!errors.prayer}>

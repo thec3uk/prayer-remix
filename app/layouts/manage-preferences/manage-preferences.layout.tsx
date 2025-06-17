@@ -11,11 +11,12 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+// import type { IManagePreferencesProps } from "./request.definition";
 import { Form } from "@remix-run/react";
 import Link from "~/components/Link";
 import ChurchSuiteMark from "~/components/ChurchSuiteMark";
 
-const ManagePreferences = ({ profile }: IManagePreferencesProps) => {
+const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
   const loggedIn = false;
   const [digest, setDigest] = useState(false);
   const [response, setResponse] = useState(false);
