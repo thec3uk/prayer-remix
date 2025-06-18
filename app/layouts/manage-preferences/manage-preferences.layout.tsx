@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { IManagePreferencesProps } from "./manage-preferences.definition";
 import {
   Box,

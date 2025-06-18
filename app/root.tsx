@@ -11,8 +11,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
   useLoaderData,
+  useRouteError,
 } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import Layout from "./components/Layout";
@@ -26,11 +26,11 @@ import Fonts from "./fonts";
 import ErrorLayout from "./components/ErrorLayout";
 import { ClientStyleContext, ServerStyleContext } from "~/lib/emotion/context";
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "Tim Creamer Prayer Room",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: MetaFunction = () => ([
+  { charset: "utf-8" },
+  { title: "Tim Creamer Prayer Room" },
+  { name: "viewport", content: "width=device-width,initial-scale=1" },
+]);
 
 export function links() {
   return [
@@ -69,13 +69,9 @@ export interface DocumentProps {
   ENV: any;
 }
 
-export function ErrorBoundary(error: any) {
+export function ErrorBoundary() {
+  const error = useRouteError();
   return <ErrorLayout error={error} />;
-}
-
-export function CatchBoundary() {
-  const caught = useCatch();
-  return <ErrorLayout caught={caught} />;
 }
 
 const Document = withEmotionCache(
@@ -166,7 +162,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function App(props: any) {
-  const { cookies, ENV } = useLoaderData();
+  const { cookies, ENV } = useLoaderData<typeof loader>();
 
   return (
     <Document cookies={cookies} ENV={ENV}>

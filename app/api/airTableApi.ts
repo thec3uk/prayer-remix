@@ -10,8 +10,6 @@ import type {
 import type { IRequestFilters } from "./api.definition";
 import { mapResponseToPrayerPraiseRequests } from "./requestMapper";
 
-import fetch from "node-fetch";
-
 export async function fetchRequests(
   { location }: IRequestFilters = {},
   AIRTABLE_PAT: string,
