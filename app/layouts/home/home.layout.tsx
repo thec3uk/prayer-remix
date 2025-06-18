@@ -67,6 +67,7 @@ const HomeLayout = ({ link, verses, card, subTitle }: IHomeProps) => {
 					href={card?.href || link?.text}
 				></Card>
 			</Box>
+			{verses.length > 0 && (
 			<Box
 				as="section"
 				maxW={{ md: '1028px' }}
@@ -86,6 +87,7 @@ const HomeLayout = ({ link, verses, card, subTitle }: IHomeProps) => {
 					}))}
 				></Carousel>
 			</Box>
+			)}
 		</Box>
 	);
 };

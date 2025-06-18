@@ -1,7 +1,11 @@
 node_modules
 
 /.cache
+/.vite
 /public/build
-/.netlify
+/build
 .env
-.vscode/
+
+# Local Netlify folder
+.netlify
+.DS_Store

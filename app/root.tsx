@@ -6,7 +6,6 @@ import {
 } from "@chakra-ui/react";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -14,9 +13,7 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { json } from "@remix-run/node";
 import Layout from "./components/Layout";
-import styles from "~/styles/global.css";
 import { ChakraProvider, VStack } from "@chakra-ui/react";
 import { SkipNavLink } from "@chakra-ui/skip-nav";
 import { useContext, useEffect } from "react";
@@ -34,7 +31,6 @@ export const meta: MetaFunction = () => ([
 
 export function links() {
   return [
-    { rel: "stylesheet", href: styles },
     {
       rel: "preload",
       href: "/LogoBlack.png",
@@ -143,7 +139,6 @@ const Document = withEmotionCache(
           </ChakraProvider>
           <ScrollRestoration />
           <Scripts />
-          {process.env.NODE_ENV === "development" && <LiveReload />}
         </body>
       </html>
     );
@@ -151,14 +146,14 @@ const Document = withEmotionCache(
 );
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return json({
+  return {
     cookies: request.headers.get("cookie") ?? "",
     ENV: {
       AIRTABLE_PAT: process.env.AIRTABLE_PAT,
       API_URL: process.env.API_URL,
       AUTH_TOKEN: process.env.AUTH_TOKEN,
     },
-  });
+  }
 };
 
 export default function App(props: any) {
