@@ -128,7 +128,12 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
         Prayer Wall
       </Heading>
       {locations && (
-        <Flex flexDir="row" justifyContent="space-between" alignItems="center">
+        <Flex
+          flexDir="row"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={8}
+        >
           <Flex display={{ base: "block", lg: "none" }} flexDir="column">
             <FiltersIcon h={"23px"} w={"24px"} onClick={onOpen}></FiltersIcon>
             <Drawer isOpen={isOpen} onClose={onClose} placement="left">

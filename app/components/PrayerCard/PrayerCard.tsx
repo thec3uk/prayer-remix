@@ -16,7 +16,6 @@ const PrayerCard = ({ data, onAmen, onReport }: IPrayerCardProps) => {
       pt={8}
       pb={6}
       px={6}
-      mt={8}
     >
       <GridItem>
         <Text>{data.prayer}</Text>

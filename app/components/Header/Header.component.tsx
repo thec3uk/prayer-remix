@@ -18,11 +18,11 @@ function Header({ user }: HeaderProps) {
 
   const handleAuthClick = () => {
     if (user) {
-      navigate('/auth/logout');
+      navigate("/auth/logout");
     } else {
-      navigate('/auth/login');
+      navigate("/auth/login");
     }
-  }
+  };
 
   return (
     <Box
@@ -40,7 +40,12 @@ function Header({ user }: HeaderProps) {
         <NavLink to="/">
           <Image src="/LogoBlack.png" h="51px" w="63px"></Image>
         </NavLink>
-        <HStack display={isDesktop} gap="8" fontSize={{ base: "sm", lg: "md" }}>
+        <HStack
+          display={isDesktop}
+          gap={8}
+          ml={8}
+          fontSize={{ base: "sm", lg: "md" }}
+        >
           <MenuLink to="/" text="Home" />
           <MenuLink to="/prayerwall" text="Prayer Wall" />
           <MenuLink to="/request" text="Submit a request" />
