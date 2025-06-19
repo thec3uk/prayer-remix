@@ -12,7 +12,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 */
   // otherwise, authenticate the user
 
-  console.log("Authenticating user...");
+  //console.log("Authenticating user...");
   //try {
     let user = await authenticator.authenticate("prayer-provider", request);
    

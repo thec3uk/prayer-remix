@@ -102,7 +102,6 @@ const Document = withEmotionCache(
           {title ? <title>{title}</title> : null}
           <Meta />
           <Links />
-          <script src="/masonryLayout.js"></script>
           <script
             async
             defer
