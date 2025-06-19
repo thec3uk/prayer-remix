@@ -1,5 +1,5 @@
 import type { IMenuAccountProps } from "./MenuAccount.definition";
-import { Flex, Text, Link } from "@chakra-ui/react";
+import { Flex, Link } from "@chakra-ui/react";
 import ChurchSuiteMark from "../ChurchSuiteMark";
 
 function MenuAccount({ loggedIn, name, handleAuthClick }: IMenuAccountProps) {
@@ -8,9 +8,7 @@ function MenuAccount({ loggedIn, name, handleAuthClick }: IMenuAccountProps) {
       <ChurchSuiteMark />
       {loggedIn && name && (
         <Link href="/manage-preferences" fontWeight="bold">
-          {/* <Text as="span" fontWeight="bold"> */}
           {name}
-          {/* </Text> */}
         </Link>
       )}
       <Link
