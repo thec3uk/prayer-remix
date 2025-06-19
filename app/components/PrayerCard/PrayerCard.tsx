@@ -13,6 +13,10 @@ const PrayerCard = ({ data, onAmen, onReport }: IPrayerCardProps) => {
       alignContent={"space-between"}
       borderTop={"0.25em solid"}
       borderColor={bgColor}
+      pt={8}
+      pb={6}
+      px={6}
+      mt={8}
     >
       <GridItem>
         <Text>{data.prayer}</Text>

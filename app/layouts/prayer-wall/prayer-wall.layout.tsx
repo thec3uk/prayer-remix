@@ -28,7 +28,7 @@ import Link from "~/components/Link";
 import PrayerCard from "~/components/PrayerCard";
 import type { IRequest } from "~/types/global.definition";
 import type { IPrayerWallProps } from "./prayer-wall.definition";
-import Masonry from 'react-layout-masonry';
+import Masonry from "react-layout-masonry";
 import getEnv from "~/get-env";
 
 const env = getEnv();
@@ -53,7 +53,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
     md: "Add a prayer request",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
-    const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [filteredRequests, setFilteredRequests] =
     useState<IRequest[]>(requests);
   const [filters, setFilters] = useState<IFilterOptions>({
@@ -183,7 +183,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
       {isClient && filteredRequests.length ? (
         <Masonry
           columns={{ 640: 1, 768: 1, 1024: 2, 1280: 3 }}
-          gap={16}
+          gap={32}
           className="masonry-grid"
           columnProps={{ className: "masonry-grid_column" }}
         >
@@ -199,7 +199,8 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
       ) : (
         <Box mt={8}>
           <Text mb={2}>
-            Looks like we couldn't find any requests that matched your filter.
+            Looks like we couldn&apos;t find any requests that matched your
+            filter.
           </Text>
           <Text mb={4}>
             Why not click the button below to submit your request and get us
