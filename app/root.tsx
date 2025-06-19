@@ -18,19 +18,21 @@ import { ChakraProvider, VStack } from "@chakra-ui/react";
 import { SkipNavLink } from "@chakra-ui/skip-nav";
 import { useContext, useEffect } from "react";
 import { withEmotionCache } from "@emotion/react";
+import styles from "~/styles/global.css";
 import C3Theme from "./theme";
 import Fonts from "./fonts";
 import ErrorLayout from "./components/ErrorLayout";
 import { ClientStyleContext, ServerStyleContext } from "~/lib/emotion/context";
 
-export const meta: MetaFunction = () => ([
+export const meta: MetaFunction = () => [
   { charset: "utf-8" },
   { title: "Tim Creamer Prayer Room" },
   { name: "viewport", content: "width=device-width,initial-scale=1" },
-]);
+];
 
 export function links() {
   return [
+    { rel: "stylesheet", href: styles },
     {
       rel: "preload",
       href: "/LogoBlack.png",
@@ -152,7 +154,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       API_URL: process.env.API_URL,
       AUTH_TOKEN: process.env.AUTH_TOKEN,
     },
-  }
+  };
 };
 
 export default function App(props: any) {
