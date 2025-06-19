@@ -5,7 +5,7 @@ import { Outlet } from '@remix-run/react';
 import { sessionStorage } from "~/services/auth.server";
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
-import type { User } from "~/services/User.definition";
+import { IUserProfile } from "~/types/global.definition";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	let session = await sessionStorage.getSession(request.headers.get("cookie"));
@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 const Main = () => {
-	const user = useLoaderData<User>();
+	const user = useLoaderData<IUserProfile>();
 	return (
 		<>
 			<Header user={user} />

@@ -1,7 +1,7 @@
 import { Authenticator } from 'remix-auth'
 import { createCookieSessionStorage } from "@remix-run/node";
 import { OAuth2Strategy, CodeChallengeMethod } from "remix-auth-oauth2";
-import type { User } from './User.definition';
+import type { IUserProfile } from '~/types/global.definition';
 import type { OAuth2Tokens } from 'arctic';
 
 // Create a session storage
@@ -16,7 +16,7 @@ export const sessionStorage = createCookieSessionStorage({
   },
 });
 
-export const authenticator = new Authenticator<User>();
+export const authenticator = new Authenticator<IUserProfile>();
 
 authenticator.use(
   new OAuth2Strategy(
@@ -45,7 +45,7 @@ authenticator.use(
 
 export default authenticator
 
-async function getUser(tokens: OAuth2Tokens, request: Request): Promise<User> {
+async function getUser(tokens: OAuth2Tokens, request: Request): Promise<IUserProfile> {
 
   // Fetch user info from the provider's userinfo endpoint.  Assuming ChurchSuite supports this.
   const access_token = (tokens.data as { access_token?: string })?.access_token || '';
@@ -67,12 +67,13 @@ async function getUser(tokens: OAuth2Tokens, request: Request): Promise<User> {
 
   // Map the provider's profile to your User type
   return {
-    id: profile.sub || profile.id,
+    username: profile.sub || profile.id,
     email: profile.email,
     name: profile.name,
-    // add other fields as needed
-  } as User;
+    digestNotifications: true, // Default value, can be updated later
+    responseNotifications: true, // Default value, can be updated later
+  } as IUserProfile;
 
   // For now, return a mock user
-  //return { id: "12345", email: "test@user.com", name: "Test User" } as User;
+  //return { id: "12345", email: "test@user.com", name: "Test User" } as IUserProfile;
 }

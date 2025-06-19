@@ -3,10 +3,10 @@ import { NavLink, useNavigate } from "@remix-run/react";
 import MenuLink from "../MenuLink";
 import MobileMenu from "../MobileMenu";
 import MenuAccount from "../MenuAccount";
-import type { User } from "~/services/User.definition";
+import { IUserProfile } from "~/types/global.definition";
 
 type HeaderProps = {
-  user: User;
+  user: IUserProfile;
 };
 
 function Header({ user }: HeaderProps) {

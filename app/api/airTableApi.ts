@@ -44,15 +44,16 @@ export async function fetchSettings(
 }
 
 export async function fetchUserProfile(
+  username:string,
   AIRTABLE_PAT: string,
   API_URL: string
-  // token: string
 ): Promise<IUserProfile | null> {
   const res = await fetch(`${API_URL}/user-profile/`, {
+    method: "POST",  // Use POST to search and keep the username out of the URL
     headers: {
-      // Authorization: `Token ${token}`,
       Authorization: `Token ${AIRTABLE_PAT}`,
     },
+    body: JSON.stringify(username),
   });
 
   if (!res.ok) {
@@ -70,7 +71,9 @@ export async function fetchUserProfile(
   const profile = data[0];
 
   return {
-    user: profile.user,
+    username: profile.username,
+    name: profile.username,
+    email: profile.email,
     digestNotifications: profile.enable_digest_notifications,
     responseNotifications: profile.enable_repsonse_notifications,
   };
@@ -109,6 +112,7 @@ export async function fetchVerses(
 
 export async function submitRequest(
   request: IRequestForm,
+  user: IUserProfile | null,
   AIRTABLE_PAT: string,
   API_URL: string
 ): Promise<any> {
@@ -128,6 +132,7 @@ export async function submitRequest(
       name: request?.name || "Anon",
       content: request?.prayer,
       location: request?.location,
+      user,
     }),
   });
 }
@@ -181,6 +186,27 @@ export async function flagRequest(
 
   const data = await res.json();
   return data.flagged_at;
+}
+
+export async function attachRequestToUser(
+  id: string,
+  user_id: string,
+  AIRTABLE_PAT: string,
+  API_URL: string
+): Promise<string> {
+  const res = await fetch(`${API_URL}/prayer-requests/${id}/attach_to_user/`, {
+    method: "POST",
+    headers: {
+      Authorization: `Token ${AIRTABLE_PAT}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: user_id
+    }),
+  });
+
+  const data = await res.json();
+  return data.username;
 }
 
 export async function fetchHomePageContent(

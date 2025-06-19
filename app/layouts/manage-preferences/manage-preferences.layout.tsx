@@ -19,15 +19,17 @@ import { updateUserProfile } from "~/api/airTableApi";
 import { useForm } from "react-hook-form";
 import type { IUserProfile } from "~/types/global.definition";
 
-const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
+const ManagePreferences = ({ user }: IManagePreferencesProps) => {
   const loggedIn = !!user;
   const env = getEnv();
   const toast = useToast();
   const { register, handleSubmit } = useForm<IUserProfile>({
     defaultValues: {
-      user: user?.id,
-      digestNotifications: profile?.digestNotifications || true,
-      responseNotifications: profile?.responseNotifications || true,
+      username: user?.username ||  "",
+      name: user?.name ||"",
+      email: user?.email || "",
+      digestNotifications: user?.digestNotifications || true,
+      responseNotifications: user?.responseNotifications || true,
     },
   });
 
@@ -97,7 +99,7 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
                   autoComplete="off"
                   size="lg"
                   {...register("responseNotifications")}
-                  defaultChecked={profile?.responseNotifications || true}
+                  defaultChecked={user?.responseNotifications || true}
                 >
                   <FormLabel
                     textTransform="none"
@@ -114,7 +116,7 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
                   autoComplete="off"
                   size="lg"
                   {...register("digestNotifications")}
-                  defaultChecked={profile?.digestNotifications || true}
+                  defaultChecked={user?.digestNotifications || true}
                 >
                   <FormLabel
                     textTransform="none"

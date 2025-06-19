@@ -47,6 +47,7 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
     try {
       await submitRequest(
         data,
+        user,
         env.AIRTABLE_PAT as string,
         env.API_URL as string
       );

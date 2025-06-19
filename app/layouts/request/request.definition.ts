@@ -1,5 +1,4 @@
-import type { ILocation } from '~/types/global.definition';
-import type { User } from '~/services/User.definition';
+import type { ILocation, IUserProfile } from '~/types/global.definition';
 
 export type IRequestForm = {
 	name?: string;
@@ -10,5 +9,5 @@ export type IRequestForm = {
 
 export interface IRequestLayoutProps {
 	locations: ILocation[];
-	user: User,
+	user: IUserProfile,
 }

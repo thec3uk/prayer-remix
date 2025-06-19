@@ -45,7 +45,9 @@ export interface IBibleVerse {
 }
 
 export interface IUserProfile {
-  user: string;
+  username: string;
+  name: string;
+  email: string;
   digestNotifications: boolean;
   responseNotifications: boolean;
 }
