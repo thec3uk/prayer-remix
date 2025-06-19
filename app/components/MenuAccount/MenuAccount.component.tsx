@@ -7,9 +7,11 @@ function MenuAccount({ loggedIn, name, handleAuthClick }: IMenuAccountProps) {
     <Flex gap={2} alignItems="center" flexWrap="wrap">
       <ChurchSuiteMark />
       {loggedIn && name && (
-        <Text as="span" fontWeight="bold">
+        <Link href="/manage-preferences" fontWeight="bold">
+          {/* <Text as="span" fontWeight="bold"> */}
           {name}
-        </Text>
+          {/* </Text> */}
+        </Link>
       )}
       <Link
         textDecoration="underline"

@@ -23,7 +23,7 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
   const loggedIn = !!user;
   const env = getEnv();
   const toast = useToast();
-  const {register, handleSubmit} = useForm<IUserProfile>({
+  const { register, handleSubmit } = useForm<IUserProfile>({
     defaultValues: {
       user: user?.id,
       digestNotifications: profile?.digestNotifications || true,
@@ -31,21 +31,21 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
     },
   });
 
-  const onSubmit = async (data:IUserProfile) => {
-     try {
-     await updateUserProfile(
+  const onSubmit = async (data: IUserProfile) => {
+    try {
+      await updateUserProfile(
         data,
         env.AIRTABLE_PAT as string,
         env.API_URL as string
-    )
-     toast({
+      );
+      toast({
         title: "Save",
         description: "Your preferences have been updated.",
         status: "success",
         duration: 5000,
         isClosable: true,
-     })
-     } catch (error) {
+      });
+    } catch (error) {
       console.error(error);
       toast({
         title: "Sorry",
@@ -86,7 +86,7 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
             <VStack
               mb={10}
               py={10}
-              spacing={6}
+              spacing={4}
               align="flex-start"
               borderBottom="1px solid"
               borderTop="1px solid"
@@ -127,7 +127,9 @@ const ManagePreferences = ({ user, profile }: IManagePreferencesProps) => {
                 </Checkbox>
               </FormControl>
 
-              <Button type="submit">UPDATE MY NOTIFICATION SETTINGS</Button>
+              <Button type="submit" mt={4}>
+                UPDATE MY NOTIFICATION SETTINGS
+              </Button>
             </VStack>
           </Form>
           <Box mb={10}>
