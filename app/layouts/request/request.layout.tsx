@@ -23,9 +23,8 @@ import {
 import { useForm, useWatch } from "react-hook-form";
 import { submitRequest } from "~/api/airTableApi";
 import type { IRequestForm, IRequestLayoutProps } from "./request.definition";
-
-import PrayerHands from "~/components/PrayerHands";
-import Praise from "~/components/Praise";
+import PrayerHands from "~/icons/PrayerHands";
+import Praise from "~/icons/Praise";
 import getEnv from "~/get-env";
 import Link from "~/components/Link";
 import ChurchSuiteMark from "~/components/ChurchSuiteMark";
@@ -42,7 +41,7 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
   } = useForm<IRequestForm>();
   const prayer = useWatch({ control, name: "prayer" });
   const toast = useToast();
-  
+
   const onSubmit = async (data: any) => {
     try {
       await submitRequest(
@@ -172,15 +171,18 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                 {locations.map((l) => (
-                  <Radio {...register("location")} value={l.id+''} key={'k'+l.id} size="lg">
+                  <Radio
+                    {...register("location")}
+                    value={l.id + ""}
+                    key={"k" + l.id}
+                    size="lg"
+                  >
                     {l.name}
                   </Radio>
                 ))}
               </Grid>
             </RadioGroup>
-            <FormErrorMessage>
-              Please select your location
-            </FormErrorMessage>
+            <FormErrorMessage>Please select your location</FormErrorMessage>
           </FormControl>
           <FormControl isRequired={true} isInvalid={!!errors.type}>
             <FormLabel htmlFor="type">Prayer or praise?</FormLabel>
@@ -194,9 +196,7 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
                 </Radio>
               </Grid>
             </RadioGroup>
-            <FormErrorMessage>
-              Please select
-            </FormErrorMessage>
+            <FormErrorMessage>Please select</FormErrorMessage>
           </FormControl>
           <Flex flexDir="column" w={"100%"} alignItems="flex-end" gap={4}>
             <FormControl isInvalid={!!errors.prayer}>

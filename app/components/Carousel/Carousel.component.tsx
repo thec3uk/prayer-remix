@@ -1,6 +1,5 @@
 import type { ICarouselProps } from "./Carousel.definition";
 import {
-  Box,
   Flex,
   Grid,
   GridItem,
@@ -8,15 +7,42 @@ import {
   Text,
   IconButton,
 } from "@chakra-ui/react";
-import { Carousel as NukaCarousel } from "nuka-carousel";
-import CaretLeftIcon from "../CaretLeftIcon";
-import CaretRightIcon from "../CaretRightIcon";
-import { useRef, useState } from "react";
+import { Carousel as NukaCarousel, useCarousel } from "nuka-carousel";
+import CaretLeftIcon from "~/icons/CaretLeftIcon";
+import CaretRightIcon from "~/icons/CaretRightIcon";
+
+export function CustomArrows() {
+  const { currentPage, totalPages, wrapMode, goBack, goForward } =
+    useCarousel();
+  const allowWrap = wrapMode === "wrap";
+  const enablePrevNavButton = allowWrap || currentPage > 0;
+  const enableNextNavButton = allowWrap || currentPage < totalPages - 1;
+
+  return (
+    <>
+      <Flex gap={2} justifyContent="flex-end" mr={4} mb={4}>
+        <IconButton
+          aria-label="Previous"
+          icon={<CaretLeftIcon />}
+          onClick={goBack}
+          variant="ghost"
+          disabled={!enablePrevNavButton}
+        />
+
+        <IconButton
+          aria-label="Next"
+          icon={<CaretRightIcon />}
+          onClick={goForward}
+          variant="ghost"
+          disabled={!enableNextNavButton}
+        />
+      </Flex>
+    </>
+  );
+}
 
 function Carousel({ items }: ICarouselProps) {
   const border = "1px solid #A3A3A3";
-  const carouselRef = useRef<any>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <Grid
       templateColumns={{ base: "1fr", md: "repeat(5, 1fr)" }}
@@ -47,15 +73,7 @@ function Carousel({ items }: ICarouselProps) {
           bgSize="cover"
           bgPosition="right"
         >
-          <NukaCarousel
-            wrapMode="wrap"
-            swiping={true}
-            // showArrows={false}
-            ref={carouselRef}
-            // @ts-expect-error slideIndex is supported but not typed in current d.ts
-            slideIndex={currentSlide}
-            afterSlide={(index: number) => setCurrentSlide(index)}
-          >
+          <NukaCarousel swiping={true} showArrows arrows={<CustomArrows />}>
             {items.map((item, idx) => (
               <Stack key={idx} w="full" minW="full" p={{ base: 4, md: 8 }}>
                 <Text color={"gray.500"} fontSize="2xl">
@@ -67,23 +85,6 @@ function Carousel({ items }: ICarouselProps) {
               </Stack>
             ))}
           </NukaCarousel>
-          {items.length > 0 && (
-            <Flex gap={2} alignSelf="flex-end" mr={4} mb={4}>
-              <IconButton
-                aria-label="Previous"
-                icon={<CaretLeftIcon />}
-                onClick={() => carouselRef.current?.goToPage(currentSlide - 1)}
-                variant="ghost"
-              />
-
-              <IconButton
-                aria-label="Next"
-                icon={<CaretRightIcon />}
-                onClick={() => carouselRef.current?.goToPage(currentSlide + 1)}
-                variant="ghost"
-              />
-            </Flex>
-          )}
         </Flex>
       </GridItem>
     </Grid>

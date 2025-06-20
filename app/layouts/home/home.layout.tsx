@@ -68,12 +68,6 @@ const HomeLayout = ({ link, verses, card, subTitle }: IHomeProps) => {
           as="section"
           maxW={{ md: "1028px" }}
           mb={sectionMargin}
-          //   overflowX={"hidden"}
-          //   bgColor={"white"}
-          //   bgImage="url(/logomark-transparent.svg)"
-          //   bgRepeat="no-repeat"
-          //   bgSize="cover"
-          //   bgPosition="right"
           filter={"drop-shadow(0px 5px 15px rgba(0, 0, 0, 0.1))"}
         >
           <Carousel

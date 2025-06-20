@@ -23,7 +23,7 @@ import type {
   IFilterOptions,
   IFiltersProps,
 } from "~/components/Filters/Filters.definition";
-import FiltersIcon from "~/components/FiltersIcon";
+import FiltersIcon from "~/icons/FiltersIcon";
 import Link from "~/components/Link";
 import PrayerCard from "~/components/PrayerCard";
 import type { IRequest } from "~/types/global.definition";
