@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "@remix-run/react";
 import {
   Button,
@@ -20,7 +20,7 @@ import {
   Text,
   Checkbox,
 } from "@chakra-ui/react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { submitRequest } from "~/api/airTableApi";
 import type { IRequestForm, IRequestLayoutProps } from "./request.definition";
 import PrayerHands from "~/icons/PrayerHands";
@@ -38,12 +38,16 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm<IRequestForm>();
   const prayer = useWatch({ control, name: "prayer" });
   const toast = useToast();
 
   const onSubmit = async (data: any) => {
     try {
+      // document.cookie = `savedLocation=${data.location}; path=/; max-age=${
+      //   30 * 24 * 60 * 60
+      // }`;
       await submitRequest(
         data,
         user,
@@ -51,6 +55,9 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
         env.API_URL as string
       );
       setShowSuccess(true);
+      document.cookie = `savedLocation=${data.location}; path=/; max-age=${
+        30 * 24 * 60 * 60
+      }`;
     } catch (error) {
       console.error(error);
       toast({
@@ -62,6 +69,21 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
       });
     }
   };
+
+  const getCookie = (name: string): string | null => {
+    const match = document.cookie.match(
+      new RegExp("(^| )" + name + "=([^;]+)")
+    );
+    return match ? match[2] : null;
+  };
+  useEffect(() => {
+    const savedLocation = getCookie("savedLocation");
+    console.log(`savedLocation1 ${savedLocation}`);
+    if (savedLocation) {
+      setValue("location", savedLocation);
+      console.log(`savedLocation2 ${savedLocation}`);
+    }
+  }, [setValue]);
 
   return showSuccess ? (
     <Box
@@ -166,22 +188,25 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
               value={user?.name || ""}
             />
           </FormControl>
+
           <FormControl isRequired={true} isInvalid={!!errors.location}>
             <FormLabel>Location</FormLabel>
-            <RadioGroup>
-              <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                {locations.map((l) => (
-                  <Radio
-                    {...register("location")}
-                    value={l.id + ""}
-                    key={"k" + l.id}
-                    size="lg"
-                  >
-                    {l.name}
-                  </Radio>
-                ))}
-              </Grid>
-            </RadioGroup>
+            <Controller
+              name="location"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <RadioGroup {...field}>
+                  <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                    {locations.map((l) => (
+                      <Radio value={l.id.toString()} key={"k" + l.id} size="lg">
+                        {l.name}
+                      </Radio>
+                    ))}
+                  </Grid>
+                </RadioGroup>
+              )}
+            />
             <FormErrorMessage>Please select your location</FormErrorMessage>
           </FormControl>
           <FormControl isRequired={true} isInvalid={!!errors.type}>
