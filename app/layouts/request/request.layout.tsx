@@ -78,10 +78,8 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
   };
   useEffect(() => {
     const savedLocation = getCookie("savedLocation");
-    console.log(`savedLocation1 ${savedLocation}`);
     if (savedLocation) {
       setValue("location", savedLocation);
-      console.log(`savedLocation2 ${savedLocation}`);
     }
   }, [setValue]);
 
