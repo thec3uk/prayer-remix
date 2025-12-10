@@ -1,8 +1,8 @@
-import { Authenticator } from 'remix-auth'
+import { Authenticator } from "remix-auth";
 import { createCookieSessionStorage } from "@remix-run/node";
 import { OAuth2Strategy, CodeChallengeMethod } from "remix-auth-oauth2";
-import type { IUserProfile } from '~/types/global.definition';
-import type { OAuth2Tokens } from 'arctic';
+import type { IUserProfile } from "~/types/global.definition";
+import type { OAuth2Tokens } from "arctic";
 
 // Create a session storage
 export const sessionStorage = createCookieSessionStorage({
@@ -26,11 +26,11 @@ authenticator.use(
       clientSecret: process.env.OAUTH_CLIENT_SECRET!,
 
       authorizationEndpoint: process.env.OAUTH_URL + "/authorize",
-      tokenEndpoint: process.env.OAUTH_URL + "/oauth/token",
+      tokenEndpoint: process.env.OAUTH_URL + "/token",
       redirectURI: process.env.OAUTH_REDIRECT_URL!,
       // tokenRevocationEndpoint: process.env.OAUTH_URL + "/oauth2/revoke", // optional
 
-      scopes: ["openid", "email", "profile"], // optional
+      scopes: ["full_access"], // optional
       codeChallengeMethod: CodeChallengeMethod.S256, // optional
     },
     async ({ tokens, request }) => {
@@ -43,31 +43,38 @@ authenticator.use(
   "prayer-provider"
 );
 
-export default authenticator
+export default authenticator;
 
-async function getUser(tokens: OAuth2Tokens, request: Request): Promise<IUserProfile> {
-
+async function getUser(
+  tokens: OAuth2Tokens,
+  request: Request
+): Promise<IUserProfile> {
   // Fetch user info from the provider's userinfo endpoint.  Assuming ChurchSuite supports this.
-  const access_token = (tokens.data as { access_token?: string })?.access_token || '';
+  const access_token =
+    (tokens.data as { access_token?: string })?.access_token || "";
   if (!access_token) {
     throw new Error("Access token is missing");
   }
-  const response = await fetch(process.env.OAUTH_URL +"/userinfo", {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-      Accept: "application/json",
-    },
-  });
+  // const response = await fetch(process.env.OAUTH_URL + "/userinfo", {
+  const response = await fetch(
+    "https://api.churchsuite.com/v2/account/users/current",
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        Accept: "application/json",
+      },
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch user info");
   }
 
-  const profile = await response.json();
+  const profile = (await response.json()).data;
 
   // Map the provider's profile to your User type
   return {
-    username: profile.sub || profile.id,
+    username: profile.username || profile.id,
     email: profile.email,
     name: profile.name,
     digestNotifications: true, // Default value, can be updated later

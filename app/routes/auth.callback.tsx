@@ -5,7 +5,7 @@ import authenticator, { sessionStorage } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
-    let user = await authenticator.authenticate("prayer-provider", request);
+    const user = await authenticator.authenticate("prayer-provider", request);
 
     // Try and lookup the user preference from our database
     const env = getEnv();

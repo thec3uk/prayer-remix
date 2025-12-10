@@ -25,8 +25,8 @@ const ManagePreferences = ({ user }: IManagePreferencesProps) => {
   const toast = useToast();
   const { register, handleSubmit } = useForm<IUserProfile>({
     defaultValues: {
-      username: user?.username ||  "",
-      name: user?.name ||"",
+      username: user?.username || "",
+      name: user?.name || "",
       email: user?.email || "",
       digestNotifications: user?.digestNotifications || true,
       responseNotifications: user?.responseNotifications || true,
