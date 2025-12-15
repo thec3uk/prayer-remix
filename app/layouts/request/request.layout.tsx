@@ -183,7 +183,7 @@ const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
               })}
               autoComplete="name"
               type="text"
-              value={user?.name || ""}
+              defaultValue={user?.name || ""}
             />
           </FormControl>
 
