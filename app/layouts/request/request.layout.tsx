@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Form } from "@remix-run/react";
 import {
   Button,
   Flex,
@@ -19,21 +20,17 @@ import {
   Text,
   Checkbox,
 } from "@chakra-ui/react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { submitRequest } from "~/api/airTableApi";
 import type { IRequestForm, IRequestLayoutProps } from "./request.definition";
-
-import { Form } from "@remix-run/react";
-import PrayerHands from "~/components/PrayerHands";
-import Praise from "~/components/Praise";
+import PrayerHands from "~/icons/PrayerHands";
+import Praise from "~/icons/Praise";
 import getEnv from "~/get-env";
 import Link from "~/components/Link";
 import ChurchSuiteMark from "~/components/ChurchSuiteMark";
 
-const RequestLayout = ({ locations }: IRequestLayoutProps) => {
-  //TO DO - add in correct login data
-  const loggedIn = false;
-
+const RequestLayout = ({ locations, user }: IRequestLayoutProps) => {
+  const loggedIn = !!user;
   const [showSuccess, setShowSuccess] = useState(false);
   const env = getEnv();
   const {
@@ -41,18 +38,26 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm<IRequestForm>();
   const prayer = useWatch({ control, name: "prayer" });
   const toast = useToast();
 
   const onSubmit = async (data: any) => {
     try {
+      // document.cookie = `savedLocation=${data.location}; path=/; max-age=${
+      //   30 * 24 * 60 * 60
+      // }`;
       await submitRequest(
         data,
+        user,
         env.AIRTABLE_PAT as string,
         env.API_URL as string
       );
       setShowSuccess(true);
+      document.cookie = `savedLocation=${data.location}; path=/; max-age=${
+        30 * 24 * 60 * 60
+      }`;
     } catch (error) {
       console.error(error);
       toast({
@@ -65,7 +70,20 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
     }
   };
 
-  return !showSuccess ? (
+  const getCookie = (name: string): string | null => {
+    const match = document.cookie.match(
+      new RegExp("(^| )" + name + "=([^;]+)")
+    );
+    return match ? match[2] : null;
+  };
+  useEffect(() => {
+    const savedLocation = getCookie("savedLocation");
+    if (savedLocation) {
+      setValue("location", savedLocation);
+    }
+  }, [setValue]);
+
+  return showSuccess ? (
     <Box
       px={{ base: 4, md: 8 }}
       maxWidth={{ base: "full", md: "container.lg" }}
@@ -101,8 +119,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
             </Box>
             <Text>
               <Link
-                href="https://login.churchsuite.com/"
-                isExternal
+                href="/auth/login?redirect=/manage-preferences"
                 text="Sign into your ChurchSuite account"
                 aria-label="Sign into your ChurchSuite account"
               />{" "}
@@ -166,28 +183,31 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
               })}
               autoComplete="name"
               type="text"
+              defaultValue={user?.name || ""}
             />
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="location">Location</FormLabel>
-            <RadioGroup>
-              <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                {locations.map((l) => {
-                  return (
-                    <Radio
-                      size={"lg"}
-                      key={l.name}
-                      {...register("location")}
-                      value={l.id}
-                    >
-                      {l.name}
-                    </Radio>
-                  );
-                })}
-              </Grid>
-            </RadioGroup>
+
+          <FormControl isRequired={true} isInvalid={!!errors.location}>
+            <FormLabel>Location</FormLabel>
+            <Controller
+              name="location"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <RadioGroup {...field}>
+                  <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                    {locations.map((l) => (
+                      <Radio value={l.id.toString()} key={"k" + l.id} size="lg">
+                        {l.name}
+                      </Radio>
+                    ))}
+                  </Grid>
+                </RadioGroup>
+              )}
+            />
+            <FormErrorMessage>Please select your location</FormErrorMessage>
           </FormControl>
-          <FormControl>
+          <FormControl isRequired={true} isInvalid={!!errors.type}>
             <FormLabel htmlFor="type">Prayer or praise?</FormLabel>
             <RadioGroup>
               <Grid templateColumns="repeat(2, 1fr)" gap={2}>
@@ -199,6 +219,7 @@ const RequestLayout = ({ locations }: IRequestLayoutProps) => {
                 </Radio>
               </Grid>
             </RadioGroup>
+            <FormErrorMessage>Please select</FormErrorMessage>
           </FormControl>
           <Flex flexDir="column" w={"100%"} alignItems="flex-end" gap={4}>
             <FormControl isInvalid={!!errors.prayer}>

@@ -43,3 +43,11 @@ export interface IBibleVerse {
   verse: string;
   content: string;
 }
+
+export interface IUserProfile {
+  username: string;
+  name: string;
+  email: string;
+  digestNotifications: boolean;
+  responseNotifications: boolean;
+}

@@ -1,5 +1,5 @@
 import type { IMenuAccountProps } from "./MenuAccount.definition";
-import { Flex, Text, Link } from "@chakra-ui/react";
+import { Flex, Link } from "@chakra-ui/react";
 import ChurchSuiteMark from "../ChurchSuiteMark";
 
 function MenuAccount({ loggedIn, name, handleAuthClick }: IMenuAccountProps) {
@@ -7,9 +7,9 @@ function MenuAccount({ loggedIn, name, handleAuthClick }: IMenuAccountProps) {
     <Flex gap={2} alignItems="center" flexWrap="wrap">
       <ChurchSuiteMark />
       {loggedIn && name && (
-        <Text as="span" fontWeight="bold">
+        <Link href="/manage-preferences" fontWeight="bold">
           {name}
-        </Text>
+        </Link>
       )}
       <Link
         textDecoration="underline"

@@ -1,20 +1,26 @@
 import { Box, Flex, HStack, Image, useColorModeValue } from "@chakra-ui/react";
-import { NavLink } from "@remix-run/react";
+import { NavLink, useNavigate } from "@remix-run/react";
 import MenuLink from "../MenuLink";
 import MobileMenu from "../MobileMenu";
 import MenuAccount from "../MenuAccount";
-function Header() {
+import { IUserProfile } from "~/types/global.definition";
+
+type HeaderProps = {
+  user: IUserProfile;
+};
+
+function Header({ user }: HeaderProps) {
+  let navigate = useNavigate();
   const isDesktop = { base: "none", md: "flex" };
 
-  //TO DO - Placeholder bits
-  const loggedIn = true;
-  const name = "Joe Bloggs";
+  const loggedIn = !!user;
+  const name = user?.name || "";
 
   const handleAuthClick = () => {
-    if (loggedIn) {
-      console.log("Signing out...");
+    if (user) {
+      navigate("/auth/logout");
     } else {
-      console.log("Signing in...");
+      navigate("/auth/login");
     }
   };
 
@@ -34,7 +40,12 @@ function Header() {
         <NavLink to="/">
           <Image src="/LogoBlack.png" h="51px" w="63px"></Image>
         </NavLink>
-        <HStack display={isDesktop} gap="8" fontSize={{ base: "sm", lg: "md" }}>
+        <HStack
+          display={isDesktop}
+          gap={8}
+          ml={8}
+          fontSize={{ base: "sm", lg: "md" }}
+        >
           <MenuLink to="/" text="Home" />
           <MenuLink to="/prayerwall" text="Prayer Wall" />
           <MenuLink to="/request" text="Submit a request" />

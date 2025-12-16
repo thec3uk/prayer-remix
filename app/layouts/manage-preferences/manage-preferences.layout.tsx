@@ -1,21 +1,63 @@
+import type { IManagePreferencesProps } from "./manage-preferences.definition";
 import {
-  Button,
-  Heading,
-  VStack,
   Box,
-  Text,
+  Button,
   Checkbox,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
+  Text,
+  useToast,
+  VStack,
 } from "@chakra-ui/react";
-// import type { IManagePreferencesProps } from "./request.definition";
 import { Form } from "@remix-run/react";
 import Link from "~/components/Link";
+import getEnv from "~/get-env";
+import ChurchSuiteMark from "~/components/ChurchSuiteMark";
+import { updateUserProfile } from "~/api/airTableApi";
+import { useForm } from "react-hook-form";
+import type { IUserProfile } from "~/types/global.definition";
 
-const MangagePreferences = () => {
-  // const handleSubmit = () => {
-  //   console.log("submitted");
-  // };
+const ManagePreferences = ({ user }: IManagePreferencesProps) => {
+  const loggedIn = !!user;
+  const env = getEnv();
+  const toast = useToast();
+  const { register, handleSubmit } = useForm<IUserProfile>({
+    defaultValues: {
+      username: user?.username || "",
+      name: user?.name || "",
+      email: user?.email || "",
+      digestNotifications: user?.digestNotifications || true,
+      responseNotifications: user?.responseNotifications || true,
+    },
+  });
+
+  const onSubmit = async (data: IUserProfile) => {
+    try {
+      await updateUserProfile(
+        data,
+        env.AIRTABLE_PAT as string,
+        env.API_URL as string
+      );
+      toast({
+        title: "Save",
+        description: "Your preferences have been updated.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Sorry",
+        description: "Something went wrong, please try again.",
+        status: "error",
+        duration: 10000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Box
@@ -30,63 +72,95 @@ const MangagePreferences = () => {
       >
         Manage your notification preferences
       </Heading>
-      <Box mb={10}>
-        <Text mb={{ base: 2, md: 3 }}>
-          Hi{" "}
-          <Text as="span" fontWeight="bold">
-            ADD NAME
-          </Text>
-          ,
-        </Text>
-        Update your notification preferences below.
-      </Box>
-      <Form name="prayer-request">
-        <VStack
-          mb={10}
-          py={10}
-          spacing={6}
-          align="flex-start"
-          borderBottom="1px solid"
-          borderTop="1px solid"
-          borderColor="gray.200"
-        >
-          <FormControl>
-            <Checkbox autoComplete="off" size="lg">
-              <FormLabel
-                textTransform="none"
-                fontWeight="regular"
-                fontSize="md"
-              >
-                Send me an email when The C3 Church responds to my requests
-              </FormLabel>
-            </Checkbox>
-          </FormControl>
-          <FormControl>
-            <Checkbox autoComplete="off" size="lg">
-              <FormLabel
-                textTransform="none"
-                fontWeight="regular"
-                fontSize="md"
-              >
-                Send me a daily email to let me know how many people are
-                engaging with my requests
-              </FormLabel>
-            </Checkbox>
-          </FormControl>
+      {loggedIn ? (
+        <>
+          <Box mb={10}>
+            <Text mb={{ base: 2, md: 3 }}>
+              Hi{" "}
+              <Text as="span" fontWeight="bold">
+                {user.name}
+              </Text>
+              ,
+            </Text>
+            Update your notification preferences below.
+          </Box>
+          <Form name="update-notifications" onSubmit={handleSubmit(onSubmit)}>
+            <VStack
+              mb={10}
+              py={10}
+              spacing={4}
+              align="flex-start"
+              borderBottom="1px solid"
+              borderTop="1px solid"
+              borderColor="gray.200"
+            >
+              <FormControl>
+                <Checkbox
+                  autoComplete="off"
+                  size="lg"
+                  {...register("responseNotifications")}
+                  defaultChecked={user?.responseNotifications || true}
+                >
+                  <FormLabel
+                    textTransform="none"
+                    fontWeight="regular"
+                    fontSize="md"
+                  >
+                    Send me an email when The C3 Church responds to my requests
+                  </FormLabel>
+                </Checkbox>
+              </FormControl>
 
-          <Button>UPDATE MY NOTIFICATION SETTINGS</Button>
-        </VStack>
-      </Form>
-      <Box mb={10}>
-        <Link
-          href="/prayerwall"
-          useButton={true}
-          text="RETURN TO THE PRAYER WALL"
-          aria-label="Return to the prayer wall"
-        />
-      </Box>
+              <FormControl>
+                <Checkbox
+                  autoComplete="off"
+                  size="lg"
+                  {...register("digestNotifications")}
+                  defaultChecked={user?.digestNotifications || true}
+                >
+                  <FormLabel
+                    textTransform="none"
+                    fontWeight="regular"
+                    fontSize="md"
+                  >
+                    Send me a daily email to let me know how many people are
+                    engaging with my requests
+                  </FormLabel>
+                </Checkbox>
+              </FormControl>
+
+              <Button type="submit" mt={4}>
+                UPDATE MY NOTIFICATION SETTINGS
+              </Button>
+            </VStack>
+          </Form>
+          <Box mb={10}>
+            <Link
+              href="/prayerwall"
+              useButton={true}
+              text="RETURN TO THE PRAYER WALL"
+              aria-label="Return to the prayer wall"
+            />
+          </Box>
+        </>
+      ) : (
+        <Flex gap={2} mb={40}>
+          <Box>
+            <ChurchSuiteMark />
+          </Box>
+          <Text>
+            <Link
+              href="/auth/login?redirect=/manage-preferences"
+              isExternal
+              text="Sign into your ChurchSuite account"
+              aria-label="Sign into your ChurchSuite account"
+            />{" "}
+            to manage your notification preferences
+          </Text>
+        </Flex>
+      )}
     </Box>
   );
 };
 
-export default MangagePreferences;
+export default ManagePreferences;

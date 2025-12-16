@@ -7,8 +7,15 @@ import getEnv from "~/get-env";
 
 export const loader: LoaderFunction = async () => {
   const env = getEnv();
-  const requests = await fetchRequests({}, env.AIRTABLE_PAT as string, env.API_URL as string);
-  const locations = await fetchLocations(env.AIRTABLE_PAT as string, env.API_URL as string);
+  const requests = await fetchRequests(
+    {},
+    env.AIRTABLE_PAT as string,
+    env.API_URL as string
+  );
+  const locations = await fetchLocations(
+    env.AIRTABLE_PAT as string,
+    env.API_URL as string
+  );
 
   return { requests, locations };
 };

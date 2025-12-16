@@ -23,12 +23,12 @@ import type {
   IFilterOptions,
   IFiltersProps,
 } from "~/components/Filters/Filters.definition";
-import FiltersIcon from "~/components/FiltersIcon";
+import FiltersIcon from "~/icons/FiltersIcon";
 import Link from "~/components/Link";
-import Masonry from "react-masonry-css";
 import PrayerCard from "~/components/PrayerCard";
 import type { IRequest } from "~/types/global.definition";
 import type { IPrayerWallProps } from "./prayer-wall.definition";
+import Masonry from "react-layout-masonry";
 import getEnv from "~/get-env";
 
 const env = getEnv();
@@ -53,6 +53,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
     md: "Add a prayer request",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isClient, setIsClient] = useState(false);
   const [filteredRequests, setFilteredRequests] =
     useState<IRequest[]>(requests);
   const [filters, setFilters] = useState<IFilterOptions>({
@@ -67,6 +68,7 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
         (r.type === filters.type || filters.type === "both")
     );
     setFilteredRequests(reqs);
+    setIsClient(true);
   }, [filters, requests]);
 
   const applyFilters = (opts: IFilterOptions) => {
@@ -114,11 +116,6 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
       );
     }
   };
-  const breakpointColumnsObj = {
-    default: 3,
-    1100: 2,
-    700: 1,
-  };
 
   return (
     <Box px={{ base: 3, md: 4 }} minH={"75vh"}>
@@ -131,7 +128,12 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
         Prayer Wall
       </Heading>
       {locations && (
-        <Flex flexDir="row" justifyContent="space-between" alignItems="center">
+        <Flex
+          flexDir="row"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={8}
+        >
           <Flex display={{ base: "block", lg: "none" }} flexDir="column">
             <FiltersIcon h={"23px"} w={"24px"} onClick={onOpen}></FiltersIcon>
             <Drawer isOpen={isOpen} onClose={onClose} placement="left">
@@ -183,11 +185,12 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
           />
         </Flex>
       )}
-      {filteredRequests.length ? (
+      {isClient && filteredRequests.length ? (
         <Masonry
-          breakpointCols={breakpointColumnsObj}
+          columns={{ 640: 1, 768: 1, 1024: 2, 1280: 3 }}
+          gap={32}
           className="masonry-grid"
-          columnClassName="masonry-grid_column"
+          columnProps={{ className: "masonry-grid_column" }}
         >
           {filteredRequests.map((request) => (
             <PrayerCard
@@ -201,7 +204,8 @@ const PrayerWallLayout = ({ requests, locations }: IPrayerWallProps) => {
       ) : (
         <Box mt={8}>
           <Text mb={2}>
-            Looks like we couldn't find any requests that matched your filter.
+            Looks like we couldn&apos;t find any requests that matched your
+            filter.
           </Text>
           <Text mb={4}>
             Why not click the button below to submit your request and get us

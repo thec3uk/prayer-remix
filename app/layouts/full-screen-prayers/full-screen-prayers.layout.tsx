@@ -4,8 +4,8 @@ import type { IRequest } from '~/types/global.definition';
 import { useEffect, useState } from 'react';
 import { Flex, Switch } from '@chakra-ui/react';
 import MasonryGridItem from '~/components/FeaturePrayerCard/MasonryGridItem';
-import { initialiseMasonry, masonryPrependElements } from './masonry';
-import type Masonry from 'masonry-layout';
+//import { initialiseMasonry, masonryPrependElements } from './masonry';
+//import type Masonry from 'masonry-layout';
 
 /* Default values to control timings and number so items displayed */
 const AUTO_UPDATE_INTERVAL = 7500;
@@ -20,14 +20,14 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 	/*
 		If we are running in the browser, it's time to initialise masonry.
 		(masonry use "window" which we cannot access server side)
-	*/
+	
 	let masonry: Masonry;
 	let gridElement: Element;
 	if (typeof document !== 'undefined' && typeof window !== 'undefined') {
 		let { msnry, grid } = initialiseMasonry();
 		gridElement = grid;
 		masonry = msnry;
-	}
+	}*/
 
 	/* 
 		Buffer used to store elements in hidden display on load, these are "popped" 
@@ -56,7 +56,7 @@ const FullScreenPrayerLayout = ({ requests }: IFullScreenPrayersProps) => {
 			);
 			if (elem) elems.push(elem);
 		});
-		masonryPrependElements(masonry, gridElement, elems);
+	//	masonryPrependElements(masonry, gridElement, elems);
 	}
 
 	/*

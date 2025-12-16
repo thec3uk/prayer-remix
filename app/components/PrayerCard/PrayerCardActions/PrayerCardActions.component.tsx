@@ -1,8 +1,8 @@
 import { Flex, Button, Circle, Text, Box } from "@chakra-ui/react";
 import { useState } from "react";
-import Flag from "~/components/Flag";
-import PrayerHands from "~/components/PrayerHands";
-import Praise from "~/components/Praise";
+import Flag from "~/icons/Flag";
+import PrayerHands from "~/icons/PrayerHands";
+import Praise from "~/icons/Praise";
 import type { IPrayerCardProps } from "../PrayerCard.definition";
 
 function PrayerCardActions({ data, onAmen, onReport }: IPrayerCardProps) {
