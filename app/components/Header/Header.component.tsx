@@ -48,6 +48,7 @@ function Header({ user }: HeaderProps) {
         >
           <MenuLink to="/" text="Home" />
           <MenuLink to="/prayerwall" text="Prayer Wall" />
+          <MenuLink to="/resources" text="Resources" />
           <MenuLink to="/request" text="Submit a request" />
           <MenuAccount
             loggedIn={loggedIn}

@@ -51,6 +51,11 @@ function MobileMenu({ loggedIn, name, handleAuthClick }: IMobileMenuProps) {
           onClick={() => setMenuVisible(false)}
         />
         <MenuLink
+          to="/resources"
+          text="Resources"
+          onClick={() => setMenuVisible(false)}
+        />
+        <MenuLink
           to="/request"
           text="Submit a request"
           onClick={() => setMenuVisible(false)}

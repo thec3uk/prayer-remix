@@ -51,3 +51,15 @@ export interface IUserProfile {
   digestNotifications: boolean;
   responseNotifications: boolean;
 }
+
+export interface IResource {
+  id: number;
+  title: string;
+  description: string;
+  resource_type: "section" | "link" | "video" | "audio" | "text";
+  section: number | null;
+  section_name: string | null;
+  url: string;
+  content: string;
+  sort_order: number;
+}

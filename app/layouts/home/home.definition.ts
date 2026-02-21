@@ -1,4 +1,4 @@
-import type { IBibleVerse, ISetting } from '~/types/global.definition';
+import type { IBibleVerse, IResource, ISetting } from '~/types/global.definition';
 
 export interface IHomeProps {
 	link: ISetting;
@@ -10,4 +10,5 @@ export interface IHomeProps {
 		text: string;
 		href: string;
 	};
+	featuredResource?: IResource;
 }
