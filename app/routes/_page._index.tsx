@@ -2,6 +2,7 @@ import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import {
   fetchHomePageContent,
+  fetchResources,
   fetchSettings,
   fetchVerses,
 } from "~/api/airTableApi";
@@ -10,6 +11,7 @@ import HomeLayout from "~/layouts/home/home.layout";
 import type {
   IBibleVerse,
   IHomePageContent,
+  IResource,
   ISetting,
 } from "~/types/global.definition";
 
@@ -23,14 +25,20 @@ export const loader: LoaderFunction = async () => {
   );
   const verses = await fetchVerses(env.AIRTABLE_PAT as string, env.API_URL as string);
   const home = await fetchHomePageContent(env.AIRTABLE_PAT as string, env.API_URL as string);
-  return { upcomingMeeting, verses, home };
+  const resources = await fetchResources(env.API_URL as string);
+  const contentResources = resources.filter((r) => r.resource_type !== "section");
+  const featuredResource = contentResources.length > 0
+    ? contentResources[Math.floor(Math.random() * contentResources.length)]
+    : undefined;
+  return { upcomingMeeting, verses, home, featuredResource };
 };
 
 export default function Index() {
-  const { upcomingMeeting, verses, home } = useLoaderData<{
+  const { upcomingMeeting, verses, home, featuredResource } = useLoaderData<{
     upcomingMeeting: ISetting;
     verses: IBibleVerse[];
     home: IHomePageContent;
+    featuredResource?: IResource;
   }>();
   return (
     <HomeLayout
@@ -38,6 +46,7 @@ export default function Index() {
       verses={verses}
       card={home.card}
       subTitle={home.subTitle}
+      featuredResource={featuredResource}
     />
   );
 }

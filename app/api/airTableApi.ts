@@ -4,6 +4,7 @@ import type {
   ILocation,
   IRequest,
   IRequestForm,
+  IResource,
   ISetting,
   IUserProfile,
 } from "~/types/global.definition";
@@ -230,6 +231,14 @@ export async function fetchHomePageContent(
       img: "",
     },
   };
+}
+
+export async function fetchResources(
+  API_URL: string
+): Promise<IResource[]> {
+  const res = await fetch(`${API_URL}/resources/`);
+  const resources = await res.json();
+  return resources;
 }
 
 type KeyValuePair = { key: string; value: string };
